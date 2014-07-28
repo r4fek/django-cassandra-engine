@@ -46,5 +46,6 @@ class DatabaseCreation(NonrelDatabaseCreation):
 
     def _destroy_test_db(self, test_database_name, verbosity=1):
 
+        self.connection.connect()
         delete_keyspace(test_database_name)
         self.connection.close()
