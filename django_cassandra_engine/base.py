@@ -16,7 +16,12 @@ class DatabaseFeatures(NonrelDatabaseFeatures):
 
 
 class DatabaseOperations(NonrelDatabaseOperations):
-    pass
+
+    def sql_flush(self, style, tables, sequences, allow_cascade=False):
+        """
+        SQL flush is not available in this engine
+        """
+        return ''
 
 
 class DatabaseClient(NonrelDatabaseClient):

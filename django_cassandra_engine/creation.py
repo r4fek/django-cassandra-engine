@@ -1,4 +1,4 @@
-from cqlengine.management import sync_table, create_keyspace
+from cqlengine.management import create_keyspace, delete_keyspace
 from djangotoolbox.db.creation import NonrelDatabaseCreation
 
 
@@ -36,23 +36,15 @@ class DatabaseCreation(NonrelDatabaseCreation):
         'RelatedAutoField':  'id',
     }
 
-    def sql_create_model(self, model, style, known_models=set()):
-        """
-        Most NoSQL databases are mostly schema-less, no data
-        definitions are needed.
-        """
+    def _create_test_db(self, verbosity=1, autoclobber=False):
 
-        #TODO
+        self.connection.connect()
         options = self.connection.settings_dict.get('OPTIONS', {})
         replication_opts = options.get('replication', {})
         create_keyspace(self.connection.settings_dict['NAME'],
                         **replication_opts)
-        sync_table(model, create_missing_keyspace=False)
 
-        return [], {}
+    def _destroy_test_db(self, test_database_name, verbosity=1):
 
-    def create_test_db(self, verbosity=1, autoclobber=False):
-        raise NotImplementedError
-
-    def destroy_test_db(self, old_database_name, verbosity=1):
-        raise NotImplemented
+        delete_keyspace(test_database_name)
+        self.connection.close()
