@@ -7,9 +7,9 @@ class CassandraConnection(object):
 
     def __init__(self, **options):
 
-        self.hosts = options.pop('HOST').split(',')
-        self.keyspace = options.pop('NAME')
-        self.options = options.pop('OPTIONS')
+        self.hosts = options.get('HOST').split(',')
+        self.keyspace = options.get('NAME')
+        self.options = options.get('OPTIONS', {})
         self.setup()
 
     def setup(self):
@@ -28,6 +28,7 @@ class CassandraConnection(object):
         pass
 
     def cursor(self):
+        connection.handle_lazy_connect()
         return FakeCursor()
 
     @property

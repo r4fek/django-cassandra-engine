@@ -48,13 +48,25 @@ class DatabaseWrapper(NonrelDatabaseWrapper):
         self.creation = DatabaseCreation(self)
         self.validation = DatabaseValidation(self)
         self.introspection = DatabaseIntrospection(self)
+        self.connected = False
 
     def connect(self):
+        if not self.connected or self.connection is None:
+            settings = self.settings_dict
+            self.connection = CassandraConnection(**settings)
+            connection_created.send(sender=self.__class__, connection=self)
+            self.connected = True
 
-        settings = self.settings_dict
+    def reconnect(self):
 
-        self.connection = CassandraConnection(**settings)
-        connection_created.send(sender=self.__class__, connection=self)
+        if self.connected:
+            self.connection.close()
+            del self.connection
+            self.connected = False
+        self.connect()
+
+    def close(self):
+        pass
 
     def _commit(self):
         pass

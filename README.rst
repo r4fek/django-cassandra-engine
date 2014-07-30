@@ -28,8 +28,8 @@ Usage
    DATABASES = {
        'default': {
            'ENGINE': 'django_cassandra_engine',
-           'NAME': 'keyspace',
-           'TEST_NAME': 'test_keyspace',
+           'NAME': 'db',
+           'TEST_NAME': 'test_db',
            'HOST': 'db1.example.com,db2.example.com',
            'OPTIONS': {
                'replication': {
