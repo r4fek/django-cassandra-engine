@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 import django_cassandra_engine as meta
 
-DESCRIPTION = 'Cassandra backend for Django-nonrel'
+DESCRIPTION = 'Django Cassandra Engine - the Cassandra backend for Django'
 LONG_DESCRIPTION = None
 
 try:
@@ -16,6 +16,7 @@ setup(
     author=meta.__author__,
     author_email=meta.__contact__,
     url=meta.__homepage__,
+    download_url='http://github.com/r4fek/django-cassandra-engine/tarball/master',
     license='2-clause BSD',
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
