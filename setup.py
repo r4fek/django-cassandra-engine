@@ -20,7 +20,7 @@ setup(
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     install_requires=['cassandra-driver', 'djangotoolbox>=1.6.0', 'cqlengine'],
-    packages=find_packages(exclude=['tests', 'tests.*']),
+    packages=find_packages(exclude=['tests', 'tests.*', 'testproject']),
     zip_safe=False,
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',

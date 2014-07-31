@@ -49,6 +49,7 @@ class DatabaseWrapper(NonrelDatabaseWrapper):
         self.validation = DatabaseValidation(self)
         self.introspection = DatabaseIntrospection(self)
         self.connected = False
+        del self.connection
 
     def connect(self):
         if not self.connected or self.connection is None:
@@ -56,6 +57,13 @@ class DatabaseWrapper(NonrelDatabaseWrapper):
             self.connection = CassandraConnection(**settings)
             connection_created.send(sender=self.__class__, connection=self)
             self.connected = True
+
+    def __getattr__(self, attr):
+        if attr == "connection":
+            assert not self.connected
+            self.connect()
+            return getattr(self, attr)
+        raise AttributeError(attr)
 
     def reconnect(self):
 
