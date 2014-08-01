@@ -17,12 +17,22 @@ Requirements
 - djangotoolbox
 
 
+Features
+--------
+
+- complete django integration
+- working syncdb command
+- support for creating/destroying test database
+- accept all cqlengine connection options
+- automatic connection/disconnection handling
+
+
 Installation
 ------------
 
 Recommended installation::
 
-   pip install git+https://github.com/r4fek/django-cassandra-engine
+   pip install django-cassandra-engine
   
 
 Usage
