@@ -1,8 +1,5 @@
-from mock import patch
-
 from django.db import connection
 from django.test import TestCase
-from django_cassandra_engine.base import DatabaseWrapper
 from django_cassandra_engine.connection import CassandraConnection
 
 

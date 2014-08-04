@@ -13,6 +13,9 @@ class CassandraConnection(object):
         self.setup()
 
     def setup(self):
+        if connection.cluster is not None:
+            # already connected
+            return
 
         connection.setup(
             self.hosts,
@@ -28,7 +31,6 @@ class CassandraConnection(object):
         pass
 
     def cursor(self):
-        connection.handle_lazy_connect()
         return FakeCursor()
 
     @property
@@ -40,4 +42,12 @@ class CassandraConnection(object):
         return connection.get_cluster()
 
     def close(self):
+        """
+        Close all dbconnections
+        """
+
         self.cluster.shutdown()
+        connection.cluster = None
+        connection.session = None
+        connection.lazy_connect_args = None
+        connection.default_consistency_level = None
