@@ -7,6 +7,7 @@ It uses latest `Cqlengine <https://github.com/cqlengine/cqlengine>`_ which is cu
 
 :License: 2-clause BSD
 :Keywords: django, cassandra, orm, nosql, database, python
+:URL (pypi): `django-cassandra-engine <https://pypi.python.org/pypi/django-cassandra-engine>`_
 
 Requirements
 ------------
