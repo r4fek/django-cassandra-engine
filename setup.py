@@ -16,6 +16,7 @@ setup(
     author=meta.__author__,
     author_email=meta.__contact__,
     url=meta.__homepage__,
+    keywords='django cassandra engine backend driver database nonrel cqlengine',
     download_url='http://github.com/r4fek/django-cassandra-engine/tarball/master',
     license='2-clause BSD',
     description=DESCRIPTION,
@@ -25,7 +26,7 @@ setup(
         exclude=['tests', 'tests.*', 'testproject', 'testproject.*']),
     zip_safe=False,
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',
