@@ -5,3 +5,7 @@ class ExampleModel(Model):
     id = columns.BigInt(primary_key=True)
     created_at = columns.DateTime()
     deleted = columns.Boolean(default=False)
+
+
+class ExampleModel2(Model):
+    id = columns.BigInt(primary_key=True)

@@ -37,13 +37,20 @@ class CassandraConnection(object):
     def session(self):
         return connection.get_session()
 
+    def execute(self, qs):
+        self.session.set_keyspace(self.keyspace)
+        self.session.execute(qs)
+
     @property
     def cluster(self):
         return connection.get_cluster()
 
     def close(self):
+        """ We would like to keep connection always open by default """
+
+    def close_all(self):
         """
-        Close all dbconnections
+        Close all db connections
         """
 
         self.cluster.shutdown()

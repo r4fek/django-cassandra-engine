@@ -36,6 +36,9 @@ class DatabaseCreation(NonrelDatabaseCreation):
         'RelatedAutoField':  'id',
     }
 
+    def set_autocommit(self):
+        """ There is no such thing in Cassandra """
+
     def create_test_db(self, verbosity=1, autoclobber=False):
         """
         Creates a test database, prompting the user for confirmation if the

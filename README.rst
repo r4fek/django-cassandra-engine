@@ -22,9 +22,9 @@ Features
 --------
 
 - complete django integration
-- working syncdb command
+- working syncdb and flush commands
 - support for creating/destroying test database
-- accept all cqlengine connection options
+- accept all Cqlengine connection options
 - automatic connection/disconnection handling
 
 
@@ -78,3 +78,12 @@ Usage
 
 #. Run ``./manage.py syncdb``
 #. Done!
+
+
+Links
+-----
+
+* `Changelog`_
+
+
+.. _Changelog: https://github.com/r4fek/django-cassandra-engine/blob/master/CHANGELOG.rst
