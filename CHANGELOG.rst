@@ -5,6 +5,7 @@ Version 0.0.4 (22.08.2014)
 --------------------------
 
 * Feature: add support for *flush* management command
+* Bugfix: lock dependencies in setup.py
 * add more tests
 
 
