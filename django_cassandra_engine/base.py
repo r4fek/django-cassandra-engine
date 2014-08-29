@@ -1,5 +1,7 @@
+from itertools import chain
+
 from django.db.backends import connection_created
-from django.db import models
+from django.db import models as django_models
 
 from djangotoolbox.db.base import (
     NonrelDatabaseClient,
@@ -49,20 +51,35 @@ class DatabaseValidation(NonrelDatabaseValidation):
 
 class DatabaseIntrospection(NonrelDatabaseIntrospection):
 
+    def __init__(self, *args, **kwargs):
+
+        super(NonrelDatabaseIntrospection, self).__init__(*args, **kwargs)
+        self._cql_models = {}
+        self.discover_models()
+
+    def discover_models(self):
+        """
+        Return a dict containing a list of cqlengine.Model classes within
+        installed App.
+        """
+
+        apps = django_models.get_apps()
+        for app in apps:
+            self._cql_models[app.__name__] = get_cql_models(app)
+
+    @property
+    def cql_models(self):
+        return self._cql_models
+
     def django_table_names(self, only_existing=False):
         """
         Returns a list of all table names that have associated cqlengine models
         and are present in settings.INSTALLED_APPS.
         """
 
-        apps = models.get_apps()
-        cqlengine_models = []
-
-        for app in apps:
-            cqlengine_models.extend(get_cql_models(app))
-
+        all_models = list(chain.from_iterable(self._cql_models.values()))
         tables = [model.column_family_name(include_keyspace=False)
-                  for model in cqlengine_models]
+                  for model in all_models]
 
         return tables
 

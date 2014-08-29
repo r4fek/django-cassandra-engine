@@ -1,27 +1,21 @@
-from optparse import make_option
+from django.conf import settings
+from django.core.management.commands.syncdb import Command as SyncCommand
+from django.db import connections
+from django.utils.importlib import import_module
 
 from cqlengine.management import create_keyspace, sync_table
 
-from django.conf import settings
-from django.core.management.base import NoArgsCommand
-from django.db import DEFAULT_DB_ALIAS, connections, models
-from django.utils.importlib import import_module
 
-from django_cassandra_engine.utils import get_cql_models
-
-
-class Command(NoArgsCommand):
-    option_list = NoArgsCommand.option_list + (
-        make_option(
-            '--database', action='store', dest='database',
-            default=DEFAULT_DB_ALIAS,
-            help='Nominates a database to synchronize. '
-                 'Defaults to the "default" database.'),
-    )
-    help = "Create the database tables for all apps in INSTALLED_APPS " \
-           "whose tables haven't already been created."
+class Command(SyncCommand):
 
     def handle_noargs(self, **options):
+        db = options.get('database')
+        engine = settings.DATABASES.get(db, {}).get('ENGINE', '')
+
+        # Call regular syncdb if engine is different from ours
+        if engine != 'django_cassandra_engine':
+            return super(Command, self).handle_noargs(**options)
+
         # Import the 'management' module within each installed app, to register
         # dispatcher events.
         for app_name in settings.INSTALLED_APPS:
@@ -42,7 +36,6 @@ class Command(NoArgsCommand):
                         or 'management' not in msg:
                     raise
 
-        db = options.get('database')
         connection = connections[db]
         connection.connect()
         options = connection.settings_dict.get('OPTIONS', {})
@@ -52,10 +45,9 @@ class Command(NoArgsCommand):
         self.stdout.write('Creating keyspace %s..' % keyspace)
         create_keyspace(keyspace, **replication_opts)
 
-        apps = models.get_apps()
-        for app in apps:
-            app_models = get_cql_models(app)
+        for app_name, app_models \
+                in connection.introspection.cql_models.iteritems():
+
             for model in app_models:
-                self.stdout.write('Syncing %s.%s' %
-                                  (app.__name__, model.__name__))
+                self.stdout.write('Syncing %s.%s' % (app_name, model.__name__))
                 sync_table(model, create_missing_keyspace=False)

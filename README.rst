@@ -26,6 +26,7 @@ Features
 - support for creating/destroying test database
 - accept all Cqlengine connection options
 - automatic connection/disconnection handling
+- support for multiple databases (also relational)
 
 
 Installation
@@ -78,7 +79,6 @@ Usage
 
 #. Run ``./manage.py syncdb``
 #. Done!
-
 
 Links
 -----
