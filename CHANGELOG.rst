@@ -7,6 +7,7 @@ Version 0.0.5 (29.08.2014)
 * Improved models discovery
 * Call the standard syncdb if the engine is not django_cassandra_engine
   (thanks to @ratm)
+* Travis integration
 
 Version 0.0.4 (22.08.2014)
 --------------------------

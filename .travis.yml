@@ -9,6 +9,7 @@ python:
 
 before_install:
   - export CASSANDRA_VERSION=20
+  - sudo apt-get install libev4 libev-dev
   - sudo echo "deb http://www.apache.org/dist/cassandra/debian ${CASSANDRA_VERSION}x main" | sudo tee -a /etc/apt/sources.list
   - sudo echo "deb-src http://www.apache.org/dist/cassandra/debian ${CASSANDRA_VERSION}x main" | sudo tee -a /etc/apt/sources.list
   - sudo gpg --keyserver pgp.mit.edu --recv-keys F758CE318D77295D
