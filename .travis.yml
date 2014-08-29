@@ -1,7 +1,6 @@
 language: python
 
 env:
-  - DJANGO_VERSION=1.5.8
   - DJANGO_VERSION=1.6.6
 
 python:
@@ -20,7 +19,6 @@ before_install:
   - sudo apt-get -o Dpkg::Options::="--force-confnew" install -y cassandra
   - sudo sh -c "echo 'JVM_OPTS=\"\${JVM_OPTS} -Djava.net.preferIPv4Stack=false\"' >> /usr/local/cassandra/conf/cassandra-env.sh"
   - sudo service cassandra start
-  - if [ "$C_VERSION" -le "20" ]; then export CASSANDRA_PROTOCOL_VERSION=1; fi
 
 install:
   - "pip install django==${DJANGO_VERSION}"
