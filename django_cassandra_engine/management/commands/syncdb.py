@@ -8,9 +8,10 @@ from django.db import DEFAULT_DB_ALIAS, connections, models
 from django.utils.importlib import import_module
 
 from django_cassandra_engine.utils import get_cql_models
+from django.core.management.commands.syncdb import Command
 
 
-class Command(NoArgsCommand):
+class Command(Command):
     option_list = NoArgsCommand.option_list + (
         make_option(
             '--database', action='store', dest='database',
@@ -44,18 +45,22 @@ class Command(NoArgsCommand):
 
         db = options.get('database')
         connection = connections[db]
-        connection.connect()
-        options = connection.settings_dict.get('OPTIONS', {})
-        replication_opts = options.get('replication', {})
-        keyspace = connection.settings_dict['NAME']
+        if connection.settings_dict.get('ENGINE', None) is "django_cassandra_engine":
+            connection.connect()
+            options = connection.settings_dict.get('OPTIONS', {})
+            replication_opts = options.get('replication', {})
+            keyspace = connection.settings_dict['NAME']
 
-        self.stdout.write('Creating keyspace %s..' % keyspace)
-        create_keyspace(keyspace, **replication_opts)
+            self.stdout.write('Creating keyspace %s..' % keyspace)
+            create_keyspace(keyspace, **replication_opts)
 
-        apps = models.get_apps()
-        for app in apps:
-            app_models = get_cql_models(app)
-            for model in app_models:
-                self.stdout.write('Syncing %s.%s' %
-                                  (app.__name__, model.__name__))
-                sync_table(model, create_missing_keyspace=False)
+            apps = models.get_apps()
+            for app in apps:
+                app_models = get_cql_models(app)
+                for model in app_models:
+                    self.stdout.write('Syncing %s.%s' %
+                                      (app.__name__, model.__name__))
+                    sync_table(model, create_missing_keyspace=False)
+
+        else:
+            super(Command, self).handle_noargs(**options)
