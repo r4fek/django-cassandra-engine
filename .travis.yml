@@ -1,14 +1,14 @@
 language: python
 
 env:
-  - CASSANDRA_VERSION=20
-  - DJANGO_VERSION=1.5
-  - DJANGO_VERSION=1.6
+  - DJANGO_VERSION=1.5.8
+  - DJANGO_VERSION=1.6.6
 
 python:
   - "2.7"
 
 before_install:
+  - export CASSANDRA_VERSION=20
   - sudo echo "deb http://www.apache.org/dist/cassandra/debian ${CASSANDRA_VERSION}x main" | sudo tee -a /etc/apt/sources.list
   - sudo echo "deb-src http://www.apache.org/dist/cassandra/debian ${CASSANDRA_VERSION}x main" | sudo tee -a /etc/apt/sources.list
   - sudo gpg --keyserver pgp.mit.edu --recv-keys F758CE318D77295D
