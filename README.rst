@@ -4,6 +4,9 @@ Django Cassandra Engine
 
 .. image:: https://travis-ci.org/r4fek/django-cassandra-engine.svg?branch=master
     :target: https://travis-ci.org/r4fek/django-cassandra-engine
+.. image:: https://pypip.in/download/django-cassandra-engine/badge.svg
+    :target: https://pypi.python.org/pypi//django-cassandra-engine/
+    :alt: Downloads
 
 django-cassandra-engine is a database wrapper for Django Framework.
 It uses latest `Cqlengine <https://github.com/cqlengine/cqlengine>`_ which is currently the best Cassandra CQL 3 Object Mapper for Python.
