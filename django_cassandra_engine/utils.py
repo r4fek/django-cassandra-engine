@@ -2,6 +2,15 @@ import inspect
 import cqlengine
 
 
+def get_installed_apps():
+    try:
+        from django.apps import apps
+        return apps.get_apps()
+    except ImportError: # Django < 1.7 fallback
+        from django.db import models
+        return models.get_apps()
+
+
 def get_cql_models(app):
     """
     :param app: django models module

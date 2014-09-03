@@ -25,12 +25,13 @@ Requirements
 - cqlengine
 - django-nonrel
 - djangotoolbox
+- django (1.6 or 1.7)
 
 
 Features
 --------
 
-- complete django integration
+- complete Django integration
 - working syncdb and flush commands
 - support for creating/destroying test database
 - accept all Cqlengine connection options
@@ -53,6 +54,8 @@ Usage
 
     INSTALLED_APPS += ('django_cassandra_engine',)
    
+
+IMPORTANT: This app should be last on ``INSTALLED_APPS`` list.
 
 #. Also change ``DATABASES`` setting::
 

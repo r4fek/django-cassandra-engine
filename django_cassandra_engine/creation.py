@@ -39,7 +39,7 @@ class DatabaseCreation(NonrelDatabaseCreation):
     def set_autocommit(self):
         """ There is no such thing in Cassandra """
 
-    def create_test_db(self, verbosity=1, autoclobber=False):
+    def create_test_db(self, verbosity=1, autoclobber=False, **kwargs):
         """
         Creates a test database, prompting the user for confirmation if the
         database already exists. Returns the name of the test database created.
@@ -81,6 +81,6 @@ class DatabaseCreation(NonrelDatabaseCreation):
 
         return test_database_name
 
-    def _destroy_test_db(self, test_database_name, verbosity=1):
+    def _destroy_test_db(self, test_database_name, verbosity=1, **kwargs):
 
         delete_keyspace(test_database_name)

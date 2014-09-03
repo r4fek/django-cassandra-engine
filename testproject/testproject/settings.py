@@ -31,9 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'django_cassandra_engine',
-
     'testproject.app',
+    'django_cassandra_engine',
 )
 
 MIDDLEWARE_CLASSES = ()

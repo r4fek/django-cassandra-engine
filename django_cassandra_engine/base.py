@@ -1,8 +1,6 @@
 from itertools import chain
 
 from django.db.backends import connection_created
-from django.db import models as django_models
-
 from djangotoolbox.db.base import (
     NonrelDatabaseClient,
     NonrelDatabaseFeatures,
@@ -13,7 +11,7 @@ from djangotoolbox.db.base import (
 )
 from django_cassandra_engine.connection import CassandraConnection
 from django_cassandra_engine.creation import DatabaseCreation
-from django_cassandra_engine.utils import get_cql_models
+from django_cassandra_engine.utils import get_cql_models, get_installed_apps
 
 
 class DatabaseFeatures(NonrelDatabaseFeatures):
@@ -63,7 +61,7 @@ class DatabaseIntrospection(NonrelDatabaseIntrospection):
         installed App.
         """
 
-        apps = django_models.get_apps()
+        apps = get_installed_apps()
         for app in apps:
             self._cql_models[app.__name__] = get_cql_models(app)
 
