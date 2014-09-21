@@ -5,6 +5,7 @@ import sys
 import os
 import django
 
+
 def run_tests():
 
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "testproject.settings")
