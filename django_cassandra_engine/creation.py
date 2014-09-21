@@ -32,7 +32,6 @@ class DatabaseCreation(NonrelDatabaseCreation):
         'XMLField':          'text',
         'GenericAutoField':  'id',
         'StringForeignKey':  'id',
-        'AutoField':         'id',
         'RelatedAutoField':  'id',
     }
 

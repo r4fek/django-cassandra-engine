@@ -92,6 +92,35 @@ IMPORTANT: This app should be last on ``INSTALLED_APPS`` list.
 #. Run ``./manage.py syncdb``
 #. Done!
 
+
+Advanced usage
+--------------
+
+Sometimes you want to use cassandra database along with your RDMS.
+This is also possible! Just define your DATABASES like here::
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        },
+        'cassandra': {
+            'ENGINE': 'django_cassandra_engine',
+            'NAME': 'db',
+            'TEST_NAME': 'test_db',
+            'HOST': '127.0.0.1',
+            'OPTIONS': {
+                'replication': {
+                    'strategy_class': 'SimpleStrategy',
+                    'replication_factor': 1
+                }
+            }
+        }
+    }
+
+Then run ``./manage.py syncdb`` for your regular database and
+``./manage.py syncdb --database cassandra`` for Cassandra DB.
+
 Links
 -----
 

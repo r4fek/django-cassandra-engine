@@ -1,12 +1,13 @@
 import inspect
 import cqlengine
+import django
 
 
 def get_installed_apps():
-    try:
+    if django.VERSION >= (1, 7):
         from django.apps import apps
         return apps.get_apps()
-    except ImportError: # Django < 1.7 fallback
+    else:
         from django.db import models
         return models.get_apps()
 

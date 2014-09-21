@@ -3,18 +3,14 @@
 
 import sys
 import os
-
+import django
 
 def run_tests():
 
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "testproject.settings")
     
-    try:
-        # Django 1.7 specific
-        import django
+    if django.VERSION >= (1, 7):
         django.setup()
-    except:
-        pass
     
     from django.test.runner import DiscoverRunner
     test_runner = DiscoverRunner(

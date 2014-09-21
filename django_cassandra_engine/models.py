@@ -1,4 +1,7 @@
-from django.db import connection
+from django.db import connections
 
 
-connection.connect()  # connect at startup
+for alias in connections:
+    engine = connections[alias].settings_dict.get('ENGINE', '')
+    if engine == 'django_cassandra_engine':
+        connections[alias].connect()
