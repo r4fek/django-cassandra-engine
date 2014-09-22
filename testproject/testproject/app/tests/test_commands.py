@@ -3,7 +3,9 @@ from unittest import TestCase
 from mock import patch, call
 
 from django.core.management import call_command
-from django.db import connection
+from django.db import connections
+
+connection = connections['cassandra']
 
 
 class SyncdbCommandTestCase(TestCase):
@@ -17,7 +19,7 @@ class SyncdbCommandTestCase(TestCase):
     def test_syncdb_creates_keyspace_and_tables(self, sync_table_mock,
                                                 create_keyspace_mock):
 
-        call_command('syncdb')
+        call_command('syncdb', database='cassandra')
         options = connection.settings_dict.get('OPTIONS', {})
         replication_opts = options.get('replication', {})
         all_models = list(chain.from_iterable(

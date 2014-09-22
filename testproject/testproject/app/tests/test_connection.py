@@ -1,7 +1,7 @@
 from cassandra.cluster import Cluster
 from djangotoolbox.db.base import FakeCursor
 
-from django.db import connection
+from django.db import connections
 from django.test import TestCase
 
 from django_cassandra_engine.connection import CassandraConnection
@@ -10,7 +10,7 @@ from django_cassandra_engine.connection import CassandraConnection
 class CassandraConnectionTestCase(TestCase):
 
     def setUp(self):
-
+        connection = connections['cassandra']
         self.connection = CassandraConnection(**connection.settings_dict)
 
     def test_cursor(self):

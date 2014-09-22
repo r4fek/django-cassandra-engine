@@ -2,12 +2,15 @@ from datetime import datetime
 from django.core.management.sql import sql_flush
 from mock import Mock
 
-from django.db import connection
+from django.db import connections
 from django.test import TestCase
 
 from django_cassandra_engine.connection import CassandraConnection
 from django_cassandra_engine.utils import get_cql_models, get_installed_apps
 from testproject.app.models import ExampleModel, ExampleModel2
+
+
+connection = connections['cassandra']
 
 
 class DatabaseWrapperTestCase(TestCase):

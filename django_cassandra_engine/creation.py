@@ -76,7 +76,8 @@ class DatabaseCreation(NonrelDatabaseCreation):
             verbosity=max(verbosity - 1, 0),
             interactive=False,
             database=self.connection.alias,
-            load_initial_data=False)
+            load_initial_data=False
+        )
 
         return test_database_name
 
