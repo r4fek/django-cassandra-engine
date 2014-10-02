@@ -1,4 +1,3 @@
-from cassandra import ConsistencyLevel
 from cqlengine import connection
 from djangotoolbox.db.base import FakeCursor
 
