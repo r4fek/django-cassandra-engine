@@ -113,6 +113,12 @@ This is also possible! Just define your DATABASES like here::
                 'replication': {
                     'strategy_class': 'SimpleStrategy',
                     'replication_factor': 1
+                },
+                'connection': {
+                    'consistency': ConsistencyLevel.ONE,
+                    'lazy_connect': False,
+                    'retry_connect': False
+                    # + All connection options for cassandra.Cluster()
                 }
             }
         }

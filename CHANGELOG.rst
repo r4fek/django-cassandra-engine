@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+Version 0.0.7 (02.10.2014)
+--------------------------
+
+* Support for more connection options (thanks to @mwiewiorski)
+
 Version 0.0.6 (03.09.2014)
 --------------------------
 

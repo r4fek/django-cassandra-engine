@@ -20,8 +20,7 @@ class CassandraConnection(object):
         connection.setup(
             self.hosts,
             self.keyspace,
-            consistency=self.options.get('consistency_level',
-                                         ConsistencyLevel.ONE)
+            **self.options.get('connection', {})
         )
 
     def commit(self):
