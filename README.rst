@@ -18,26 +18,6 @@ It uses latest `Cqlengine <https://github.com/cqlengine/cqlengine>`_ which is cu
 :Keywords: django, cassandra, orm, nosql, database, python
 :URL (pypi): `django-cassandra-engine <https://pypi.python.org/pypi/django-cassandra-engine>`_
 
-Requirements
-------------
-
-- cassandra
-- cqlengine
-- django-nonrel
-- djangotoolbox
-- django (1.6 or 1.7)
-
-
-Features
---------
-
-- complete Django integration
-- working syncdb and flush commands
-- support for creating/destroying test database
-- accept all Cqlengine connection options
-- automatic connection/disconnection handling
-- support for multiple databases (also relational)
-
 
 Installation
 ------------
@@ -92,45 +72,7 @@ IMPORTANT: This app should be last on ``INSTALLED_APPS`` list.
 #. Run ``./manage.py syncdb``
 #. Done!
 
+Documentation
+-------------
 
-Advanced usage
---------------
-
-Sometimes you want to use cassandra database along with your RDMS.
-This is also possible! Just define your DATABASES like here::
-
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        },
-        'cassandra': {
-            'ENGINE': 'django_cassandra_engine',
-            'NAME': 'db',
-            'TEST_NAME': 'test_db',
-            'HOST': '127.0.0.1',
-            'OPTIONS': {
-                'replication': {
-                    'strategy_class': 'SimpleStrategy',
-                    'replication_factor': 1
-                },
-                'connection': {
-                    'consistency': ConsistencyLevel.ONE,
-                    'lazy_connect': False,
-                    'retry_connect': False
-                    # + All connection options for cassandra.Cluster()
-                }
-            }
-        }
-    }
-
-Then run ``./manage.py syncdb`` for your regular database and
-``./manage.py syncdb --database cassandra`` for Cassandra DB.
-
-Links
------
-
-* `Changelog`_
-
-
-.. _Changelog: https://github.com/r4fek/django-cassandra-engine/blob/master/CHANGELOG.rst
+You can find `documentation here <http://r4fek.github.io/django-cassandra-engine/>`_
