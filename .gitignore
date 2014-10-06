@@ -4,4 +4,5 @@ dist/
 *.egg-info
 *.pyc
 *.sqlite3
+site/
 
