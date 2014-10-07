@@ -21,8 +21,6 @@
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
-
-        
     </head>
 
     <body>
@@ -239,10 +237,13 @@ This is also possible! Just define your <code>DATABASES</code> like here:</p>
 <p>Then run <code>./manage.py syncdb</code> for your regular database and
 <code>./manage.py syncdb --database cassandra</code> for Cassandra DB.</p>
 <p>All <code>cassandra.Cluster</code> options are well described <a href="http://datastax.github.io/python-driver/api/cassandra/cluster.html">here</a>.</p>
-<hr />
-<p>Copyright &copy; 2014, <a href="http://rafal-furmanski.com" title="Rafał Furmański">Rafał Furmański</a></p>
 </div>
         </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Copyright &copy; 2014, <a href="http://rafal-furmanski.com" target="_blank" title="Rafał Furmański">Rafał Furmański</a>.</p>
+        </footer>
 
         
 
@@ -250,5 +251,14 @@ This is also possible! Just define your <code>DATABASES</code> like here:</p>
         <script src="./js/bootstrap-3.0.3.min.js"></script>
         <script src="./js/prettify-1.0.min.js"></script>
         <script src="./js/base.js"></script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-38726443-3', 'auto');
+            ga('send', 'pageview');
+        </script>
     </body>
 </html>
