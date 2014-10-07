@@ -128,7 +128,3 @@ Then run `./manage.py syncdb` for your regular database and
 
 All `cassandra.Cluster` options are well described [here](http://datastax.github.io/python-driver/api/cassandra/cluster.html).
 
----
-
-Copyright &copy; 2014, [Rafał Furmański](http://rafal-furmanski.com "Rafał Furmański")
-

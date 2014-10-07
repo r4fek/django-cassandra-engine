@@ -2,10 +2,10 @@ site_name: Django Cassandra Engine
 site_author: Rafał Furmański
 site_description: Cassandra Database Wrapper for Django
 site_url: http://r4fek.github.io/django-cassandra-engine
-theme: flatly
+theme_dir: flatly_custom
 repo_url: https://github.com/r4fek/django-cassandra-engine
-copyright: Copyright &copy; 2014, <a href="http://rafal-furmanski.com">Rafał Furmański</a>.
 pages:
 - [index.md, Home]
 - [faq.md, FAQ]
 - [changelog.md, Changelog]
+
