@@ -99,6 +99,8 @@ Advanced usage
 Sometimes you want to use cassandra database along with your RDMS.
 This is also possible! Just define your DATABASES like here::
 
+    from django_cassandra_engine.connection import ConsistencyLevel
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
