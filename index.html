@@ -209,7 +209,9 @@ class ExampleModel(Model):
 <h2 id="advanced-usage">Advanced usage</h2>
 <p>Sometimes you want to use cassandra database along with your RDMS.
 This is also possible! Just define your <code>DATABASES</code> like here:</p>
-<pre class="prettyprint well"><code>DATABASES = {
+<pre class="prettyprint well"><code>from cassandra import ConsistencyLevel
+
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
