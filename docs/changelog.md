@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version 0.1.0 (08.10.2014)
+
+* Change status to **Production/Stable**
+* Bump cqlengine to v.0.19
+* Update docs
+
 ## Version 0.0.7 (02.10.2014)
 
 * Support for more connection options (thanks to @mwiewiorski)

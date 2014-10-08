@@ -16,17 +16,18 @@ setup(
     author=meta.__author__,
     author_email=meta.__contact__,
     url=meta.__homepage__,
-    keywords='django cassandra engine backend driver database nonrel cqlengine',
+    keywords='django cassandra engine backend driver wrapper database nonrel '
+             'cqlengine',
     download_url='http://github.com/r4fek/django-cassandra-engine/tarball/master',
     license='2-clause BSD',
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
-    install_requires=['djangotoolbox==1.6.2', 'cqlengine==0.18.1'],
+    install_requires=['djangotoolbox==1.6.2', 'cqlengine==0.19'],
     packages=find_packages(
         exclude=['tests', 'tests.*', 'testproject', 'testproject.*']),
     zip_safe=False,
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         "Environment :: Plugins",
         'Framework :: Django',

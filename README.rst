@@ -75,4 +75,4 @@ IMPORTANT: This app should be last on ``INSTALLED_APPS`` list.
 Documentation
 -------------
 
-You can find `documentation here <http://r4fek.github.io/django-cassandra-engine/>`_
+You can find `documentation here <http://r4fek.github.io/django-cassandra-engine/>`_.
