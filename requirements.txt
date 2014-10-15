@@ -1,3 +1,3 @@
-djangotoolbox
-cassandra-driver
-cqlengine
+djangotoolbox==1.6.2
+cassandra-driver>=2.1.0
+cqlengine==0.19
