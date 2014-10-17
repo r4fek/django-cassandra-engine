@@ -112,7 +112,7 @@
 
 <h1 id="troubleshotting">Troubleshotting</h1>
 <h2 id="q-syncdb-only-creates-a-keyspace"><strong>Q:  <code>syncdb</code> only creates a keyspace..</strong></h2>
-<p>A: Please make sure that <code>django_cassandra_engine</code> is <strong>last application</strong> in <code>INSTALLED_APPS</code> list.</p>
+<p>A: Please make sure that <code>django_cassandra_engine</code> is <strong>the first application</strong> in <code>INSTALLED_APPS</code> list.</p>
 <h2 id="q-is-it-possible-to-use-it-with-celery"><strong>Q:  Is it possible to use it with Celery?</strong></h2>
 <p>A: Short answer: YES.</p>
 <p>If you use <code>django_cassandra_engine</code> as your default backend:</p>

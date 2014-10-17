@@ -127,7 +127,7 @@ It uses latest <em>Cqlengine</em>, which is currently the best Cassandra CQL 3 O
 <hr />
 <h2 id="features">Features</h2>
 <ul>
-<li>working <code>syncdb</code> and <code>flush</code> commands</li>
+<li>working <code>syncdb</code> <code>migrate</code> and <code>flush</code> commands</li>
 <li>support for creating/destroying test database</li>
 <li>accepts all <code>Cqlengine</code> and <code>cassandra.Cluster</code> connection options</li>
 <li>automatic connection/disconnection handling</li>
@@ -160,11 +160,12 @@ It uses latest <em>Cqlengine</em>, which is currently the best Cassandra CQL 3 O
 <ol>
 <li>
 <p>Add django-cassandra-engine to <code>INSTALLED_APPS</code> in your settings.py file:</p>
-<pre class="prettyprint well"><code>INSTALLED_APPS += ('django_cassandra_engine',)
+<pre class="prettyprint well"><code>INSTALLED_APPS = ('django_cassandra_engine',) + INSTALLED_APPS
 </code></pre>
 </li>
 </ol>
-<p><code>IMPORTANT</code>: This app should be last on <code>INSTALLED_APPS</code> list.</p>
+<p><code>IMPORTANT</code>: This app should be <strong>the first app</strong> on <code>INSTALLED_APPS</code> list.
+This rule applies only to Django &gt;= 1.7.</p>
 <ol>
 <li>
 <p>Change <code>DATABASES</code> setting:</p>
