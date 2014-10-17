@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version 0.1.1 (17.10.2014)
+
+* fix exceptions in Django 1.7
+* override migrate and runserver commands
+
 ## Version 0.1.0 (08.10.2014)
 
 * Change status to **Production/Stable**

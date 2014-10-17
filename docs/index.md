@@ -9,7 +9,7 @@ It uses latest *Cqlengine*, which is currently the best Cassandra CQL 3 Object M
 
 ## Features
 
-* working `syncdb` and `flush` commands
+* working `syncdb` `migrate` and `flush` commands
 * support for creating/destroying test database
 * accepts all `Cqlengine` and `cassandra.Cluster` connection options
 * automatic connection/disconnection handling
@@ -52,10 +52,11 @@ or clone source code and run:
 
 1.  Add django-cassandra-engine to `INSTALLED_APPS` in your settings.py file:
 
-        INSTALLED_APPS += ('django_cassandra_engine',)
+        INSTALLED_APPS = ('django_cassandra_engine',) + INSTALLED_APPS
 
 
-`IMPORTANT`: This app should be last on `INSTALLED_APPS` list.
+`IMPORTANT`: This app should be **the first app** on `INSTALLED_APPS` list.
+This rule applies only to Django >= 1.7.
 
 2.  Change `DATABASES` setting:
 
@@ -130,4 +131,3 @@ Then run `./manage.py syncdb` for your regular database and
 `./manage.py syncdb --database cassandra` for Cassandra DB.
 
 All `cassandra.Cluster` options are well described [here](http://datastax.github.io/python-driver/api/cassandra/cluster.html).
-

@@ -53,9 +53,9 @@ class DatabaseIntrospection(NonrelDatabaseIntrospection):
 
         super(NonrelDatabaseIntrospection, self).__init__(*args, **kwargs)
         self._cql_models = {}
-        self.discover_models()
+        self._models_discovered = False
 
-    def discover_models(self):
+    def _discover_models(self):
         """
         Return a dict containing a list of cqlengine.Model classes within
         installed App.
@@ -67,6 +67,9 @@ class DatabaseIntrospection(NonrelDatabaseIntrospection):
 
     @property
     def cql_models(self):
+        if not self._models_discovered:
+            self._discover_models()
+            self._models_discovered = True
         return self._cql_models
 
     def django_table_names(self, only_existing=False):
@@ -75,7 +78,7 @@ class DatabaseIntrospection(NonrelDatabaseIntrospection):
         and are present in settings.INSTALLED_APPS.
         """
 
-        all_models = list(chain.from_iterable(self._cql_models.values()))
+        all_models = list(chain.from_iterable(self.cql_models.values()))
         tables = [model.column_family_name(include_keyspace=False)
                   for model in all_models]
 

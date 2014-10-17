@@ -2,7 +2,7 @@
 
 ## **Q:  `syncdb` only creates a keyspace..**
 
-A: Please make sure that `django_cassandra_engine` is **last application** in `INSTALLED_APPS` list.
+A: Please make sure that `django_cassandra_engine` is **the first application** in `INSTALLED_APPS` list.
 
 ## **Q:  Is it possible to use it with Celery?**
 

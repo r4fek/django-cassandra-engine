@@ -32,10 +32,10 @@ Usage
 
 #. Add django-cassandra-engine to ``INSTALLED_APPS`` in your settings.py file::
 
-    INSTALLED_APPS += ('django_cassandra_engine',)
+    INSTALLED_APPS = ('django_cassandra_engine',) + INSTALLED_APPS
    
 
-IMPORTANT: This app should be last on ``INSTALLED_APPS`` list.
+IMPORTANT: This app should be **the first app** on ``INSTALLED_APPS`` list.
 
 #. Also change ``DATABASES`` setting::
 

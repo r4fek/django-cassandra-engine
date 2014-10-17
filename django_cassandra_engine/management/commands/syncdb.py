@@ -1,23 +1,22 @@
+import django
 from django.conf import settings
 from django.core.management.commands.syncdb import Command as SyncCommand
 from django.db import connections
-from django.utils.importlib import import_module
 
 from cqlengine.management import create_keyspace, sync_table
 
 
 class Command(SyncCommand):
 
-    def handle_noargs(self, **options):
-        db = options.get('database')
-        engine = settings.DATABASES.get(db, {}).get('ENGINE', '')
+    @staticmethod
+    def _import_management():
+        """
+        Import the 'management' module within each installed app, to register
+        dispatcher events.
+        """
 
-        # Call regular syncdb if engine is different from ours
-        if engine != 'django_cassandra_engine':
-            return super(Command, self).handle_noargs(**options)
+        from django.utils.importlib import import_module
 
-        # Import the 'management' module within each installed app, to register
-        # dispatcher events.
         for app_name in settings.INSTALLED_APPS:
             try:
                 import_module('.management', app_name)
@@ -36,6 +35,17 @@ class Command(SyncCommand):
                         or 'management' not in msg:
                     raise
 
+    def handle_noargs(self, **options):
+        db = options.get('database')
+        engine = settings.DATABASES.get(db, {}).get('ENGINE', '')
+
+        # Call regular syncdb if engine is different from ours
+        if engine != 'django_cassandra_engine':
+            return super(Command, self).handle_noargs(**options)
+
+        if django.VERSION < (1, 7):
+            self._import_management()
+
         connection = connections[db]
         connection.connect()
         options = connection.settings_dict.get('OPTIONS', {})
@@ -44,7 +54,6 @@ class Command(SyncCommand):
 
         self.stdout.write('Creating keyspace %s..' % keyspace)
         create_keyspace(keyspace, **replication_opts)
-
         for app_name, app_models \
                 in connection.introspection.cql_models.iteritems():
 
