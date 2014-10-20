@@ -69,7 +69,7 @@ IMPORTANT: This app should be **the first app** on ``INSTALLED_APPS`` list.
         created_at      = columns.DateTime()
         description     = columns.Text(required=False)
 
-#. Run ``./manage.py syncdb``
+#. Run ``./manage.py sync_cassandra``
 #. Done!
 
 Documentation
