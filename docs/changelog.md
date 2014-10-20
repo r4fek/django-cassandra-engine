@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version 0.1.3 (TBD)
+
+* set retry_connect and lazy_connect to True by default
+* more tests for Connection class
+
 ## Version 0.1.2 (20.10.2014)
 
 * add support for uWSGI
