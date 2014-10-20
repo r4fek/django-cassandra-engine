@@ -99,7 +99,7 @@
             <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#troubleshotting">Troubleshotting</a></li>
+        <li class="main active"><a href="#troubleshooting">Troubleshooting</a></li>
         
             <li><a href="#q-syncdb-only-creates-a-keyspace">Q:  syncdb only creates a keyspace..</a></li>
         
@@ -112,9 +112,10 @@
 </div></div>
             <div class="col-md-9" role="main">
 
-<h1 id="troubleshotting">Troubleshotting</h1>
+<h1 id="troubleshooting">Troubleshooting</h1>
 <h2 id="q-syncdb-only-creates-a-keyspace"><strong>Q:  <code>syncdb</code> only creates a keyspace..</strong></h2>
-<p>A: Please make sure that <code>django_cassandra_engine</code> is <strong>the first application</strong> in <code>INSTALLED_APPS</code> list.</p>
+<p>A: Please make sure that <code>django_cassandra_engine</code> is 
+<strong>the first application</strong> in <code>INSTALLED_APPS</code> list.</p>
 <h2 id="q-is-it-possible-to-use-it-with-celery"><strong>Q:  Is it possible to use it with Celery?</strong></h2>
 <p>A: Short answer: YES.</p>
 <p>If you use <code>django_cassandra_engine</code> as your default backend:</p>
@@ -135,7 +136,8 @@ def connect_db(**kwargs):
     connection.reconnect()
 </code></pre>
 <h2 id="q-is-uwsgi-supported"><strong>Q: is uWSGI supported?</strong></h2>
-<p>A: Yes, uWSGI is supported by default. You don't have to do anything.</p>
+<p>A: Yes, uWSGI is supported by default. 
+It works best with <code>retry_connect</code> and <code>lazy_connect</code> set to <code>True</code>.</p>
 </div>
         </div>
 

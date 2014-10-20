@@ -115,6 +115,10 @@
         
             <li><a href="#advanced-usage">Advanced usage</a></li>
         
+            <li><a href="#working-with-source-code-and-running-tests">Working with source code and running tests</a></li>
+        
+            <li><a href="#contributing">Contributing</a></li>
+        
     
     </ul>
 </div></div>
@@ -127,7 +131,7 @@ It uses latest <em>Cqlengine</em>, which is currently the best Cassandra CQL 3 O
 <hr />
 <h2 id="features">Features</h2>
 <ul>
-<li>working <code>syncdb</code> <code>migrate</code> and <code>flush</code> commands</li>
+<li>working <code>syncdb</code>, <code>migrate</code>, <code>sync_cassandra</code> and <code>flush</code> commands</li>
 <li>support for creating/destroying test database</li>
 <li>accepts all <code>Cqlengine</code> and <code>cassandra.Cluster</code> connection options</li>
 <li>automatic connection/disconnection handling</li>
@@ -239,8 +243,20 @@ DATABASES = {
 }
 </code></pre>
 <p>Then run <code>./manage.py syncdb</code> for your regular database and
-<code>./manage.py syncdb --database cassandra</code> for Cassandra DB.</p>
+<code>./manage.py sync_cassandra</code> or <code>./manage.py syncdb --database cassandra</code> for Cassandra DB.</p>
 <p>All <code>cassandra.Cluster</code> options are well described <a href="http://datastax.github.io/python-driver/api/cassandra/cluster.html">here</a>.</p>
+<hr />
+<h2 id="working-with-source-code-and-running-tests">Working with source code and running tests</h2>
+<pre class="prettyprint well"><code>git clone https://github.com/r4fek/django-cassandra-engine.git
+cd django_cassandra_engine
+# mkvirtualenv cassengine
+pip install -r requirements.txt
+pip install Django#==1.7/1.6
+python setup.py install &amp;&amp; ./testproject/runtests.py
+</code></pre>
+<h2 id="contributing">Contributing</h2>
+<p>You are highly encouraged to participate in the development, 
+simply use GitHub's fork/pull request system.</p>
 </div>
         </div>
 
