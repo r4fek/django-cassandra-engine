@@ -10,10 +10,6 @@ class CassandraConnection(object):
         self.keyspace = options.get('NAME')
         self.options = options.get('OPTIONS', {})
         self.connection_options = self.options.get('connection', {})
-        self.connection_options['lazy_connect'] = \
-            self.connection_options.get('lazy_connect', True)
-        self.connection_options['retry_connect'] = \
-            self.connection_options.get('retry_connect', True)
         self.setup()
 
     def setup(self):

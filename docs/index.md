@@ -9,7 +9,7 @@ It uses latest *Cqlengine*, which is currently the best Cassandra CQL 3 Object M
 
 ## Features
 
-* working `syncdb` `migrate` and `flush` commands
+* working `syncdb`, `migrate`, `sync_cassandra` and `flush` commands
 * support for creating/destroying test database
 * accepts all `Cqlengine` and `cassandra.Cluster` connection options
 * automatic connection/disconnection handling
@@ -128,6 +128,23 @@ This is also possible! Just define your `DATABASES` like here:
     }
 
 Then run `./manage.py syncdb` for your regular database and
-`./manage.py syncdb --database cassandra` for Cassandra DB.
+`./manage.py sync_cassandra` or `./manage.py syncdb --database cassandra` for Cassandra DB.
 
 All `cassandra.Cluster` options are well described [here](http://datastax.github.io/python-driver/api/cassandra/cluster.html).
+
+---
+
+## Working with source code and running tests
+
+    git clone https://github.com/r4fek/django-cassandra-engine.git
+    cd django_cassandra_engine
+    # mkvirtualenv cassengine
+    pip install -r requirements.txt
+    pip install Django#==1.7/1.6
+    python setup.py install && ./testproject/runtests.py
+
+
+## Contributing
+
+You are highly encouraged to participate in the development, 
+simply use GitHub's fork/pull request system.

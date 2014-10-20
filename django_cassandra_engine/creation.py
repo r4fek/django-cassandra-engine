@@ -72,7 +72,7 @@ class DatabaseCreation(NonrelDatabaseCreation):
         # This ensures we don't get flooded with messages during testing
         # (unless you really ask to be flooded)
         call_command(
-            'syncdb',
+            'sync_cassandra',
             verbosity=max(verbosity - 1, 0),
             interactive=False,
             database=self.connection.alias,

@@ -1,9 +1,9 @@
 # CHANGELOG
 
-## Version 0.1.3 (TBD)
+## Version 0.1.3 (20.10.2014)
 
-* set retry_connect and lazy_connect to True by default
 * more tests for Connection class
+* presesnt `sync_cassandra` management command
 
 ## Version 0.1.2 (20.10.2014)
 

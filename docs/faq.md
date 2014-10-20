@@ -1,8 +1,9 @@
-# Troubleshotting
+# Troubleshooting
 
 ## **Q:  `syncdb` only creates a keyspace..**
 
-A: Please make sure that `django_cassandra_engine` is **the first application** in `INSTALLED_APPS` list.
+A: Please make sure that `django_cassandra_engine` is 
+**the first application** in `INSTALLED_APPS` list.
 
 ## **Q:  Is it possible to use it with Celery?**
 
@@ -29,4 +30,5 @@ Or if 'cassandra' is your secondary DB alias:
 
 ## **Q: is uWSGI supported?**
 
-A: Yes, uWSGI is supported by default. You don't have to do anything.
+A: Yes, uWSGI is supported by default. 
+It works best with `retry_connect` and `lazy_connect` set to `True`.
