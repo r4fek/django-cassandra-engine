@@ -27,3 +27,6 @@ Or if 'cassandra' is your secondary DB alias:
     def connect_db(**kwargs):
         connection.reconnect()
 
+## **Q: is uWSGI supported?**
+
+A: Yes, uWSGI is supported by default. You don't have to do anything.

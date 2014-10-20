@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 0.1.2 (20.10.2014)
+
+* add support for uWSGI
+
 ## Version 0.1.1 (17.10.2014)
 
 * fix exceptions in Django 1.7

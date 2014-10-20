@@ -35,13 +35,13 @@ class CassandraConnection(object):
     def session(self):
         return connection.get_session()
 
-    def execute(self, qs):
-        self.session.set_keyspace(self.keyspace)
-        self.session.execute(qs)
-
     @property
     def cluster(self):
         return connection.get_cluster()
+
+    def execute(self, qs):
+        self.session.set_keyspace(self.keyspace)
+        self.session.execute(qs)
 
     def close(self):
         """ We would like to keep connection always open by default """
@@ -51,7 +51,11 @@ class CassandraConnection(object):
         Close all db connections
         """
 
-        self.cluster.shutdown()
+        if self.cluster is not None:
+            self.cluster.shutdown()
+        if self.session is not None:
+            self.session.shutdown()
+
         connection.cluster = None
         connection.session = None
         connection.lazy_connect_args = None
