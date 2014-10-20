@@ -119,8 +119,8 @@ This is also possible! Just define your `DATABASES` like here:
                 },
                 'connection': {
                     'consistency': ConsistencyLevel.ONE,
-                    'lazy_connect': False,
-                    'retry_connect': False
+                    'lazy_connect': True,
+                    'retry_connect': True
                     # + All connection options for cassandra.Cluster()
                 }
             }

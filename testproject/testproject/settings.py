@@ -71,6 +71,10 @@ DATABASES = {
             'replication': {
                 'strategy_class': 'SimpleStrategy',
                 'replication_factor': 1
+            },
+            'connection': {
+                'lazy_connect': True,
+                'retry_connect': True
             }
         }
     }
