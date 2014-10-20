@@ -89,7 +89,7 @@ This rule applies only to Django >= 1.7.
             created_at      = columns.DateTime()
             description     = columns.Text(required=False)
 
-4.  Run `./manage.py syncdb` in order to sync your models with Cassandra.
+4.  Run `./manage.py sync_cassandra` in order to sync your models with Cassandra.
 
 5.  Thats all!
 
