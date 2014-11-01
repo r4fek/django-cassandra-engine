@@ -115,6 +115,8 @@
         
             <li><a href="#advanced-usage">Advanced usage</a></li>
         
+            <li><a href="#using-internal-authorization">Using internal authorization</a></li>
+        
             <li><a href="#working-with-source-code-and-running-tests">Working with source code and running tests</a></li>
         
             <li><a href="#contributing">Contributing</a></li>
@@ -225,6 +227,8 @@ DATABASES = {
     'cassandra': {
         'ENGINE': 'django_cassandra_engine',
         'NAME': 'db',
+        'USER': 'user',
+        'PASSWORD': 'pass',
         'TEST_NAME': 'test_db',
         'HOST': '127.0.0.1',
         'OPTIONS': {
@@ -244,7 +248,40 @@ DATABASES = {
 </code></pre>
 <p>Then run <code>./manage.py syncdb</code> for your regular database and
 <code>./manage.py sync_cassandra</code> or <code>./manage.py syncdb --database cassandra</code> for Cassandra DB.</p>
-<p>All <code>cassandra.Cluster</code> options are well described <a href="http://datastax.github.io/python-driver/api/cassandra/cluster.html">here</a>.</p>
+<p>All <code>cassandra.Cluster</code> options are well described
+<a href="http://datastax.github.io/python-driver/api/cassandra/cluster.html" target="_blank" rel="nofollow">
+    here
+</a>.</p>
+<hr />
+<h2 id="using-internal-authorization">Using internal authorization</h2>
+<p>If you want to use
+<a href="http://www.datastax.com/documentation/cassandra/2.1/cassandra/security/secure_config_native_authorize_t.html" target="_blank" rel="nofollow">
+    internal authorization
+</a>
+just provide <code>USER</code> and <code>PASSWORD</code> in cassandra's database alias.</p>
+<pre class="prettyprint well"><code>...
+'cassandra' {
+    'ENGINE': 'django_cassandra_engine',
+    'NAME': 'db',
+    'USER': 'user',
+    'PASSWORD': 'pass'
+}
+</code></pre>
+<p>You can also pass custom
+<a href="http://datastax.github.io/python-driver/api/cassandra/auth.html#cassandra.auth.PlainTextAuthProvider" target="_blank" rel="nofollow">
+    auth_provider
+</a>
+to <code>connection</code> dict:</p>
+<pre class="prettyprint well"><code>...
+'connection': {
+    'consistency': ConsistencyLevel.ONE,
+    'lazy_connect': True,
+    'retry_connect': True,
+    'port': 9042,
+    'auth_provider': PlainTextAuthProvider(username='user', password='password')
+    # + All connection options for cassandra.Cluster()
+}
+</code></pre>
 <hr />
 <h2 id="working-with-source-code-and-running-tests">Working with source code and running tests</h2>
 <pre class="prettyprint well"><code>git clone https://github.com/r4fek/django-cassandra-engine.git
