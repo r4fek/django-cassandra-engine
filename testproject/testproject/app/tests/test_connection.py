@@ -1,3 +1,4 @@
+from cassandra.auth import PlainTextAuthProvider
 from cassandra.cluster import Cluster
 from djangotoolbox.db.base import FakeCursor
 from mock import patch
@@ -64,3 +65,25 @@ class CassandraConnectionTestCase(TestCase):
         CassandraConnection(**settings)
 
         self.assertFalse(connection_mock.setup.called)
+
+    def test_connection_auth_provider_added_to_connection_options(self):
+
+        settings = connections['cassandra'].settings_dict
+        settings['USER'] = 'user'
+        settings['PASSWORD'] = 'pass'
+        connection = CassandraConnection(**settings)
+
+        self.assertIsInstance(connection.connection_options['auth_provider'],
+                              PlainTextAuthProvider)
+
+    def test_connection_auth_provider_not_changed(self):
+
+        settings = connections['cassandra'].settings_dict
+        settings['USER'] = 'user'
+        settings['PASSWORD'] = 'pass'
+        settings['OPTIONS']['connection'] = {}
+        settings['OPTIONS']['connection']['auth_provider'] = 'sth'
+        connection = CassandraConnection(**settings)
+
+        self.assertEqual(connection.connection_options['auth_provider'],
+                         settings['OPTIONS']['connection']['auth_provider'])

@@ -110,6 +110,8 @@ This is also possible! Just define your `DATABASES` like here:
         'cassandra': {
             'ENGINE': 'django_cassandra_engine',
             'NAME': 'db',
+            'USER': 'user',
+            'PASSWORD': 'pass',
             'TEST_NAME': 'test_db',
             'HOST': '127.0.0.1',
             'OPTIONS': {
@@ -130,7 +132,44 @@ This is also possible! Just define your `DATABASES` like here:
 Then run `./manage.py syncdb` for your regular database and
 `./manage.py sync_cassandra` or `./manage.py syncdb --database cassandra` for Cassandra DB.
 
-All `cassandra.Cluster` options are well described [here](http://datastax.github.io/python-driver/api/cassandra/cluster.html).
+All `cassandra.Cluster` options are well described
+<a href="http://datastax.github.io/python-driver/api/cassandra/cluster.html" target="_blank" rel="nofollow">
+    here
+</a>.
+
+---
+
+## Using internal authorization
+
+If you want to use
+<a href="http://www.datastax.com/documentation/cassandra/2.1/cassandra/security/secure_config_native_authorize_t.html" target="_blank" rel="nofollow">
+    internal authorization
+</a>
+just provide `USER` and `PASSWORD` in cassandra's database alias.
+
+    ...
+    'cassandra' {
+        'ENGINE': 'django_cassandra_engine',
+        'NAME': 'db',
+        'USER': 'user',
+        'PASSWORD': 'pass'
+    }
+
+You can also pass custom
+<a href="http://datastax.github.io/python-driver/api/cassandra/auth.html#cassandra.auth.PlainTextAuthProvider" target="_blank" rel="nofollow">
+    auth_provider
+</a>
+to `connection` dict:
+
+    ...
+    'connection': {
+        'consistency': ConsistencyLevel.ONE,
+        'lazy_connect': True,
+        'retry_connect': True,
+        'port': 9042,
+        'auth_provider': PlainTextAuthProvider(username='user', password='password')
+        # + All connection options for cassandra.Cluster()
+    }
 
 ---
 

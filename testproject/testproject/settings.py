@@ -65,6 +65,8 @@ DATABASES = {
     'cassandra': {
         'ENGINE': 'django_cassandra_engine',
         'NAME': 'db',
+        'USER': 'user',
+        'PASSWORD': 'pass',
         'TEST_NAME': 'test_db',
         'HOST': '127.0.0.1',
         'OPTIONS': {

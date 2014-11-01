@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 0.1.4 (01.11.2014)
+
+* add support for authorization (thanks to @drivard)
+
 ## Version 0.1.3 (20.10.2014)
 
 * more tests for Connection class

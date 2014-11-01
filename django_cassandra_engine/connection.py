@@ -1,5 +1,6 @@
 from cqlengine import connection
 from djangotoolbox.db.base import FakeCursor
+from cassandra.auth import PlainTextAuthProvider
 
 
 class CassandraConnection(object):
@@ -8,8 +9,17 @@ class CassandraConnection(object):
 
         self.hosts = options.get('HOST').split(',')
         self.keyspace = options.get('NAME')
+        self.user = options.get('USER')
+        self.password = options.get('PASSWORD')
         self.options = options.get('OPTIONS', {})
         self.connection_options = self.options.get('connection', {})
+
+        if self.user and self.password and not \
+                'auth_provider' in self.connection_options:
+            self.connection_options['auth_provider'] = \
+                PlainTextAuthProvider(username=self.user,
+                                      password=self.password)
+
         self.setup()
 
     def setup(self):
