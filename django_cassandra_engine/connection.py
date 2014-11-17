@@ -13,6 +13,7 @@ class CassandraConnection(object):
         self.password = options.get('PASSWORD')
         self.options = options.get('OPTIONS', {})
         self.connection_options = self.options.get('connection', {})
+        self.session_options = self.options.get('session', {})
 
         if self.user and self.password and not \
                 'auth_provider' in self.connection_options:
@@ -28,6 +29,9 @@ class CassandraConnection(object):
             return
 
         connection.setup(self.hosts, self.keyspace, **self.connection_options)
+
+        for option, value in self.session_options.iteritems():
+            setattr(self.session, option, value)
 
     def commit(self):
         pass
@@ -46,9 +50,9 @@ class CassandraConnection(object):
     def cluster(self):
         return connection.get_cluster()
 
-    def execute(self, qs):
+    def execute(self, qs, *args, **kwargs):
         self.session.set_keyspace(self.keyspace)
-        self.session.execute(qs)
+        self.session.execute(qs, *args, **kwargs)
 
     def close(self):
         """ We would like to keep connection always open by default """

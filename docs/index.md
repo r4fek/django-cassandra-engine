@@ -11,7 +11,7 @@ It uses latest *Cqlengine*, which is currently the best Cassandra CQL 3 Object M
 
 * working `syncdb`, `migrate`, `sync_cassandra` and `flush` commands
 * support for creating/destroying test database
-* accepts all `Cqlengine` and `cassandra.Cluster` connection options
+* accepts all `Cqlengine` and `cassandra.cluster.Cluster` connection options
 * automatic connection/disconnection handling
 * support for multiple databases (also relational)
 
@@ -123,16 +123,22 @@ This is also possible! Just define your `DATABASES` like here:
                     'consistency': ConsistencyLevel.ONE,
                     'lazy_connect': True,
                     'retry_connect': True
-                    # + All connection options for cassandra.Cluster()
+                    # + All connection options for cassandra.cluster.Cluster()
+                },
+                'session': {
+                    'default_timeout': 10,
+                    'default_fetch_size': 10000
+                    # + All options for cassandra.cluster.Session()
                 }
             }
         }
     }
 
 Then run `./manage.py syncdb` for your regular database and
-`./manage.py sync_cassandra` or `./manage.py syncdb --database cassandra` for Cassandra DB.
+`./manage.py sync_cassandra` or `./manage.py syncdb --database cassandra`
+for Cassandra DB.
 
-All `cassandra.Cluster` options are well described
+All `cassandra.cluster.Cluster` and `cassandra.cluster.Session` options are well described
 <a href="http://datastax.github.io/python-driver/api/cassandra/cluster.html" target="_blank" rel="nofollow">
     here
 </a>.
@@ -168,7 +174,7 @@ to `connection` dict:
         'retry_connect': True,
         'port': 9042,
         'auth_provider': PlainTextAuthProvider(username='user', password='password')
-        # + All connection options for cassandra.Cluster()
+        # + All connection options for cassandra.cluster.Cluster()
     }
 
 ---

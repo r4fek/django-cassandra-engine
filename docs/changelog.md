@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version 0.1.5 (17.11.2014)
+
+* ability to set `cassandra.cluster.Session` options like `default_timeout`
+(thanks @danpilch)
+
 ## Version 0.1.4 (01.11.2014)
 
 * add support for authorization (thanks to @drivard)

@@ -77,6 +77,9 @@ DATABASES = {
             'connection': {
                 'lazy_connect': True,
                 'retry_connect': True
+            },
+            'session': {
+                'default_timeout': 15
             }
         }
     }

@@ -87,3 +87,11 @@ class CassandraConnectionTestCase(TestCase):
 
         self.assertEqual(connection.connection_options['auth_provider'],
                          settings['OPTIONS']['connection']['auth_provider'])
+
+    def test_connection_session_options_default_timeout(self):
+
+        session_opts = \
+            connections['cassandra'].settings_dict['OPTIONS']['session']
+        self.assertEqual(self.connection.session_options, session_opts)
+        self.assertEqual(self.connection.session.default_timeout,
+                         session_opts.get('default_timeout'))
