@@ -135,7 +135,7 @@ It uses latest <em>Cqlengine</em>, which is currently the best Cassandra CQL 3 O
 <ul>
 <li>working <code>syncdb</code>, <code>migrate</code>, <code>sync_cassandra</code> and <code>flush</code> commands</li>
 <li>support for creating/destroying test database</li>
-<li>accepts all <code>Cqlengine</code> and <code>cassandra.Cluster</code> connection options</li>
+<li>accepts all <code>Cqlengine</code> and <code>cassandra.cluster.Cluster</code> connection options</li>
 <li>automatic connection/disconnection handling</li>
 <li>support for multiple databases (also relational)</li>
 </ul>
@@ -240,15 +240,21 @@ DATABASES = {
                 'consistency': ConsistencyLevel.ONE,
                 'lazy_connect': True,
                 'retry_connect': True
-                # + All connection options for cassandra.Cluster()
+                # + All connection options for cassandra.cluster.Cluster()
+            },
+            'session': {
+                'default_timeout': 10,
+                'default_fetch_size': 10000
+                # + All options for cassandra.cluster.Session()
             }
         }
     }
 }
 </code></pre>
 <p>Then run <code>./manage.py syncdb</code> for your regular database and
-<code>./manage.py sync_cassandra</code> or <code>./manage.py syncdb --database cassandra</code> for Cassandra DB.</p>
-<p>All <code>cassandra.Cluster</code> options are well described
+<code>./manage.py sync_cassandra</code> or <code>./manage.py syncdb --database cassandra</code>
+for Cassandra DB.</p>
+<p>All <code>cassandra.cluster.Cluster</code> and <code>cassandra.cluster.Session</code> options are well described
 <a href="http://datastax.github.io/python-driver/api/cassandra/cluster.html" target="_blank" rel="nofollow">
     here
 </a>.</p>
@@ -279,7 +285,7 @@ to <code>connection</code> dict:</p>
     'retry_connect': True,
     'port': 9042,
     'auth_provider': PlainTextAuthProvider(username='user', password='password')
-    # + All connection options for cassandra.Cluster()
+    # + All connection options for cassandra.cluster.Cluster()
 }
 </code></pre>
 <hr />
