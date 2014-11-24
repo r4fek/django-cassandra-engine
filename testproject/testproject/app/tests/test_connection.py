@@ -1,3 +1,4 @@
+from cassandra import ConsistencyLevel
 from cassandra.auth import PlainTextAuthProvider
 from cassandra.cluster import Cluster
 from djangotoolbox.db.base import FakeCursor
@@ -44,7 +45,7 @@ class CassandraConnectionTestCase(TestCase):
         self.assertEqual(
             self.connection.connection_options, connection_options)
 
-    @patch("django_cassandra_engine.connection.connection")
+    @patch("cqlengine.connection")
     def test_connection_setup_called_first_time_with_proper_options(
             self, connection_mock):
 
@@ -54,6 +55,7 @@ class CassandraConnectionTestCase(TestCase):
 
         connection_mock.setup.assert_called_once_with(
             connection.hosts, connection.keyspace,
+            consistency=settings['OPTIONS']['consistency_level'],
             **settings['OPTIONS']['connection'])
 
     @patch("django_cassandra_engine.connection.connection")
@@ -95,3 +97,15 @@ class CassandraConnectionTestCase(TestCase):
         self.assertEqual(self.connection.session_options, session_opts)
         self.assertEqual(self.connection.session.default_timeout,
                          session_opts.get('default_timeout'))
+
+    def test_connection_consistency_level(self):
+
+        settings = connections['cassandra'].settings_dict
+        settings['OPTIONS']['consistency_level'] = ConsistencyLevel.ALL
+
+        connection = CassandraConnection(**settings)
+
+        from cqlengine import connection as cql_connection
+        self.assertEqual(connection.consistency, ConsistencyLevel.ALL)
+        self.assertEqual(cql_connection.default_consistency_level,
+                         ConsistencyLevel.ALL)

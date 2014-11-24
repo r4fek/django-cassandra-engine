@@ -1,4 +1,5 @@
 from cqlengine import connection
+from cassandra import ConsistencyLevel
 from djangotoolbox.db.base import FakeCursor
 from cassandra.auth import PlainTextAuthProvider
 
@@ -14,9 +15,11 @@ class CassandraConnection(object):
         self.options = options.get('OPTIONS', {})
         self.connection_options = self.options.get('connection', {})
         self.session_options = self.options.get('session', {})
+        self.consistency = self.options.get('consistency_level',
+                                            ConsistencyLevel.ONE)
 
-        if self.user and self.password and not \
-                'auth_provider' in self.connection_options:
+        if self.user and self.password and \
+                'auth_provider' not in self.connection_options:
             self.connection_options['auth_provider'] = \
                 PlainTextAuthProvider(username=self.user,
                                       password=self.password)
@@ -24,11 +27,13 @@ class CassandraConnection(object):
         self.setup()
 
     def setup(self):
+        from cqlengine import connection
         if connection.cluster is not None:
             # already connected
             return
-
-        connection.setup(self.hosts, self.keyspace, **self.connection_options)
+        connection.setup(self.hosts, self.keyspace,
+                         consistency=self.consistency,
+                         **self.connection_options)
 
         for option, value in self.session_options.iteritems():
             setattr(self.session, option, value)

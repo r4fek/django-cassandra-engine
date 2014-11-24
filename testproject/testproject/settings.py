@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from cassandra import ConsistencyLevel
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -70,6 +72,7 @@ DATABASES = {
         'TEST_NAME': 'test_db',
         'HOST': '127.0.0.1',
         'OPTIONS': {
+            'consistency_level': ConsistencyLevel.ALL,
             'replication': {
                 'strategy_class': 'SimpleStrategy',
                 'replication_factor': 1

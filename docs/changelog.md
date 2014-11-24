@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version 0.1.6 (24.11.2014)
+
+* fix passing proper consistency option to `cqlengine.setup`
+* add more tests
+* bump cqlengine to 0.20.0
+
 ## Version 0.1.5 (17.11.2014)
 
 * ability to set `cassandra.cluster.Session` options like `default_timeout`
