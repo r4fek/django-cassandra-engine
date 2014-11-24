@@ -72,14 +72,14 @@ DATABASES = {
         'TEST_NAME': 'test_db',
         'HOST': '127.0.0.1',
         'OPTIONS': {
-            'consistency_level': ConsistencyLevel.ALL,
             'replication': {
                 'strategy_class': 'SimpleStrategy',
-                'replication_factor': 1
+                'replication_factor': 1,
             },
             'connection': {
                 'lazy_connect': True,
-                'retry_connect': True
+                'retry_connect': True,
+                'consistency': ConsistencyLevel.ALL
             },
             'session': {
                 'default_timeout': 15

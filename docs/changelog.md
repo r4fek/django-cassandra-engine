@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 0.1.7 (24.11.2014)
+
+* revert broken consistency fix (thanks to @danandersonasc)
+
 ## Version 0.1.6 (24.11.2014)
 
 * fix passing proper consistency option to `cqlengine.setup`

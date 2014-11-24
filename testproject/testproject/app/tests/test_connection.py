@@ -55,7 +55,6 @@ class CassandraConnectionTestCase(TestCase):
 
         connection_mock.setup.assert_called_once_with(
             connection.hosts, connection.keyspace,
-            consistency=settings['OPTIONS']['consistency_level'],
             **settings['OPTIONS']['connection'])
 
     @patch("django_cassandra_engine.connection.connection")
@@ -97,15 +96,3 @@ class CassandraConnectionTestCase(TestCase):
         self.assertEqual(self.connection.session_options, session_opts)
         self.assertEqual(self.connection.session.default_timeout,
                          session_opts.get('default_timeout'))
-
-    def test_connection_consistency_level(self):
-
-        settings = connections['cassandra'].settings_dict
-        settings['OPTIONS']['consistency_level'] = ConsistencyLevel.ALL
-
-        connection = CassandraConnection(**settings)
-
-        from cqlengine import connection as cql_connection
-        self.assertEqual(connection.consistency, ConsistencyLevel.ALL)
-        self.assertEqual(cql_connection.default_consistency_level,
-                         ConsistencyLevel.ALL)
