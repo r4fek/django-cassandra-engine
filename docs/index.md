@@ -9,7 +9,7 @@ It uses latest *Cqlengine*, which is currently the best Cassandra CQL 3 Object M
 
 ## Features
 
-* working `syncdb`, `migrate`, `sync_cassandra` and `flush` commands
+* working `syncdb`, `migrate`, `sync_cassandra`, `inspectdb` and `flush` commands
 * support for creating/destroying test database
 * accepts all `Cqlengine` and `cassandra.cluster.Cluster` connection options
 * automatic connection/disconnection handling
@@ -53,8 +53,7 @@ or clone source code and run:
 1.  Add django-cassandra-engine to `INSTALLED_APPS` in your settings.py file:
 
         INSTALLED_APPS = ('django_cassandra_engine',) + INSTALLED_APPS
-
-
+        
 `IMPORTANT`: This app should be **the first app** on `INSTALLED_APPS` list.
 This rule applies only to Django >= 1.7.
 
@@ -75,7 +74,7 @@ This rule applies only to Django >= 1.7.
             }
         }
 
-3.  Define some model:
+3.  Define some model(s):
 
         #  myapp/models.py
         import uuid
@@ -97,7 +96,7 @@ This rule applies only to Django >= 1.7.
 
 ## Advanced usage
 
-Sometimes you want to use cassandra database along with your RDMS.
+Sometimes you want to use cassandra database along with your relational database.
 This is also possible! Just define your `DATABASES` like here:
 
     from cassandra import ConsistencyLevel
@@ -176,6 +175,30 @@ to `connection` dict:
         'auth_provider': PlainTextAuthProvider(username='user', password='password')
         # + All connection options for cassandra.cluster.Cluster()
     }
+
+---
+
+## Writing tests
+
+You can write tests the way you used to. Just subclass `django.test.TestCase`
+if `django_cassandra_engine` is your primary (default) database backend.
+
+If not, just use `django_cassandra_engine.test.TestCase`.
+
+---
+
+## Performing raw database queries
+
+You might need to perform queries that don’t map cleanly to models, 
+or directly execute `UPDATE`, `INSERT`, or `DELETE` queries.
+
+In these cases, you can always access the database directly,
+routing around the model layer entirely:
+
+    from django.db import connection
+    cursor = connection.cursor()
+    result = cursor.execute("SELECT COUNT(*) FROM users")
+    print result[0]['count']
 
 ---
 

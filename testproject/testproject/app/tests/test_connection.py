@@ -1,13 +1,11 @@
-from cassandra import ConsistencyLevel
 from cassandra.auth import PlainTextAuthProvider
 from cassandra.cluster import Cluster
-from djangotoolbox.db.base import FakeCursor
 from mock import patch
 
 from django.db import connections
 from django.test import TestCase
 
-from django_cassandra_engine.connection import CassandraConnection
+from django_cassandra_engine.connection import CassandraConnection, Cursor
 
 
 class CassandraConnectionTestCase(TestCase):
@@ -18,7 +16,8 @@ class CassandraConnectionTestCase(TestCase):
 
     def test_cursor(self):
 
-        self.assertIsInstance(self.connection.cursor(), FakeCursor)
+        self.assertIsInstance(self.connection.cursor(), Cursor)
+        self.assertEqual(self.connection.cursor().connection, self.connection)
 
     def test_connected_to_db(self):
 
@@ -96,3 +95,15 @@ class CassandraConnectionTestCase(TestCase):
         self.assertEqual(self.connection.session_options, session_opts)
         self.assertEqual(self.connection.session.default_timeout,
                          session_opts.get('default_timeout'))
+
+    def test_raw_cql_cursor_queries(self):
+        cursor = self.connection.cursor()
+        self.assertEqual(
+            cursor.execute("SELECT count(*) from example_model")[0]['count'], 0
+        )
+
+        cursor.execute("INSERT INTO example_model (id) VALUES (1)")
+
+        self.assertEqual(
+            cursor.execute("SELECT count(*) from example_model")[0]['count'], 1
+        )

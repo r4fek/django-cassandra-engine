@@ -1,12 +1,6 @@
-from django.db import connections
+from django_cassandra_engine.utils import get_cassandra_connection
 
-
-cassandra_connection = None
-
-for alias in connections:
-    engine = connections[alias].settings_dict.get('ENGINE', '')
-    if engine == 'django_cassandra_engine':
-        cassandra_connection = connections[alias]
+cassandra_connection = get_cassandra_connection()
 
 
 try:

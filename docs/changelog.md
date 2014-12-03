@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Version 0.1.8 (03.12.2014)
+
+* add working `Cursor` implementation
+* improve support for Django 1.7
+* present `get_cassandra_connection` helper
+* add more tests
+
 ## Version 0.1.7 (24.11.2014)
 
 * revert broken consistency fix (thanks to @danandersonasc)

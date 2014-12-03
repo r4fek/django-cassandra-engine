@@ -1,6 +1,19 @@
 from cqlengine import connection
-from djangotoolbox.db.base import FakeCursor
 from cassandra.auth import PlainTextAuthProvider
+
+
+class Cursor(object):
+    def __init__(self, connection):
+        self.connection = connection
+
+    def execute(self, *args, **kwargs):
+        return self.connection.execute(*args, **kwargs)
+
+    def close(self):
+        pass
+
+    def fetchmany(self, _):
+        return []
 
 
 class CassandraConnection(object):
@@ -40,7 +53,7 @@ class CassandraConnection(object):
         pass
 
     def cursor(self):
-        return FakeCursor()
+        return Cursor(self)
 
     @property
     def session(self):
@@ -52,7 +65,7 @@ class CassandraConnection(object):
 
     def execute(self, qs, *args, **kwargs):
         self.session.set_keyspace(self.keyspace)
-        self.session.execute(qs, *args, **kwargs)
+        return self.session.execute(qs, *args, **kwargs)
 
     def close(self):
         """ We would like to keep connection always open by default """

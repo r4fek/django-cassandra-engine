@@ -11,7 +11,12 @@ from djangotoolbox.db.base import (
 )
 from django_cassandra_engine.connection import CassandraConnection
 from django_cassandra_engine.creation import DatabaseCreation
-from django_cassandra_engine.utils import get_cql_models, get_installed_apps
+from django_cassandra_engine.schema import DatabaseSchemaEditor
+from django_cassandra_engine.utils import (
+    get_cql_models,
+    get_installed_apps,
+    CursorWrapper
+)
 
 
 class DatabaseFeatures(NonrelDatabaseFeatures):
@@ -21,6 +26,7 @@ class DatabaseFeatures(NonrelDatabaseFeatures):
     can_rollback_ddl = True
     uses_savepoints = False
     requires_rollback_on_dirty_transaction = False
+    atomic_transactions = True
 
 
 class DatabaseOperations(NonrelDatabaseOperations):
@@ -95,11 +101,25 @@ class DatabaseIntrospection(NonrelDatabaseIntrospection):
 
         return keyspace.tables
 
+    def get_table_list(self, cursor):
+        return self.table_names()
+
     def sequence_list(self):
         """
         Sequences are not supported
         """
         return []
+
+    def get_relations(self, *_):
+        """No relations in nonrel database"""
+        return []
+
+    def get_table_description(self, *_):
+        """
+        Unfortunately we can't use `DESCRIBE table_name` here
+        because DESCRIBE isn't part of CQL language..
+        """
+        return ""
 
 
 class DatabaseWrapper(NonrelDatabaseWrapper):
@@ -119,6 +139,8 @@ class DatabaseWrapper(NonrelDatabaseWrapper):
 
         self.commit_on_exit = False
         self.connected = False
+        self.autocommit = True
+
         del self.connection
 
     def connect(self):
@@ -151,3 +173,12 @@ class DatabaseWrapper(NonrelDatabaseWrapper):
 
     def _rollback(self):
         pass
+
+    def _cursor(self):
+        return CursorWrapper(self.connection.cursor(), self)
+
+    def schema_editor(self, *args, **kwargs):
+        """
+        Returns a new instance of this backend's SchemaEditor (Django>=1.7)
+        """
+        return DatabaseSchemaEditor(self, *args, **kwargs)
