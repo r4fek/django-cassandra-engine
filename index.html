@@ -117,6 +117,10 @@
         
             <li><a href="#using-internal-authorization">Using internal authorization</a></li>
         
+            <li><a href="#writing-tests">Writing tests</a></li>
+        
+            <li><a href="#performing-raw-database-queries">Performing raw database queries</a></li>
+        
             <li><a href="#working-with-source-code-and-running-tests">Working with source code and running tests</a></li>
         
             <li><a href="#contributing">Contributing</a></li>
@@ -133,7 +137,7 @@ It uses latest <em>Cqlengine</em>, which is currently the best Cassandra CQL 3 O
 <hr />
 <h2 id="features">Features</h2>
 <ul>
-<li>working <code>syncdb</code>, <code>migrate</code>, <code>sync_cassandra</code> and <code>flush</code> commands</li>
+<li>working <code>syncdb</code>, <code>migrate</code>, <code>sync_cassandra</code>, <code>inspectdb</code> and <code>flush</code> commands</li>
 <li>support for creating/destroying test database</li>
 <li>accepts all <code>Cqlengine</code> and <code>cassandra.cluster.Cluster</code> connection options</li>
 <li>automatic connection/disconnection handling</li>
@@ -192,7 +196,7 @@ This rule applies only to Django &gt;= 1.7.</p>
 </code></pre>
 </li>
 <li>
-<p>Define some model:</p>
+<p>Define some model(s):</p>
 <pre class="prettyprint well"><code>#  myapp/models.py
 import uuid
 from cqlengine import columns
@@ -215,7 +219,7 @@ class ExampleModel(Model):
 </ol>
 <hr />
 <h2 id="advanced-usage">Advanced usage</h2>
-<p>Sometimes you want to use cassandra database along with your RDMS.
+<p>Sometimes you want to use cassandra database along with your relational database.
 This is also possible! Just define your <code>DATABASES</code> like here:</p>
 <pre class="prettyprint well"><code>from cassandra import ConsistencyLevel
 
@@ -287,6 +291,22 @@ to <code>connection</code> dict:</p>
     'auth_provider': PlainTextAuthProvider(username='user', password='password')
     # + All connection options for cassandra.cluster.Cluster()
 }
+</code></pre>
+<hr />
+<h2 id="writing-tests">Writing tests</h2>
+<p>You can write tests the way you used to. Just subclass <code>django.test.TestCase</code>
+if <code>django_cassandra_engine</code> is your primary (default) database backend.</p>
+<p>If not, just use <code>django_cassandra_engine.test.TestCase</code>.</p>
+<hr />
+<h2 id="performing-raw-database-queries">Performing raw database queries</h2>
+<p>You might need to perform queries that don’t map cleanly to models, 
+or directly execute <code>UPDATE</code>, <code>INSERT</code>, or <code>DELETE</code> queries.</p>
+<p>In these cases, you can always access the database directly,
+routing around the model layer entirely:</p>
+<pre class="prettyprint well"><code>from django.db import connection
+cursor = connection.cursor()
+result = cursor.execute("SELECT COUNT(*) FROM users")
+print result[0]['count']
 </code></pre>
 <hr />
 <h2 id="working-with-source-code-and-running-tests">Working with source code and running tests</h2>
