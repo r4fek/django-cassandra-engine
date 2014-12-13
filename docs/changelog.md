@@ -3,6 +3,7 @@
 ## Version 0.1.8 (13.12.2014)
 
 * add working `Cursor` implementation
+* ability to perform raw CQL queries
 * improve support for Django 1.7
 * present `get_cassandra_connection` helper
 * add more tests
