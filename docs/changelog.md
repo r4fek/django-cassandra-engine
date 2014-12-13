@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Version 0.1.8 (03.12.2014)
+## Version 0.1.8 (13.12.2014)
 
 * add working `Cursor` implementation
 * improve support for Django 1.7
