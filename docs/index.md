@@ -53,7 +53,7 @@ or clone source code and run:
 1.  Add django-cassandra-engine to `INSTALLED_APPS` in your settings.py file:
 
         INSTALLED_APPS = ('django_cassandra_engine',) + INSTALLED_APPS
-        
+
 `IMPORTANT`: This app should be **the first app** on `INSTALLED_APPS` list.
 This rule applies only to Django >= 1.7.
 
@@ -189,7 +189,7 @@ If not, just use `django_cassandra_engine.test.TestCase`.
 
 ## Performing raw database queries
 
-You might need to perform queries that don’t map cleanly to models, 
+You might need to perform queries that don't map cleanly to models,
 or directly execute `UPDATE`, `INSERT`, or `DELETE` queries.
 
 In these cases, you can always access the database directly,
@@ -207,12 +207,11 @@ routing around the model layer entirely:
     git clone https://github.com/r4fek/django-cassandra-engine.git
     cd django_cassandra_engine
     # mkvirtualenv cassengine
-    pip install -r requirements.txt
-    pip install Django#==1.7/1.6
+    pip install -r requirements-dev.txt
     python setup.py install && ./testproject/runtests.py
 
 
 ## Contributing
 
-You are highly encouraged to participate in the development, 
+You are highly encouraged to participate in the development,
 simply use GitHub's fork/pull request system.
