@@ -68,8 +68,10 @@ class DatabaseIntrospection(NonrelDatabaseIntrospection):
         """
 
         apps = get_installed_apps()
+        keyspace = self.connection.connection.keyspace
         for app in apps:
-            self._cql_models[app.__name__] = get_cql_models(app)
+            self._cql_models[app.__name__] = get_cql_models(app,
+                                                            keyspace=keyspace)
 
     @property
     def cql_models(self):
