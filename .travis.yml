@@ -28,4 +28,4 @@ install:
   - python setup.py install
 
 script:
-  - "python testproject/runtests.py --no-skip"
+  - "cd testproject && python runtests.py"
