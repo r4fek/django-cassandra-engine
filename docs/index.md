@@ -208,7 +208,9 @@ routing around the model layer entirely:
     cd django_cassandra_engine
     # mkvirtualenv cassengine
     pip install -r requirements-dev.txt
-    python setup.py install && ./testproject/runtests.py
+    python setup.py install
+    cd testproject
+    ./runtests.py
 
 
 ## Contributing
