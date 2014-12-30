@@ -1,25 +1,41 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 
-import sys
 import os
-import django
+from subprocess import check_call as execute
+from types import ModuleType
 
 
-def run_tests():
+def run_tests(foo, settings='settings', extra=(), test_builtin=False):
+    if isinstance(foo, ModuleType):
+        settings = foo.__name__
+        apps = list(foo.INSTALLED_APPS)
+    else:
+        apps = list(foo)
 
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "testproject.settings")
-    
-    if django.VERSION >= (1, 7):
-        django.setup()
-
-    from django.test.runner import DiscoverRunner
-    test_runner = DiscoverRunner(
-        verbosity=1, interactive=False, failfast=False)
-
-    return test_runner.run_tests(['testproject.app'])
+    if not test_builtin:
+        apps = filter(lambda name: not name.startswith('django.contrib.'),
+                      apps)
+    print '\n============================\n' \
+          'Running tests with settings: {}\n' \
+          '============================\n'.format(settings)
+    return execute(
+        ['./manage.py', 'test', '--settings', settings] + list(extra) + apps)
 
 
 if __name__ == "__main__":
-    failures = run_tests()
-    sys.exit(failures)
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE",
+                          "testproject.settings.default_only_cassandra")
+    import django
+    if django.VERSION >= (1, 7):
+        django.setup()
+
+    import testproject.settings.default_only_cassandra as default_only_cass
+    #import testproject.settings.default_cassandra as default_cassandra
+    import testproject.settings.secondary_cassandra as secondary_cassandra
+    import testproject.settings.multi_cassandra as multi_cassandra
+
+    run_tests(default_only_cass)
+    run_tests(secondary_cassandra)
+    run_tests(multi_cassandra)
+    #run_tests(default_cassandra)

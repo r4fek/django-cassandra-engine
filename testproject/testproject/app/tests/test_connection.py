@@ -2,17 +2,18 @@ from cassandra.auth import PlainTextAuthProvider
 from cassandra.cluster import Cluster
 from mock import patch
 
-from django.db import connections
 from django.test import TestCase
 
 from django_cassandra_engine.connection import CassandraConnection, Cursor
+from django_cassandra_engine.utils import get_cassandra_connection
 
 
 class CassandraConnectionTestCase(TestCase):
 
     def setUp(self):
-        connection = connections['cassandra']
-        self.connection = CassandraConnection(**connection.settings_dict)
+        self.cassandra_connection = get_cassandra_connection()
+        self.connection = CassandraConnection(
+            **self.cassandra_connection.settings_dict)
 
     def test_cursor(self):
 
@@ -39,8 +40,8 @@ class CassandraConnectionTestCase(TestCase):
         self.assertEqual(self.connection.cluster, cql_connection.cluster)
 
     def test_connection_options(self):
-        connection = connections['cassandra']
-        connection_options = connection.settings_dict['OPTIONS']['connection']
+        connection_options = \
+            self.cassandra_connection.settings_dict['OPTIONS']['connection']
         self.assertEqual(
             self.connection.connection_options, connection_options)
 
@@ -48,7 +49,7 @@ class CassandraConnectionTestCase(TestCase):
     def test_connection_setup_called_first_time_with_proper_options(
             self, connection_mock):
 
-        settings = connections['cassandra'].settings_dict
+        settings = self.cassandra_connection.settings_dict
         connection_mock.cluster = None
         connection = CassandraConnection(**settings)
 
@@ -60,7 +61,7 @@ class CassandraConnectionTestCase(TestCase):
     def test_connection_setup_called_second_time(
             self, connection_mock):
 
-        settings = connections['cassandra'].settings_dict
+        settings = self.cassandra_connection.settings_dict
         connection_mock.cluster = Cluster()
         CassandraConnection(**settings)
 
@@ -68,7 +69,7 @@ class CassandraConnectionTestCase(TestCase):
 
     def test_connection_auth_provider_added_to_connection_options(self):
 
-        settings = connections['cassandra'].settings_dict
+        settings = self.cassandra_connection.settings_dict
         settings['USER'] = 'user'
         settings['PASSWORD'] = 'pass'
         connection = CassandraConnection(**settings)
@@ -78,7 +79,7 @@ class CassandraConnectionTestCase(TestCase):
 
     def test_connection_auth_provider_not_changed(self):
 
-        settings = connections['cassandra'].settings_dict
+        settings = self.cassandra_connection.settings_dict
         settings['USER'] = 'user'
         settings['PASSWORD'] = 'pass'
         settings['OPTIONS']['connection'] = {}
@@ -91,7 +92,7 @@ class CassandraConnectionTestCase(TestCase):
     def test_connection_session_options_default_timeout(self):
 
         session_opts = \
-            connections['cassandra'].settings_dict['OPTIONS']['session']
+            self.cassandra_connection.settings_dict['OPTIONS']['session']
         self.assertEqual(self.connection.session_options, session_opts)
         self.assertEqual(self.connection.session.default_timeout,
                          session_opts.get('default_timeout'))

@@ -1,5 +1,6 @@
 from datetime import datetime
 from django_cassandra_engine.test import TestCase
+
 from testproject.app.models import ExampleModel, ExampleModel2
 
 

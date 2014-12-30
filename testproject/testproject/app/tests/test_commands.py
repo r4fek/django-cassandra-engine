@@ -3,27 +3,31 @@ from unittest import TestCase
 from mock import patch, call
 
 from django.core.management import call_command
-from django.db import connections
+from django_cassandra_engine.utils import (
+    get_cassandra_connection,
+    get_cassandra_db_alias
+)
 
-connection = connections['cassandra']
+COMMANDS_MOD = 'django_cassandra_engine.management.commands'
 
 
-class SyncdbCommandTestCase(TestCase):
+class SyncCassandraCommandTestCase(TestCase):
 
     def setUp(self):
-        self.keyspace = connection.settings_dict['NAME']
+        self.connection = get_cassandra_connection()
+        self.keyspace = self.connection.settings_dict['NAME']
 
-    @patch(
-        "django_cassandra_engine.management.commands.syncdb.create_keyspace")
-    @patch("django_cassandra_engine.management.commands.syncdb.sync_table")
-    def test_syncdb_creates_keyspace_and_tables(self, sync_table_mock,
-                                                create_keyspace_mock):
+    @patch(COMMANDS_MOD + ".sync_cassandra.create_keyspace")
+    @patch(COMMANDS_MOD + ".sync_cassandra.sync_table")
+    def test_sync_cassandra_creates_keyspace_and_tables(
+            self, sync_table_mock, create_keyspace_mock):
 
-        call_command('syncdb', database='cassandra')
-        options = connection.settings_dict.get('OPTIONS', {})
+        alias = get_cassandra_db_alias()
+        call_command('sync_cassandra', database=alias)
+        options = self.connection.settings_dict.get('OPTIONS', {})
         replication_opts = options.get('replication', {})
         all_models = list(chain.from_iterable(
-            connection.introspection.cql_models.values()))
+            self.connection.introspection.cql_models.values()))
 
         create_keyspace_mock.assert_called_once_with(self.keyspace,
                                                      **replication_opts)
