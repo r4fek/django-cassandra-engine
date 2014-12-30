@@ -63,24 +63,59 @@ def get_installed_apps():
         return models.get_apps()
 
 
-def get_cql_models(app):
+def get_cql_models(app, keyspace=None):
     """
     :param app: django models module
-    :return: list of all cqlengine.Model within app
+    :param keyspace: database name (keyspace)
+    :return: list of all cqlengine.Model within app that should be synced to
+    keyspace.
     """
+    from cqlengine.models import DEFAULT_KEYSPACE
+    keyspace = keyspace or DEFAULT_KEYSPACE
 
     models = []
     for name, obj in inspect.getmembers(app):
         if inspect.isclass(obj) and issubclass(obj, cqlengine.Model) \
                 and not obj.__abstract__:
-            models.append(obj)
+            if (obj.__keyspace__ is None and keyspace == DEFAULT_KEYSPACE) \
+                    or obj.__keyspace__ == keyspace:
+                models.append(obj)
 
     return models
 
 
-def get_cassandra_connection():
+def get_cassandra_connections():
+    """
+    :return: List of tuples (db_alias, connection) for all cassandra
+    connections in DATABASES dict.
+    """
+
     from django.db import connections
     for alias in connections:
         engine = connections[alias].settings_dict.get('ENGINE', '')
         if engine == 'django_cassandra_engine':
-            return connections[alias]
+            yield alias, connections[alias]
+
+
+def get_cassandra_connection(alias=None, name=None):
+    """
+    :return: cassandra connection matching alias or name or just first found.
+    """
+
+    for _alias, connection in get_cassandra_connections():
+        if alias is not None:
+            if alias == _alias:
+                return connection
+        elif name is not None:
+            if name == connection.settings_dict['NAME']:
+                return connection
+        else:
+            return connection
+
+
+def get_cassandra_db_alias():
+    from django.db import connections
+    for alias in connections:
+        engine = connections[alias].settings_dict.get('ENGINE', '')
+        if engine == 'django_cassandra_engine':
+            return alias
