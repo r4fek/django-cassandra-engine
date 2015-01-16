@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Version 0.2.0 (16.01.2015)
+## Version 0.2.1 (16.01.2015)
 
 * update cqlengine to 0.21.0
 * move syncing code to `sync_cassandra` command
