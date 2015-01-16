@@ -101,6 +101,8 @@
     
         <li class="main active"><a href="#changelog">CHANGELOG</a></li>
         
+            <li><a href="#version-021-16012015">Version 0.2.1 (16.01.2015)</a></li>
+        
             <li><a href="#version-018-13122014">Version 0.1.8 (13.12.2014)</a></li>
         
             <li><a href="#version-017-24112014">Version 0.1.7 (24.11.2014)</a></li>
@@ -139,6 +141,18 @@
             <div class="col-md-9" role="main">
 
 <h1 id="changelog">CHANGELOG</h1>
+<h2 id="version-021-16012015">Version 0.2.1 (16.01.2015)</h2>
+<ul>
+<li>update cqlengine to 0.21.0</li>
+<li>move syncing code to <code>sync_cassandra</code> command</li>
+<li>Refactor test runner</li>
+<li>separate settings modules to make testing easier</li>
+<li>new test application: multiapp</li>
+<li>new get_cassandra_connections function to return list of all
+  cassandra conncetions defined in DATABASES setting</li>
+<li>get_cassandra_connection now accepts alias and name parameters</li>
+<li>get_cql_models now can return models for given keyspace</li>
+</ul>
 <h2 id="version-018-13122014">Version 0.1.8 (13.12.2014)</h2>
 <ul>
 <li>add working <code>Cursor</code> implementation</li>

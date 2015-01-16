@@ -299,7 +299,7 @@ if <code>django_cassandra_engine</code> is your primary (default) database backe
 <p>If not, just use <code>django_cassandra_engine.test.TestCase</code>.</p>
 <hr />
 <h2 id="performing-raw-database-queries">Performing raw database queries</h2>
-<p>You might need to perform queries that don’t map cleanly to models, 
+<p>You might need to perform queries that don't map cleanly to models,
 or directly execute <code>UPDATE</code>, <code>INSERT</code>, or <code>DELETE</code> queries.</p>
 <p>In these cases, you can always access the database directly,
 routing around the model layer entirely:</p>
@@ -313,12 +313,13 @@ print result[0]['count']
 <pre class="prettyprint well"><code>git clone https://github.com/r4fek/django-cassandra-engine.git
 cd django_cassandra_engine
 # mkvirtualenv cassengine
-pip install -r requirements.txt
-pip install Django#==1.7/1.6
-python setup.py install &amp;&amp; ./testproject/runtests.py
+pip install -r requirements-dev.txt
+python setup.py install
+cd testproject
+./runtests.py
 </code></pre>
 <h2 id="contributing">Contributing</h2>
-<p>You are highly encouraged to participate in the development, 
+<p>You are highly encouraged to participate in the development,
 simply use GitHub's fork/pull request system.</p>
 </div>
         </div>
