@@ -1,5 +1,4 @@
 from optparse import make_option
-import django
 from django.core.management.base import NoArgsCommand, CommandError
 from django.db import connections
 from django.conf import settings
@@ -60,12 +59,11 @@ class Command(NoArgsCommand):
                 in connection.introspection.cql_models.iteritems():
             for model in app_models:
                 self.stdout.write('Syncing %s.%s' % (app_name, model.__name__))
-                sync_table(model, create_missing_keyspace=False)
+                sync_table(model)
 
     def handle_noargs(self, **options):
 
-        if django.VERSION < (1, 7):
-            self._import_management()
+        self._import_management()
 
         database = options.get('database')
         if database is not None:

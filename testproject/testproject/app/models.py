@@ -11,3 +11,8 @@ class ExampleModel(Model):
 class ExampleModel2(Model):
     __keyspace__ = 'test_db'
     id = columns.BigInt(primary_key=True)
+
+
+class TestProjectModel(Model):
+    __keyspace__ = 'db'
+    id = columns.UUID(primary_key=True)

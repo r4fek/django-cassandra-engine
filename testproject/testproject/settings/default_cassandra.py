@@ -1,6 +1,4 @@
-from base import *
-
-# THIS CONFIGURATION REQUIRES CUSTOM DATABASE ROUTER
+from .base import *
 
 DATABASES = {
     'default': {

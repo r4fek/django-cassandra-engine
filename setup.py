@@ -22,7 +22,7 @@ setup(
     license='2-clause BSD',
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
-    install_requires=['djangotoolbox==1.6.2', 'cqlengine==0.20.0'],
+    install_requires=['djangotoolbox==1.6.2', 'cqlengine==0.21.0'],
     packages=find_packages(
         exclude=['tests', 'tests.*', 'testproject', 'testproject.*']),
     zip_safe=False,

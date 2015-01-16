@@ -63,7 +63,7 @@ class ModelsTestCase(TestCase):
 
         from cqlengine.connection import get_session
         session = get_session()
-        session.set_keyspace('test_db')
+        session.set_keyspace('test_db2')
         self.assertEqual(
             session.execute('SELECT id FROM test_model3')[0]['id'], obj_id)
 
