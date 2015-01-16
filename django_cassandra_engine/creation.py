@@ -60,8 +60,12 @@ class DatabaseCreation(NonrelDatabaseCreation):
         self.connection.connect()
         options = self.connection.settings_dict.get('OPTIONS', {})
         replication_opts = options.get('replication', {})
-        create_keyspace(self.connection.settings_dict['NAME'],
-                        **replication_opts)
+        strategy_class = replication_opts.pop('strategy_class',
+                                              'SimpleStrategy')
+        replication_factor = replication_opts.pop('replication_factor')
+
+        create_keyspace(self.connection.settings_dict['NAME'], strategy_class,
+                        replication_factor, **replication_opts)
 
         settings.DATABASES[self.connection.alias]["NAME"] = test_database_name
         self.connection.settings_dict["NAME"] = test_database_name

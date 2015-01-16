@@ -50,11 +50,17 @@ class Command(NoArgsCommand):
         connection = connections[alias]
         connection.connect()
         options = connection.settings_dict.get('OPTIONS', {})
-        replication_opts = options.get('replication', {})
         keyspace = connection.settings_dict['NAME']
+        replication_opts = options.get('replication', {})
+        strategy_class = replication_opts.pop('strategy_class',
+                                              'SimpleStrategy')
+        replication_factor = replication_opts.pop('replication_factor', 1)
 
         self.stdout.write('Creating keyspace {}..'.format(keyspace))
-        create_keyspace(keyspace, **replication_opts)
+
+        create_keyspace(keyspace, strategy_class, replication_factor,
+                        **replication_opts)
+
         for app_name, app_models \
                 in connection.introspection.cql_models.iteritems():
             for model in app_models:

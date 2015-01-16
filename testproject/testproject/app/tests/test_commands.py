@@ -26,11 +26,16 @@ class SyncCassandraCommandTestCase(TestCase):
         call_command('sync_cassandra', database=alias)
         options = self.connection.settings_dict.get('OPTIONS', {})
         replication_opts = options.get('replication', {})
+        strategy_class = 'SimpleStrategy'
+        replication_factor = 1
+
         all_models = list(chain.from_iterable(
             self.connection.introspection.cql_models.values()))
 
-        create_keyspace_mock.assert_called_once_with(self.keyspace,
-                                                     **replication_opts)
+        create_keyspace_mock.assert_called_once_with(
+            self.keyspace, strategy_class, replication_factor,
+            **replication_opts)
+
         for model in all_models:
             sync_table_mock.assert_has_call(call(model))
 
