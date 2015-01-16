@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version 0.2.2 (TBD)
+
+* add support for Django>=1.5
+
+
 ## Version 0.2.1 (16.01.2015)
 
 * update cqlengine to 0.21.0

@@ -1,6 +1,12 @@
 from itertools import chain
+import django
 
-from django.db.backends import connection_created
+if django.VERSION[0:2] > (1, 5):
+    from django.db.backends import connection_created
+else:
+    from django.db.backends import *
+    from django.db.backends.signals import connection_created
+
 from djangotoolbox.db.base import (
     NonrelDatabaseClient,
     NonrelDatabaseFeatures,
