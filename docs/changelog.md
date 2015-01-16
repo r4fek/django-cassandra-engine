@@ -6,11 +6,11 @@
 * move syncing code to `sync_cassandra` command
 * Refactor test runner
 * separate settings modules to make testing easier
-* new test application: multiapp
-* new get_cassandra_connections function to return list of all
+* new test application: `multiapp`
+* new `get_cassandra_connections` function to return list of all
   cassandra conncetions defined in DATABASES setting
-* get_cassandra_connection now accepts alias and name parameters
-* get_cql_models now can return models for given keyspace
+* `get_cassandra_connection` now accepts alias and name parameters
+* `get_cql_models` now returns models for given keyspace
 
 ## Version 0.1.8 (13.12.2014)
 
