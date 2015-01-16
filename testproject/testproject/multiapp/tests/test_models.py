@@ -56,17 +56,6 @@ class ModelsTestCase(TestCase):
         self.assertEqual(
             session.execute('SELECT id FROM test_model2')[0]['id'], obj_id)
 
-    def test_check_if_test_model3_saved_to_db2_keyspace(self):
-
-        obj_id = 123456
-        TestModel3.objects.create(id=obj_id)
-
-        from cqlengine.connection import get_session
-        session = get_session()
-        session.set_keyspace('test_db2')
-        self.assertEqual(
-            session.execute('SELECT id FROM test_model3')[0]['id'], obj_id)
-
     def test_truncate_models_before_running_tests_works(self):
 
         self.assertEqual(TestModel.objects.count(), 0)
