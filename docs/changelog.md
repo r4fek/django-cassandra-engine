@@ -4,6 +4,7 @@
 
 * add support for Django==1.5
 * add support for Django>=1.7.2
+* add `get_engine_from_db_alias` util function
 
 ## Version 0.2.1 (16.01.2015)
 
