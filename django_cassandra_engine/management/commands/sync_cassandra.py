@@ -1,9 +1,11 @@
 from optparse import make_option
+
 from django.core.management.base import NoArgsCommand, CommandError
 from django.db import connections
 from django.conf import settings
 
 from cqlengine.management import create_keyspace, sync_table
+from django_cassandra_engine.utils import get_engine_from_db_alias
 
 
 class Command(NoArgsCommand):
@@ -42,7 +44,7 @@ class Command(NoArgsCommand):
                     raise
 
     def sync(self, alias):
-        engine = settings.DATABASES.get(alias, {}).get('ENGINE', '')
+        engine = get_engine_from_db_alias(alias)
 
         if engine != 'django_cassandra_engine':
             raise CommandError('Database {} is not cassandra!'.format(alias))
@@ -77,7 +79,7 @@ class Command(NoArgsCommand):
 
         cassandra_alias = None
         for alias in connections:
-            engine = connections[alias].settings_dict.get('ENGINE', '')
+            engine = get_engine_from_db_alias(alias)
             if engine == 'django_cassandra_engine':
                 self.sync(alias)
                 cassandra_alias = alias

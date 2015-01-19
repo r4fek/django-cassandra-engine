@@ -50,3 +50,12 @@ class SyncCassandraCommandTestCase(TestCase):
             call_command('syncdb', database='mysql')
 
         handle_mock.assert_called_once()
+
+
+class FlushCommandTestCase(TestCase):
+
+    def test_flush(self):
+
+        db_alias = get_cassandra_db_alias()
+        call_command('flush', database=db_alias, noinput=True,
+                     interactive=False)

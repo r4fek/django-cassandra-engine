@@ -1,6 +1,7 @@
 import inspect
 import cqlengine
 import django
+from django.conf import settings
 
 
 class CursorWrapper(object):
@@ -119,3 +120,13 @@ def get_cassandra_db_alias():
         engine = connections[alias].settings_dict.get('ENGINE', '')
         if engine == 'django_cassandra_engine':
             return alias
+
+
+def get_engine_from_db_alias(db_alias):
+    """
+    :param db_alias: database alias
+    :return: database engine from DATABASES dict corresponding to db_alias
+             or None if db_alias was not found
+    """
+
+    return settings.DATABASES.get(db_alias, {}).get('ENGINE', None)

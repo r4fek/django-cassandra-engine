@@ -1,18 +1,12 @@
 from django.core.management import call_command
 from django.test import TestCase as DjangoTestCase
-from django.db import connections
+from django_cassandra_engine.utils import get_cassandra_connections
 
 
 class TestCase(DjangoTestCase):
 
     def _databases_names(self, include_mirrors=True):
-
-        cassandra_aliases = []
-        for alias in connections:
-            if connections[alias].settings_dict['ENGINE'] == \
-                    'django_cassandra_engine':
-                cassandra_aliases.append(alias)
-        return cassandra_aliases
+        return [alias for alias, _ in get_cassandra_connections()]
 
     def _fixture_setup(self):
         pass
@@ -24,5 +18,6 @@ class TestCase(DjangoTestCase):
                          database=db_name, skip_checks=True,
                          reset_sequences=False,
                          allow_cascade=False,
+                         load_initial_data=False,
                          inhibit_post_migrate=True,
                          inhibit_post_syncdb=True)

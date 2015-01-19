@@ -1,9 +1,9 @@
 # CHANGELOG
 
-## Version 0.2.2 (TBD)
+## Version 0.2.2 (19.01.2015)
 
-* add support for Django>=1.5
-
+* add support for Django==1.5
+* add support for Django>=1.7.2
 
 ## Version 0.2.1 (16.01.2015)
 

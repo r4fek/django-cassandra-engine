@@ -1,14 +1,13 @@
-from django.conf import settings
 from django.core.management.commands.syncdb import Command as SyncCommand
 
 from django_cassandra_engine.management.commands import sync_cassandra
+from django_cassandra_engine.utils import get_engine_from_db_alias
 
 
 class Command(SyncCommand):
 
     def handle_noargs(self, **options):
-        db = options.get('database')
-        engine = settings.DATABASES.get(db, {}).get('ENGINE', '')
+        engine = get_engine_from_db_alias(options['database'])
 
         # Call regular syncdb if engine is different from ours
         if engine != 'django_cassandra_engine':
