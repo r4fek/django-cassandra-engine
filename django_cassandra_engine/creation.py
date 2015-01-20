@@ -48,7 +48,15 @@ class DatabaseCreation(NonrelDatabaseCreation):
         from django.core.management import call_command
         from django.conf import settings
 
+        # If using django-nose, its runner has already set the db name
+        # to test_*, so restore it here so that all the models for the
+        # live keyspace can be found.
+        self.connection.connection.keyspace = self.connection.settings_dict['NAME']
+        models = self.get_models(self.connection.settings_dict['NAME'])
         test_database_name = self._get_test_db_name()
+        # Set all models keyspace to the test keyspace
+        self.set_model_keyspace(models, test_database_name)
+
 
         if verbosity >= 1:
             test_db_repr = ''
@@ -88,3 +96,15 @@ class DatabaseCreation(NonrelDatabaseCreation):
     def _destroy_test_db(self, test_database_name, verbosity=1, **kwargs):
 
         delete_keyspace(test_database_name)
+        
+    def get_models(self, keyspace):
+        """Return a list of all dce models for keyspace"""
+        rv = []
+        for app_name, model_klasses in self.connection.introspection.cql_models.items():
+            rv.extend(model_klasses)
+        return rv
+
+    def set_model_keyspace(self, models, keyspace):
+        """Set keyspace for models"""
+        for model in models:
+            model.__keyspace__ = keyspace
