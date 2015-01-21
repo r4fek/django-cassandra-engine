@@ -53,12 +53,6 @@ class CassandraConnection(object):
         pass
 
     def cursor(self):
-        # Error if keyspace doesn't exist. This allows e.g.,
-        # django-nose to determine if a db should be created. Any
-        # exception will do, and this raises a KeyError if the
-        # keyspace doesn't exist
-        from cqlengine import connection
-        connection.cluster.metadata.keyspaces[self.keyspace]
         return Cursor(self)
 
     @property
