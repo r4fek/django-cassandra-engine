@@ -183,6 +183,13 @@ class DatabaseWrapper(NonrelDatabaseWrapper):
         pass
 
     def _cursor(self):
+        # Error if keyspace for cursor doesn't exist. django-nose uses
+        # a cursor to check if it should create a db or not. Any
+        # exception will do, and this will raise a KeyError if the
+        # keyspace doesn't exist.
+        from cqlengine import connection
+        keyspace = self.settings_dict['NAME']
+        connection.cluster.metadata.keyspaces[keyspace]
         return CursorWrapper(self.connection.cursor(), self)
 
     def schema_editor(self, *args, **kwargs):
