@@ -21,7 +21,8 @@ class ModelsTestCase(TestCase):
 
         now = datetime(2010, 1, 1, 1, 1)
         obj_id = 123456
-        ExampleModel.objects.create(id=obj_id, created_at=now)
+        obj = ExampleModel.objects.create(id=obj_id, created_at=now)
+        self.assertEqual(obj.__keyspace__, 'test_db')
 
         from cqlengine.connection import get_session
         session = get_session()

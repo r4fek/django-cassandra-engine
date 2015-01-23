@@ -28,6 +28,7 @@ class ModelsTestCase(TestCase):
 
     def test_check_if_test_model3_synced(self):
 
+        self.assertEqual(TestModel3.__keyspace__, 'test_db2')
         TestModel3.objects.create(id=11)
         self.assertEqual(TestModel3.objects.count(), 1)
         obj = TestModel3.objects.all()[0]

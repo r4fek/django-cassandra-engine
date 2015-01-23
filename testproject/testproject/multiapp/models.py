@@ -2,7 +2,7 @@ from cqlengine import columns, Model
 
 
 class TestModel(Model):
-    __keyspace__ = 'test_db'
+    __keyspace__ = 'db'
 
     id = columns.BigInt(primary_key=True)
     created_at = columns.DateTime()
@@ -10,9 +10,10 @@ class TestModel(Model):
 
 
 class TestModel2(Model):
-    __keyspace__ = 'test_db2'
+    __keyspace__ = 'db2'
     id = columns.BigInt(primary_key=True)
 
 
 class TestModel3(Model):
+    __keyspace__ = 'db2'
     id = columns.BigInt(primary_key=True)

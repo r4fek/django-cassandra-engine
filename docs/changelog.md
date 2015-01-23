@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 0.2.3 (TBA)
+
+* fix #15: test database not used by code under test (by @lsmithso)
+
 ## Version 0.2.2 (19.01.2015)
 
 * add support for Django==1.5
