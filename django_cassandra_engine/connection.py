@@ -1,5 +1,6 @@
 from cqlengine import connection
 from cassandra.auth import PlainTextAuthProvider
+from django.utils import six
 
 
 class Cursor(object):
@@ -43,7 +44,7 @@ class CassandraConnection(object):
             return
         connection.setup(self.hosts, self.keyspace, **self.connection_options)
 
-        for option, value in self.session_options.iteritems():
+        for option, value in six.iteritems(self.session_options):
             setattr(self.session, option, value)
 
     def commit(self):

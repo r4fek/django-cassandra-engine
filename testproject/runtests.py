@@ -14,18 +14,18 @@ def run_tests(foo, settings='settings', extra=(), test_builtin=False):
         apps = list(foo)
 
     if not test_builtin:
-        apps = filter(lambda name: not name.startswith('django.contrib.'),
-                      apps)
+        apps = list(filter(lambda name: not name.startswith('django.contrib.'),
+                      apps))
 
     # pre-1.6 test runners don't understand full module names
     if django.VERSION < (1, 6):
         apps = [app.replace('django.contrib.', '') for app in apps]
-        apps = filter(lambda name: not name.startswith('testproject.'),
-                      apps)
+        apps = list(filter(lambda name: not name.startswith('testproject.'),
+                      apps))
 
-    print '\n============================\n' \
+    print('\n============================\n' \
           'Running tests with settings: {}\n' \
-          '============================\n'.format(settings)
+          '============================\n'.format(settings))
     return execute(
         ['./manage.py', 'test', '--settings', settings] + list(extra) + apps)
 
