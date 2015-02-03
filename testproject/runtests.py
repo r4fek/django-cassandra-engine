@@ -27,7 +27,7 @@ def run_tests(foo, settings='settings', extra=(), test_builtin=False):
           'Running tests with settings: {}\n' \
           '============================\n'.format(settings))
     return execute(
-        [/manage.py', 'test', '--settings', settings] + list(extra) + apps)
+        ['./manage.py', 'test', '--settings', settings] + list(extra) + apps)
 
 
 if __name__ == "__main__":
