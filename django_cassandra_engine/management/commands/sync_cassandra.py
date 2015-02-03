@@ -3,6 +3,7 @@ from optparse import make_option
 from django.core.management.base import NoArgsCommand, CommandError
 from django.db import connections
 from django.conf import settings
+from django.utils import six
 
 from cqlengine.management import create_keyspace, sync_table
 from django_cassandra_engine.utils import get_engine_from_db_alias
@@ -64,7 +65,7 @@ class Command(NoArgsCommand):
                         **replication_opts)
 
         for app_name, app_models \
-                in connection.introspection.cql_models.iteritems():
+                in six.iteritems(connection.introspection.cql_models):
             for model in app_models:
                 self.stdout.write('Syncing %s.%s' % (app_name, model.__name__))
                 sync_table(model)
