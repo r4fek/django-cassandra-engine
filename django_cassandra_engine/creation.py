@@ -70,7 +70,7 @@ class DatabaseCreation(NonrelDatabaseCreation):
         replication_opts = options.get('replication', {})
         strategy_class = replication_opts.pop('strategy_class',
                                               'SimpleStrategy')
-        replication_factor = replication_opts.pop('replication_factor')
+        replication_factor = replication_opts.pop('replication_factor', 1)
 
         create_keyspace(self.connection.settings_dict['NAME'], strategy_class,
                         replication_factor, **replication_opts)
