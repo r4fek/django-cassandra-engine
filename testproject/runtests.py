@@ -2,8 +2,18 @@
 # -*- encoding: utf-8 -*-
 
 import os
+import sys
 from subprocess import check_call as execute
 from types import ModuleType
+
+import django
+from django.utils.importlib import import_module
+
+
+os.environ["DJANGO_SETTINGS_MODULE"] = "settings.default_only_cassandra"
+
+test_dir = os.path.dirname(__file__)
+sys.path.insert(0, test_dir)
 
 
 def run_tests(foo, settings='settings', extra=(), test_builtin=False):
@@ -23,6 +33,7 @@ def run_tests(foo, settings='settings', extra=(), test_builtin=False):
         apps = filter(lambda name: not name.startswith('testproject.'),
                       apps)
 
+    os.chdir(test_dir)
     print '\n============================\n' \
           'Running tests with settings: {}\n' \
           '============================\n'.format(settings)
@@ -30,17 +41,22 @@ def run_tests(foo, settings='settings', extra=(), test_builtin=False):
         ['./manage.py', 'test', '--settings', settings] + list(extra) + apps)
 
 
-if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE",
-                          "testproject.settings.default_only_cassandra")
-    import django
+def main():
+
+    default_only_cass = import_module(
+        'settings.default_only_cassandra')
+    secondary_cassandra = import_module(
+        'settings.secondary_cassandra')
+    multi_cassandra = import_module(
+        'settings.multi_cassandra')
+
     if django.VERSION[0:2] >= (1, 7):
         django.setup()
-
-    import testproject.settings.default_only_cassandra as default_only_cass
-    import testproject.settings.secondary_cassandra as secondary_cassandra
-    import testproject.settings.multi_cassandra as multi_cassandra
 
     run_tests(default_only_cass)
     run_tests(secondary_cassandra)
     run_tests(multi_cassandra)
+    sys.exit(0)
+
+if __name__ == "__main__":
+    main()

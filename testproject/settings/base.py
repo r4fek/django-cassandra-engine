@@ -39,7 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'testproject.app',
+    'app',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -51,9 +51,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'testproject.urls'
-
-WSGI_APPLICATION = 'testproject.wsgi.application'
+ROOT_URLCONF = 'urls'
 
 
 # Internationalization
@@ -74,3 +72,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
