@@ -29,4 +29,4 @@ DATABASES = {
 }
 
 # If default and only engine is cassandra
-INSTALLED_APPS = ('django_cassandra_engine', 'testproject.app')
+INSTALLED_APPS = ('django_cassandra_engine', 'app')

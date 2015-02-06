@@ -209,8 +209,7 @@ routing around the model layer entirely:
     # mkvirtualenv cassengine
     pip install -r requirements-dev.txt
     python setup.py install
-    cd testproject
-    ./runtests.py
+    python setup.py test
 
 
 ## Contributing

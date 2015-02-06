@@ -29,6 +29,8 @@ setup(
     ],
     packages=find_packages(
         exclude=['tests', 'tests.*', 'testproject', 'testproject.*']),
+    test_suite='testproject.runtests.main',
+    tests_require=['mock==1.0.1'],
     zip_safe=False,
     classifiers=[
         'Development Status :: 5 - Production/Stable',
