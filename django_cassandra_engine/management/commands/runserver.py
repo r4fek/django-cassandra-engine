@@ -1,7 +1,10 @@
-from django.core.management.commands.runserver import Command as RunserverCmd
+from django.core.management import get_commands
 from django.db import DEFAULT_DB_ALIAS
 
 from django_cassandra_engine.utils import get_engine_from_db_alias
+
+
+RunserverCmd = get_commands()['runserver']
 
 
 class Command(RunserverCmd):

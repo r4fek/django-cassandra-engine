@@ -3,6 +3,8 @@
 ## Version 0.2.3 (TBA)
 
 * fix #15: test database not used by code under test (by @lsmithso)
+* fix #22: static files not served if django_cassandra_engine is the first item
+  in INSTALLED_APPS
 
 ## Version 0.2.2 (19.01.2015)
 
