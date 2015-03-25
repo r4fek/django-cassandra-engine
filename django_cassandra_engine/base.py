@@ -149,12 +149,26 @@ class DatabaseWrapper(NonrelDatabaseWrapper):
         self.connected = False
         self.autocommit = True
 
+        self.original_db_name = self.settings_dict['NAME']
+        self.updated_keyspace = False
+
         del self.connection
 
     def connect(self):
         if not self.connected or self.connection is None:
             settings = self.settings_dict
             self.connection = CassandraConnection(**settings)
+
+            # Support django-nose's REUSE_DB flag.
+            if (self.original_db_name != settings['NAME']
+                    and not self.updated_keyspace):
+                self.connection.keyspace = self.original_db_name
+                for models in self.introspection.cql_models.values():
+                    for model in models:
+                        model.__keyspace__ = settings['NAME']
+                self.connection.keyspace = settings['NAME']
+                self.updated_keyspace = True
+
             connection_created.send(sender=self.__class__, connection=self)
             self.connected = True
 

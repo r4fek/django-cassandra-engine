@@ -58,6 +58,8 @@ class DatabaseCreation(NonrelDatabaseCreation):
         # Set all models keyspace to the test keyspace
         self.set_models_keyspace(test_database_name)
 
+        self.connection.connection.keyspace = test_database_name
+
         if verbosity >= 1:
             test_db_repr = ''
             if verbosity >= 2:
