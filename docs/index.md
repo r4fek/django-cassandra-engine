@@ -28,9 +28,8 @@ It uses latest *Cqlengine*, which is currently the best Cassandra CQL 3 Object M
 ## Requirements
 
 * Cassandra (of course)
-* cqlengine
-* django-nonrel
-* djangotoolbox
+* cassandra-driver>=2.5
+* djangotoolbox>=1.6.2
 * Django>=1.5
 * blist (optional)
 
@@ -86,8 +85,8 @@ This rule applies only to Django >= 1.7.
 
         #  myapp/models.py
         import uuid
-        from cqlengine import columns
-        from cqlengine.models import Model
+        from cassandra.cqlengine import columns
+        from cassandra.cqlengine.models import Model
 
         class ExampleModel(Model):
             read_repair_chance = 0.05 # optional - defaults to 0.1
