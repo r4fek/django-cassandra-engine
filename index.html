@@ -153,9 +153,8 @@ It uses latest <em>Cqlengine</em>, which is currently the best Cassandra CQL 3 O
 <h2 id="requirements">Requirements</h2>
 <ul>
 <li>Cassandra (of course)</li>
-<li>cqlengine</li>
-<li>django-nonrel</li>
-<li>djangotoolbox</li>
+<li>cassandra-driver&gt;=2.5</li>
+<li>djangotoolbox&gt;=1.6.2</li>
 <li>Django&gt;=1.5</li>
 <li>blist (optional)</li>
 </ul>
@@ -205,8 +204,8 @@ This rule applies only to Django &gt;= 1.7.</p>
 <p>Define some model(s):</p>
 <pre class="prettyprint well"><code>#  myapp/models.py
 import uuid
-from cqlengine import columns
-from cqlengine.models import Model
+from cassandra.cqlengine import columns
+from cassandra.cqlengine.models import Model
 
 class ExampleModel(Model):
     read_repair_chance = 0.05 # optional - defaults to 0.1
