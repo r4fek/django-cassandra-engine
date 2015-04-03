@@ -4,7 +4,11 @@ from django.core.management.base import NoArgsCommand, CommandError
 from django.db import connections
 from django.conf import settings
 
-from cqlengine.management import create_keyspace, sync_table
+from cassandra.cqlengine.management import (
+    create_keyspace_simple,
+    create_keyspace_network_topology,
+    sync_table
+)
 from django_cassandra_engine.utils import get_engine_from_db_alias
 
 
@@ -60,8 +64,10 @@ class Command(NoArgsCommand):
 
         self.stdout.write('Creating keyspace {}..'.format(keyspace))
 
-        create_keyspace(keyspace, strategy_class, replication_factor,
-                        **replication_opts)
+        if strategy_class == 'SimpleStrategy':
+            create_keyspace_simple(keyspace, replication_factor)
+        else:
+            create_keyspace_network_topology(keyspace, replication_opts)
 
         for app_name, app_models \
                 in connection.introspection.cql_models.iteritems():

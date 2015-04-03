@@ -1,5 +1,5 @@
 import inspect
-import cqlengine
+from cassandra import cqlengine
 import django
 from django.conf import settings
 
@@ -68,15 +68,15 @@ def get_cql_models(app, keyspace=None):
     """
     :param app: django models module
     :param keyspace: database name (keyspace)
-    :return: list of all cqlengine.Model within app that should be synced to
-    keyspace.
+    :return: list of all cassandra.cqlengine.Model within app that should be
+    synced to keyspace.
     """
-    from cqlengine.models import DEFAULT_KEYSPACE
+    from cassandra.cqlengine.models import DEFAULT_KEYSPACE
     keyspace = keyspace or DEFAULT_KEYSPACE
 
     models = []
     for name, obj in inspect.getmembers(app):
-        if inspect.isclass(obj) and issubclass(obj, cqlengine.Model) \
+        if inspect.isclass(obj) and issubclass(obj, cqlengine.models.Model) \
                 and not obj.__abstract__:
             if (obj.__keyspace__ is None and keyspace == DEFAULT_KEYSPACE) \
                     or obj.__keyspace__ == keyspace:

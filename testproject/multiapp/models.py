@@ -1,7 +1,8 @@
-from cqlengine import columns, Model
+from cassandra.cqlengine import columns
+from cassandra.cqlengine import models
 
 
-class TestModel(Model):
+class TestModel(models.Model):
     __keyspace__ = 'db'
 
     id = columns.BigInt(primary_key=True)
@@ -9,11 +10,11 @@ class TestModel(Model):
     deleted = columns.Boolean(default=False)
 
 
-class TestModel2(Model):
+class TestModel2(models.Model):
     __keyspace__ = 'db2'
     id = columns.BigInt(primary_key=True)
 
 
-class TestModel3(Model):
+class TestModel3(models.Model):
     __keyspace__ = 'db2'
     id = columns.BigInt(primary_key=True)

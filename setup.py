@@ -25,7 +25,7 @@ setup(
     install_requires=[
         'Django>=1.5',
         'djangotoolbox==1.6.2',
-        'cqlengine==0.21.0'
+        'cassandra-driver==2.5.0'
     ],
     packages=find_packages(
         exclude=['tests', 'tests.*', 'testproject', 'testproject.*']),

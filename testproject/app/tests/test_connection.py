@@ -22,20 +22,20 @@ class CassandraConnectionTestCase(TestCase):
 
     def test_connected_to_db(self):
 
-        from cqlengine import connection as cql_connection
+        from cassandra.cqlengine import connection as cql_connection
 
         self.assertIsInstance(cql_connection.cluster, Cluster)
         self.assertIsNotNone(cql_connection.session)
 
     def test_session_property(self):
 
-        from cqlengine import connection as cql_connection
+        from cassandra.cqlengine import connection as cql_connection
 
         self.assertEqual(self.connection.session, cql_connection.session)
 
     def test_cluster_property(self):
 
-        from cqlengine import connection as cql_connection
+        from cassandra.cqlengine import connection as cql_connection
 
         self.assertEqual(self.connection.cluster, cql_connection.cluster)
 
@@ -45,7 +45,7 @@ class CassandraConnectionTestCase(TestCase):
         self.assertEqual(
             self.connection.connection_options, connection_options)
 
-    @patch("cqlengine.connection")
+    @patch("cassandra.cqlengine.connection")
     def test_connection_setup_called_first_time_with_proper_options(
             self, connection_mock):
 

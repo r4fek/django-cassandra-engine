@@ -40,7 +40,7 @@ class ModelsTestCase(TestCase):
         obj_id = 123456
         TestModel.objects.create(id=obj_id, created_at=now)
 
-        from cqlengine.connection import get_session
+        from cassandra.cqlengine.connection import get_session
         session = get_session()
         session.set_keyspace('test_db')
         self.assertEqual(
@@ -51,7 +51,7 @@ class ModelsTestCase(TestCase):
         obj_id = 123456
         TestModel2.objects.create(id=obj_id)
 
-        from cqlengine.connection import get_session
+        from cassandra.cqlengine.connection import get_session
         session = get_session()
         session.set_keyspace('test_db2')
         self.assertEqual(

@@ -69,8 +69,8 @@ class DatabaseIntrospection(NonrelDatabaseIntrospection):
 
     def _discover_models(self):
         """
-        Return a dict containing a list of cqlengine.Model classes within
-        installed App.
+        Return a dict containing a list of cassandra.cqlengine.Model classes
+        within installed App.
         """
 
         apps = get_installed_apps()
@@ -187,7 +187,7 @@ class DatabaseWrapper(NonrelDatabaseWrapper):
         # a cursor to check if it should create a db or not. Any
         # exception will do, and this will raise a KeyError if the
         # keyspace doesn't exist.
-        from cqlengine import connection
+        from cassandra.cqlengine import connection
         keyspace = self.settings_dict['NAME']
         connection.cluster.metadata.keyspaces[keyspace]
         return CursorWrapper(self.connection.cursor(), self)

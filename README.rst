@@ -12,7 +12,10 @@ Django Cassandra Engine
     :alt: Downloads
 
 django-cassandra-engine is a database wrapper for Django Framework.
-It uses latest `Cqlengine <https://github.com/cqlengine/cqlengine>`_ which is currently the best Cassandra CQL 3 Object Mapper for Python.
+It uses the latest `cassandra-driver <https://github.com/datastax/python-driver>`_
+while primarily utilizing `Cqlengine <https://github.com/cqlengine/cqlengine>`_
+which is currently the best Cassandra CQL 3 Object Mapper for Python and was
+integrated into `cassandra-driver`.
 
 :License: 2-clause BSD
 :Keywords: django, cassandra, orm, nosql, database, python
@@ -59,8 +62,8 @@ IMPORTANT: This app should be **the first app** on ``INSTALLED_APPS`` list.
 
     #  myapp/models.py
     import uuid
-    from cqlengine import columns
-    from cqlengine.models import Model
+    from cassandra.cqlengine import columns
+    from cassandra.cqlengine.models import Model
 
     class ExampleModel(Model):
         read_repair_chance = 0.05 # optional - defaults to 0.1

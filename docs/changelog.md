@@ -1,9 +1,15 @@
 # CHANGELOG
 
+## Version 0.3.0 (03.04.2015)
+
+* fix #29: Update to use integrated cqlengine via cassandra-driver>=2.5.0
+  (by @mbeacom and @r4fek)
+
 ## Version 0.2.3 (25.03.2015)
 
 * fix #15: test database not used by code under test (by @lsmithso)
-* fix #25: working fixtures in `django_cassandra_engine.test.TestCase` (by @slurms)
+* fix #25: working fixtures in `django_cassandra_engine.test.TestCase` 
+  (by @slurms)
 
 ## Version 0.2.2 (19.01.2015)
 

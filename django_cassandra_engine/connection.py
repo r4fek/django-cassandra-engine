@@ -1,4 +1,4 @@
-from cqlengine import connection
+from cassandra.cqlengine import connection
 from cassandra.auth import PlainTextAuthProvider
 
 
@@ -37,7 +37,7 @@ class CassandraConnection(object):
         self.setup()
 
     def setup(self):
-        from cqlengine import connection
+        from cassandra.cqlengine import connection
         if connection.cluster is not None:
             # already connected
             return

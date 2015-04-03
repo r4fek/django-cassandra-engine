@@ -1,5 +1,13 @@
 # django-cassandra-engine docs
 
+**IMPORTANT: Users of versions <0.3.0, please read this before upgrading!**
+
+**django-cassandra-engine>=0.3.0 uses python-driver with built-in cqlengine
+instead of cqlengine itself. 
+You should read 
+[Upgrade Guide](http://datastax.github.io/python-driver/cqlengine/upgrade_guide.html)
+before installing the new version!**
+
 ## Overview
 
 *django-cassandra-engine* is a database wrapper for *Django Framework*.

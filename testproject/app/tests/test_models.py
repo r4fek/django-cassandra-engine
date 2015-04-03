@@ -24,7 +24,7 @@ class ModelsTestCase(TestCase):
         obj = ExampleModel.objects.create(id=obj_id, created_at=now)
         self.assertEqual(obj.__keyspace__, 'test_db')
 
-        from cqlengine.connection import get_session
+        from cassandra.cqlengine.connection import get_session
         session = get_session()
         session.set_keyspace('test_db')
         self.assertEqual(
