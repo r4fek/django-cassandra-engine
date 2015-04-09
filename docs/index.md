@@ -29,7 +29,6 @@ It uses latest *Cqlengine*, which is currently the best Cassandra CQL 3 Object M
 
 * Cassandra (of course)
 * cassandra-driver>=2.5
-* djangotoolbox>=1.6.2
 * Django>=1.5
 * blist (optional)
 

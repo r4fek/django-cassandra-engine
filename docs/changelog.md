@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version 0.3.1 (TBD)
+
+* fix #30: Add support for Django>=1.8
+* get rid of djangotoolbox dependency
+
 ## Version 0.3.0 (03.04.2015)
 
 * fix #29: Update to use integrated cqlengine via cassandra-driver>=2.5.0

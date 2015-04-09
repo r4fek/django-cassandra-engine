@@ -5,7 +5,8 @@ try:
     )
 except ImportError:
     try:
-        from django.db.backends import connection_created, BaseDatabaseWrapper
+        from django.db.backends import BaseDatabaseWrapper
+        from django.db.backends import connection_created
     except ImportError:
         from django.db.backends.signals import connection_created
 
