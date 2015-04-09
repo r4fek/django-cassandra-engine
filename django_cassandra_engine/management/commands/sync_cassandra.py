@@ -70,7 +70,7 @@ class Command(NoArgsCommand):
             create_keyspace_network_topology(keyspace, replication_opts)
 
         for app_name, app_models \
-                in connection.introspection.cql_models.iteritems():
+                in connection.introspection.cql_models.items():
             for model in app_models:
                 self.stdout.write('Syncing %s.%s' % (app_name, model.__name__))
                 sync_table(model)

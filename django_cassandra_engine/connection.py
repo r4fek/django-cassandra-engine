@@ -58,7 +58,7 @@ class CassandraConnection(object):
             return
         connection.setup(self.hosts, self.keyspace, **self.connection_options)
 
-        for option, value in self.session_options.iteritems():
+        for option, value in self.session_options.items():
             setattr(self.session, option, value)
 
     def commit(self):
