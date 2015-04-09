@@ -39,9 +39,14 @@ class SyncCassandraCommandTestCase(TestCase):
         """
         Test if syncdb of another database works as before
         """
+        import django
+        if django.VERSION[0:2] >= (1, 8):
+            base_command = \
+                "django.core.management.commands.syncdb.Command.handle"
+        else:
+            base_command = \
+                "django.core.management.commands.syncdb.Command.handle_noargs"
 
-        base_command = \
-            "django.core.management.commands.syncdb.Command.handle_noargs"
         with patch(base_command) as handle_mock:
             call_command('syncdb', database='mysql')
 

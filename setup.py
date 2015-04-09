@@ -23,8 +23,7 @@ setup(
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     install_requires=[
-        'Django>=1.5',
-        'djangotoolbox==1.6.2',
+        'Django<1.9',
         'cassandra-driver==2.5.0'
     ],
     packages=find_packages(

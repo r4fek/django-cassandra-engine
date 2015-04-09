@@ -16,6 +16,21 @@ class Cursor(object):
         return []
 
 
+class FakeConnection(object):
+
+    def commit(self):
+        pass
+
+    def rollback(self):
+        pass
+
+    def cursor(self):
+        return Cursor(None)
+
+    def close(self):
+        pass
+
+
 class CassandraConnection(object):
 
     def __init__(self, **options):

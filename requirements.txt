@@ -1,4 +1,2 @@
-Django>=1.5
-djangotoolbox==1.6.2
-cassandra-driver>=2.1.0
-cqlengine==0.21.0
+Django<1.9
+cassandra-driver>=2.5.0

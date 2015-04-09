@@ -14,3 +14,12 @@ class Command(SyncCommand):
             return super(Command, self).handle_noargs(**options)
         else:
             return sync_cassandra.Command().execute(**options)
+
+    def handle(self, **options):
+        engine = get_engine_from_db_alias(options['database'])
+
+        # Call regular syncdb if engine is different from ours
+        if engine != 'django_cassandra_engine':
+            return super(Command, self).handle(**options)
+        else:
+            return sync_cassandra.Command().execute(**options)

@@ -2,44 +2,15 @@ from cassandra.cqlengine.management import (
     create_keyspace_simple,
     drop_keyspace
 )
-from djangotoolbox.db.creation import NonrelDatabaseCreation
+
+import django
+if django.VERSION[0:2] >= (1, 8):
+    from django.db.backends.base.creation import BaseDatabaseCreation
+else:
+    from django.db.backends.creation import BaseDatabaseCreation
 
 
-class DatabaseCreation(NonrelDatabaseCreation):
-
-    data_types = {
-        'AutoField':         'text',
-        'BigIntegerField':   'long',
-        'BooleanField':      'bool',
-        'CharField':         'text',
-        'CommaSeparatedIntegerField': 'text',
-        'DateField':         'date',
-        'DateTimeField':     'datetime',
-        'DecimalField':      'decimal:%(max_digits)s,%(decimal_places)s',
-        'EmailField':        'text',
-        'FileField':         'text',
-        'FilePathField':     'text',
-        'FloatField':        'float',
-        'ImageField':        'text',
-        'IntegerField':      'int',
-        'IPAddressField':    'text',
-        'NullBooleanField':  'bool',
-        'OneToOneField':     'integer',
-        'PositiveIntegerField': 'int',
-        'PositiveSmallIntegerField': 'int',
-        'SlugField':         'text',
-        'SmallIntegerField': 'integer',
-        'TextField':         'text',
-        'TimeField':         'time',
-        'URLField':          'text',
-        'XMLField':          'text',
-        'GenericAutoField':  'id',
-        'StringForeignKey':  'id',
-        'RelatedAutoField':  'id',
-    }
-
-    def set_autocommit(self):
-        """ There is no such thing in Cassandra """
+class CassandraDatabaseCreation(BaseDatabaseCreation):
 
     def create_test_db(self, verbosity=1, autoclobber=False, **kwargs):
         """
