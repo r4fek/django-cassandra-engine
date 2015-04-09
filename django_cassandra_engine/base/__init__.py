@@ -26,7 +26,7 @@ from django_cassandra_engine.utils import CursorWrapper
 
 
 class Database(object):
-    class Error(StandardError):
+    class Error(Exception):
         pass
 
     class InterfaceError(Error):
