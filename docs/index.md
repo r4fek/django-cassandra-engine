@@ -11,23 +11,26 @@ before installing the new version!**
 ## Overview
 
 *django-cassandra-engine* is a database wrapper for *Django Framework*.
-It uses latest *Cqlengine*, which is currently the best Cassandra CQL 3 Object Mapper for Python.
+It uses latest *Cqlengine*, which is currently the best Cassandra CQL 3 Object
+Mapper for Python.
 
 ---
 
 ## Features
 
-* working `syncdb`, `migrate`, `sync_cassandra`, `inspectdb` and `flush` commands
+* working `flush`, `syncdb`, `migrate`, `sync_cassandra`, `inspectdb` and 
+  `dbshell` commands
 * support for creating/destroying test database
 * accepts all `Cqlengine` and `cassandra.cluster.Cluster` connection options
 * automatic connection/disconnection handling
-* support for multiple databases (also relational)
+* works well along with relational databases
 
 ---
 
 ## Requirements
 
-* Cassandra (of course)
+* Python>=2.7
+* Cassandra>=2.0 (of course)
 * cassandra-driver>=2.5
 * Django>=1.5
 * blist (optional)
@@ -208,6 +211,20 @@ routing around the model layer entirely:
 
 ---
 
+## Quick access to dbshell via cqlsh
+
+If you need to perform raw CQL query on your keyspace just run:
+
+    $ python manage.py dbshell                                                                                                                                                                master 
+    Connected to Test Cluster at 127.0.0.1:9042.
+    [cqlsh 5.0.1 | Cassandra 2.1.4 | CQL spec 3.2.0 | Native protocol v3]
+    Use HELP for help.
+    cqlsh:your_keyspace>
+
+It will connect directly to your database using credentials from settings.py
+
+---
+
 ## Working with source code and running tests
 
     git clone https://github.com/r4fek/django-cassandra-engine.git
@@ -217,6 +234,7 @@ routing around the model layer entirely:
     python setup.py install
     python setup.py test
 
+---
 
 ## Contributing
 

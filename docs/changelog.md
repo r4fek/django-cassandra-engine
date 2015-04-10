@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Version 0.3.1 (TBD)
+## Version 0.3.1 (10.04.2015)
 
 * fix #30: Add support for Django>=1.8
 * remove djangotoolbox dependency
