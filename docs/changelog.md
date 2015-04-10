@@ -3,7 +3,8 @@
 ## Version 0.3.1 (TBD)
 
 * fix #30: Add support for Django>=1.8
-* get rid of djangotoolbox dependency
+* remove djangotoolbox dependency
+* fix #21: Python 3 compatibility
 
 ## Version 0.3.0 (03.04.2015)
 
