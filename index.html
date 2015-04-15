@@ -121,6 +121,8 @@
         
             <li><a href="#performing-raw-database-queries">Performing raw database queries</a></li>
         
+            <li><a href="#quick-access-to-dbshell-via-cqlsh">Quick access to dbshell via cqlsh</a></li>
+        
             <li><a href="#working-with-source-code-and-running-tests">Working with source code and running tests</a></li>
         
             <li><a href="#contributing">Contributing</a></li>
@@ -139,22 +141,24 @@ You should read
 before installing the new version!</strong></p>
 <h2 id="overview">Overview</h2>
 <p><em>django-cassandra-engine</em> is a database wrapper for <em>Django Framework</em>.
-It uses latest <em>Cqlengine</em>, which is currently the best Cassandra CQL 3 Object Mapper for Python.</p>
+It uses latest <em>Cqlengine</em>, which is currently the best Cassandra CQL 3 Object
+Mapper for Python.</p>
 <hr />
 <h2 id="features">Features</h2>
 <ul>
-<li>working <code>syncdb</code>, <code>migrate</code>, <code>sync_cassandra</code>, <code>inspectdb</code> and <code>flush</code> commands</li>
+<li>working <code>flush</code>, <code>syncdb</code>, <code>migrate</code>, <code>sync_cassandra</code>, <code>inspectdb</code> and 
+  <code>dbshell</code> commands</li>
 <li>support for creating/destroying test database</li>
 <li>accepts all <code>Cqlengine</code> and <code>cassandra.cluster.Cluster</code> connection options</li>
 <li>automatic connection/disconnection handling</li>
-<li>support for multiple databases (also relational)</li>
+<li>works well along with relational databases</li>
 </ul>
 <hr />
 <h2 id="requirements">Requirements</h2>
 <ul>
-<li>Cassandra (of course)</li>
+<li>Python&gt;=2.7</li>
+<li>Cassandra&gt;=2.0 (of course)</li>
 <li>cassandra-driver&gt;=2.5</li>
-<li>djangotoolbox&gt;=1.6.2</li>
 <li>Django&gt;=1.5</li>
 <li>blist (optional)</li>
 </ul>
@@ -314,6 +318,16 @@ result = cursor.execute("SELECT COUNT(*) FROM users")
 print result[0]['count']
 </code></pre>
 <hr />
+<h2 id="quick-access-to-dbshell-via-cqlsh">Quick access to dbshell via cqlsh</h2>
+<p>If you need to perform raw CQL query on your keyspace just run:</p>
+<pre class="prettyprint well"><code>$ python manage.py dbshell                                                                                                                                                                master 
+Connected to Test Cluster at 127.0.0.1:9042.
+[cqlsh 5.0.1 | Cassandra 2.1.4 | CQL spec 3.2.0 | Native protocol v3]
+Use HELP for help.
+cqlsh:your_keyspace&gt;
+</code></pre>
+<p>It will connect directly to your database using credentials from settings.py</p>
+<hr />
 <h2 id="working-with-source-code-and-running-tests">Working with source code and running tests</h2>
 <pre class="prettyprint well"><code>git clone https://github.com/r4fek/django-cassandra-engine.git
 cd django_cassandra_engine
@@ -322,6 +336,7 @@ pip install -r requirements-dev.txt
 python setup.py install
 python setup.py test
 </code></pre>
+<hr />
 <h2 id="contributing">Contributing</h2>
 <p>You are highly encouraged to participate in the development,
 simply use GitHub's fork/pull request system.</p>
