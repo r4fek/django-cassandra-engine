@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 0.3.2 (04.05.2015)
+
+* upgrade cassandra-driver to 2.5.1
+
 ## Version 0.3.1 (10.04.2015)
 
 * fix #30: Add support for Django>=1.8
