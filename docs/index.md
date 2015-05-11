@@ -129,7 +129,6 @@ This is also possible! Just define your `DATABASES` like here:
                 },
                 'connection': {
                     'consistency': ConsistencyLevel.ONE,
-                    'lazy_connect': True,
                     'retry_connect': True
                     # + All connection options for cassandra.cluster.Cluster()
                 },
@@ -178,7 +177,6 @@ to `connection` dict:
     ...
     'connection': {
         'consistency': ConsistencyLevel.ONE,
-        'lazy_connect': True,
         'retry_connect': True,
         'port': 9042,
         'auth_provider': PlainTextAuthProvider(username='user', password='password')

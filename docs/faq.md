@@ -31,4 +31,4 @@ Or if 'cassandra' is your secondary DB alias:
 ## **Q: is uWSGI supported?**
 
 A: Yes, uWSGI is supported by default. 
-It works best with `retry_connect` and `lazy_connect` set to `True`.
+It works best with `retry_connect` set to `True`.
