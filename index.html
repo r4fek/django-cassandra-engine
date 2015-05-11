@@ -251,7 +251,6 @@ DATABASES = {
             },
             'connection': {
                 'consistency': ConsistencyLevel.ONE,
-                'lazy_connect': True,
                 'retry_connect': True
                 # + All connection options for cassandra.cluster.Cluster()
             },
@@ -294,7 +293,6 @@ to <code>connection</code> dict:</p>
 <pre class="prettyprint well"><code>...
 'connection': {
     'consistency': ConsistencyLevel.ONE,
-    'lazy_connect': True,
     'retry_connect': True,
     'port': 9042,
     'auth_provider': PlainTextAuthProvider(username='user', password='password')
