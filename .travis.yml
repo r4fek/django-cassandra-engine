@@ -8,8 +8,8 @@ env:
 
 python:
   - "2.7"
-  - "3.3"
-  - "3.4"
+  #- "3.3"
+  #- "3.4"
 
 before_install:
   - sudo apt-get install libev4 libev-dev
