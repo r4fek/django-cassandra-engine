@@ -27,7 +27,7 @@ class Command(NoArgsCommand):
         dispatcher events.
         """
 
-        from django.utils.importlib import import_module
+        from importlib import import_module
 
         for app_name in settings.INSTALLED_APPS:
             try:
