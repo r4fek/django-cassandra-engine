@@ -1,3 +1,4 @@
+from cassandra import ConsistencyLevel
 from cassandra.auth import PlainTextAuthProvider
 from cassandra.cluster import Cluster
 from mock import patch
@@ -96,6 +97,16 @@ class CassandraConnectionTestCase(TestCase):
         self.assertEqual(self.connection.session_options, session_opts)
         self.assertEqual(self.connection.session.default_timeout,
                          session_opts.get('default_timeout'))
+
+    def test_connection_session_default_consistency(self):
+
+        settings = self.cassandra_connection.settings_dict
+        settings['OPTIONS']['connection'] = {
+            'consistency': ConsistencyLevel.ALL
+        }
+        connection = CassandraConnection(**settings)
+        self.assertEqual(connection.session.default_consistency_level,
+                         ConsistencyLevel.ALL)
 
     def test_raw_cql_cursor_queries(self):
         cursor = self.connection.cursor()

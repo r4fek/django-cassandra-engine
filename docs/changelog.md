@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version 0.3.3 (25.05.2015)
+
+* RemovedInDjango19Warnings when using Django >= 1.7 (by @paksu)
+* set session.default_consistency_level
+
 ## Version 0.3.2 (04.05.2015)
 
 * upgrade cassandra-driver to 2.5.1
