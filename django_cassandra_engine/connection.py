@@ -1,3 +1,4 @@
+from cassandra.cluster import Session
 from cassandra.cqlengine import connection
 from cassandra.auth import PlainTextAuthProvider
 
@@ -62,7 +63,7 @@ class CassandraConnection(object):
         if consistency:
             self.session.default_consistency_level = consistency
         for option, value in self.session_options.items():
-            setattr(self.session, option, value)
+            setattr(Session, option, value)
 
     def commit(self):
         pass
