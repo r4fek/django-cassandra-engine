@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 0.3.4 (01.07.2015)
+
+* Set Session attributes in class instead of local instance (by @mateuszm)
+
 ## Version 0.3.3 (25.05.2015)
 
 * RemovedInDjango19Warnings when using Django >= 1.7 (by @paksu)
