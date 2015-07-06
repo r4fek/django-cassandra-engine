@@ -10,6 +10,10 @@ Django Cassandra Engine
 .. image:: https://pypip.in/download/django-cassandra-engine/badge.svg
     :target: https://pypi.python.org/pypi//django-cassandra-engine/
     :alt: Downloads
+.. image:: https://codeclimate.com/github/r4fek/django-cassandra-engine/badges/gpa.svg
+   :target: https://codeclimate.com/github/r4fek/django-cassandra-engine
+   :alt: Code Climate
+
 
 django-cassandra-engine is a database wrapper for Django Framework.
 It uses the latest `cassandra-driver <https://github.com/datastax/python-driver>`_
