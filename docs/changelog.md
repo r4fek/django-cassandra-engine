@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 0.4.0 (21.07.2015)
+
+* Update cassandra-driver to 2.6.0
+
 ## Version 0.3.4 (01.07.2015)
 
 * Set Session attributes in class instead of local instance (by @mateuszm)
