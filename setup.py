@@ -24,7 +24,7 @@ setup(
     long_description=LONG_DESCRIPTION,
     install_requires=[
         'Django<1.9',
-        'cassandra-driver==2.5.1'
+        'cassandra-driver==2.6.0'
     ],
     packages=find_packages(
         exclude=['tests', 'tests.*', 'testproject', 'testproject.*']),
