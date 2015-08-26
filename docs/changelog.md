@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version 0.5.0 (26.08.2015)
+
+* Fix `CassandraDatabaseFeatures.supports_transactions` (thanks @slurms)
+* Update cassandra-driver to 2.7.1
+
 ## Version 0.4.0 (21.07.2015)
 
 * Update cassandra-driver to 2.6.0
