@@ -9,7 +9,7 @@
         <link rel="canonical" href="http://r4fek.github.io/django-cassandra-engine/faq/">
         <link rel="shortcut icon" href="../img/favicon.ico">
 
-        <title>FAQ - Django Cassandra Engine</title>
+        <title>FAQ</title>
 
         <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
@@ -119,7 +119,7 @@
 <h2 id="q-is-it-possible-to-use-it-with-celery"><strong>Q:  Is it possible to use it with Celery?</strong></h2>
 <p>A: Short answer: YES.</p>
 <p>If you use <code>django_cassandra_engine</code> as your default backend:</p>
-<pre class="prettyprint well"><code># project/tasks.py
+<pre><code># project/tasks.py
 from celery.signals import worker_init
 from django.db import connection
 
@@ -128,7 +128,7 @@ def connect_db(**kwargs):
     connection.reconnect()
 </code></pre>
 <p>Or if 'cassandra' is your secondary DB alias:</p>
-<pre class="prettyprint well"><code>from django.db import connections
+<pre><code>from django.db import connections
 connection = connections['cassandra']
 
 @worker_process_init.connect
@@ -137,8 +137,7 @@ def connect_db(**kwargs):
 </code></pre>
 <h2 id="q-is-uwsgi-supported"><strong>Q: is uWSGI supported?</strong></h2>
 <p>A: Yes, uWSGI is supported by default. 
-It works best with <code>retry_connect</code> set to <code>True</code>.</p>
-</div>
+It works best with <code>retry_connect</code> set to <code>True</code>.</p></div>
         </div>
 
         <footer class="col-md-12">

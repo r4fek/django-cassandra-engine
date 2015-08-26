@@ -9,7 +9,7 @@
         <link rel="canonical" href="http://r4fek.github.io/django-cassandra-engine/">
         <link rel="shortcut icon" href="./img/favicon.ico">
 
-        <title>Django Cassandra Engine</title>
+        <title>None</title>
 
         <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="./css/font-awesome-4.0.3.css" rel="stylesheet">
@@ -169,17 +169,15 @@ Mapper for Python.</p>
 <hr />
 <h2 id="installation">Installation</h2>
 <p>You can install it easily from PyPi by single command:</p>
-<pre class="prettyprint well"><code>pip install django-cassandra-engine
+<pre><code>pip install django-cassandra-engine
 </code></pre>
 <p>or clone source code and run:</p>
-<pre class="prettyprint well"><code>python setup.py install
+<pre><code>python setup.py install
 </code></pre>
 <hr />
 <h2 id="getting-started">Getting started</h2>
 <ol>
-<li>
-<p>Add django-cassandra-engine to <code>INSTALLED_APPS</code> in your settings.py file:</p>
-<pre class="prettyprint well"><code>INSTALLED_APPS = ('django_cassandra_engine',) + INSTALLED_APPS
+<li>Add django-cassandra-engine to <code>INSTALLED_APPS</code> in your settings.py file:<pre><code>INSTALLED_APPS = ('django_cassandra_engine',) + INSTALLED_APPS
 </code></pre>
 </li>
 </ol>
@@ -188,7 +186,7 @@ This rule applies only to Django &gt;= 1.7.</p>
 <ol>
 <li>
 <p>Change <code>DATABASES</code> setting:</p>
-<pre class="prettyprint well"><code>DATABASES = {
+<pre><code>DATABASES = {
     'default': {
         'ENGINE': 'django_cassandra_engine',
         'NAME': 'db',
@@ -206,7 +204,7 @@ This rule applies only to Django &gt;= 1.7.</p>
 </li>
 <li>
 <p>Define some model(s):</p>
-<pre class="prettyprint well"><code>#  myapp/models.py
+<pre><code>#  myapp/models.py
 import uuid
 from cassandra.cqlengine import columns
 from cassandra.cqlengine.models import Model
@@ -230,7 +228,7 @@ class ExampleModel(Model):
 <h2 id="advanced-usage">Advanced usage</h2>
 <p>Sometimes you want to use cassandra database along with your relational database.
 This is also possible! Just define your <code>DATABASES</code> like here:</p>
-<pre class="prettyprint well"><code>from cassandra import ConsistencyLevel
+<pre><code>from cassandra import ConsistencyLevel
 
 DATABASES = {
     'default': {
@@ -277,7 +275,7 @@ for Cassandra DB.</p>
     internal authorization
 </a>
 just provide <code>USER</code> and <code>PASSWORD</code> in cassandra's database alias.</p>
-<pre class="prettyprint well"><code>...
+<pre><code>...
 'cassandra' {
     'ENGINE': 'django_cassandra_engine',
     'NAME': 'db',
@@ -290,7 +288,7 @@ just provide <code>USER</code> and <code>PASSWORD</code> in cassandra's database
     auth_provider
 </a>
 to <code>connection</code> dict:</p>
-<pre class="prettyprint well"><code>...
+<pre><code>...
 'connection': {
     'consistency': ConsistencyLevel.ONE,
     'retry_connect': True,
@@ -310,7 +308,7 @@ if <code>django_cassandra_engine</code> is your primary (default) database backe
 or directly execute <code>UPDATE</code>, <code>INSERT</code>, or <code>DELETE</code> queries.</p>
 <p>In these cases, you can always access the database directly,
 routing around the model layer entirely:</p>
-<pre class="prettyprint well"><code>from django.db import connection
+<pre><code>from django.db import connection
 cursor = connection.cursor()
 result = cursor.execute("SELECT COUNT(*) FROM users")
 print result[0]['count']
@@ -318,7 +316,7 @@ print result[0]['count']
 <hr />
 <h2 id="quick-access-to-dbshell-via-cqlsh">Quick access to dbshell via cqlsh</h2>
 <p>If you need to perform raw CQL query on your keyspace just run:</p>
-<pre class="prettyprint well"><code>$ python manage.py dbshell                                                                                                                                                                master 
+<pre><code>$ python manage.py dbshell                                                                                                                                                                master 
 Connected to Test Cluster at 127.0.0.1:9042.
 [cqlsh 5.0.1 | Cassandra 2.1.4 | CQL spec 3.2.0 | Native protocol v3]
 Use HELP for help.
@@ -327,7 +325,7 @@ cqlsh:your_keyspace&gt;
 <p>It will connect directly to your database using credentials from settings.py</p>
 <hr />
 <h2 id="working-with-source-code-and-running-tests">Working with source code and running tests</h2>
-<pre class="prettyprint well"><code>git clone https://github.com/r4fek/django-cassandra-engine.git
+<pre><code>git clone https://github.com/r4fek/django-cassandra-engine.git
 cd django_cassandra_engine
 # mkvirtualenv cassengine
 pip install -r requirements-dev.txt
@@ -337,8 +335,7 @@ python setup.py test
 <hr />
 <h2 id="contributing">Contributing</h2>
 <p>You are highly encouraged to participate in the development,
-simply use GitHub's fork/pull request system.</p>
-</div>
+simply use GitHub's fork/pull request system.</p></div>
         </div>
 
         <footer class="col-md-12">
