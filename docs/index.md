@@ -219,7 +219,9 @@ If you need to perform raw CQL query on your keyspace just run:
     Use HELP for help.
     cqlsh:your_keyspace>
 
-It will connect directly to your database using credentials from settings.py
+It will connect directly to your database using credentials from settings.py.
+If the database has multiple Cassandra hosts in settings.py, dbshell attempts
+to connect to the host that is listed first.
 
 ---
 
