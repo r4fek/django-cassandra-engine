@@ -14,7 +14,7 @@ class CassandraDatabaseClient(BaseDatabaseClient):
         settings_dict = self.connection.settings_dict
         args = [self.executable_name]
         if settings_dict['HOST']:
-            args.extend([settings_dict['HOST']])
+            args.extend([settings_dict['HOST'].split(',')[0]])
         if settings_dict['PORT']:
             args.extend([str(settings_dict['PORT'])])
         if settings_dict['USER']:
