@@ -11,7 +11,7 @@ class Command(MigrateCommand):
 
         # Call regular migrate if engine is different from ours
         if engine != 'django_cassandra_engine':
-            return super(Command, self).handle(**options)
+            return super(Command, self).handle(*args, **options)
         else:
             self.stdout.write("Migrations are not supported in this engine. "
                               "Calling syncdb instead..")
