@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 0.5.1 (14.09.2015)
+
+* fix #44: Fix migrate command when working in a multi db environment (by @paksu)
+
 ## Version 0.5.0 (26.08.2015)
 
 * Fix `CassandraDatabaseFeatures.supports_transactions` (thanks @slurms)
