@@ -322,7 +322,9 @@ Connected to Test Cluster at 127.0.0.1:9042.
 Use HELP for help.
 cqlsh:your_keyspace&gt;
 </code></pre>
-<p>It will connect directly to your database using credentials from settings.py</p>
+<p>It will connect directly to your database using credentials from settings.py.
+If the database has multiple Cassandra hosts in settings.py, dbshell attempts
+to connect to the host that is listed first.</p>
 <hr />
 <h2 id="working-with-source-code-and-running-tests">Working with source code and running tests</h2>
 <pre><code>git clone https://github.com/r4fek/django-cassandra-engine.git
