@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 0.5.1 (04.10.2015)
+
+* Update cassandra-driver to 2.7.2
+
 ## Version 0.5.1 (14.09.2015)
 
 * fix #44: Fix migrate command when working in a multi db environment (by @paksu)
