@@ -1,6 +1,10 @@
 # CHANGELOG
 
-## Version 0.5.1 (04.10.2015)
+## Version 0.6.0 (25.11.2015)
+
+* Update cassandra-driver to 0.3.0
+
+## Version 0.5.2 (04.10.2015)
 
 * Update cassandra-driver to 2.7.2
 

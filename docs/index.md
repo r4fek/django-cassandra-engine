@@ -1,11 +1,10 @@
 # django-cassandra-engine docs
 
-**IMPORTANT: Users of versions <0.3.0, please read this before upgrading!**
+**IMPORTANT: Users of versions <0.6.0, please read this before upgrading!**
 
-**django-cassandra-engine>=0.3.0 uses python-driver with built-in cqlengine
-instead of cqlengine itself. 
+**django-cassandra-engine>=0.6.0 uses python-driver>=0.3.0
 You should read 
-[Upgrade Guide](http://datastax.github.io/python-driver/cqlengine/upgrade_guide.html)
+[Upgrade Guide](https://datastax.github.io/python-driver/upgrading.html)
 before installing the new version!**
 
 ## Overview
@@ -33,7 +32,6 @@ Mapper for Python.
 * Cassandra>=2.0 (of course)
 * cassandra-driver>=2.5
 * Django>=1.5
-* blist (optional)
 
 ---
 
@@ -128,7 +126,7 @@ This is also possible! Just define your `DATABASES` like here:
                     'replication_factor': 1
                 },
                 'connection': {
-                    'consistency': ConsistencyLevel.ONE,
+                    'consistency': ConsistencyLevel.LOCAL_ONE,
                     'retry_connect': True
                     # + All connection options for cassandra.cluster.Cluster()
                 },
@@ -176,7 +174,7 @@ to `connection` dict:
 
     ...
     'connection': {
-        'consistency': ConsistencyLevel.ONE,
+        'consistency': ConsistencyLevel.LOCAL_ONE,
         'retry_connect': True,
         'port': 9042,
         'auth_provider': PlainTextAuthProvider(username='user', password='password')
