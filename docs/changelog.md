@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 0.6.1 (07.12.2015)
+
+* Fix `CassandraConnection.setup` method (thanks @mateuszm!)
+
 ## Version 0.6.0 (25.11.2015)
 
 * Update cassandra-driver to 0.3.0

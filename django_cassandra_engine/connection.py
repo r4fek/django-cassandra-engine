@@ -57,13 +57,10 @@ class CassandraConnection(object):
         if connection.cluster is not None:
             # already connected
             return
-        connection.setup(self.hosts, self.keyspace, **self.connection_options)
 
-        consistency = self.connection_options.get('consistency')
-        if consistency:
-            self.session.default_consistency_level = consistency
         for option, value in self.session_options.items():
             setattr(Session, option, value)
+        connection.setup(self.hosts, self.keyspace, **self.connection_options)
 
     def commit(self):
         pass
