@@ -1,4 +1,5 @@
-# django-cassandra-engine docs
+django-cassandra-engine docs
+============================
 
 **IMPORTANT: Users of versions <0.6.0, please read this before upgrading!**
 
