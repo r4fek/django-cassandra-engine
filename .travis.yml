@@ -1,33 +1,27 @@
 language: python
+sudo: false
+services: cassandra
 
 env:
-  - DJANGO_VERSION=1.5 CASSANDRA_VERSION=20
-  - DJANGO_VERSION=1.6 CASSANDRA_VERSION=20
-  - DJANGO_VERSION=1.7 CASSANDRA_VERSION=20
-  - DJANGO_VERSION=1.8 CASSANDRA_VERSION=20
-  - DJANGO_VERSION=1.9 CASSANDRA_VERSION=20
+  - DJANGO_VERSION=1.5
+  - DJANGO_VERSION=1.6
+  - DJANGO_VERSION=1.7
+  - DJANGO_VERSION=1.8
+  - DJANGO_VERSION=1.9
 
 python:
   - "2.7"
   - "3.3"
   - "3.4"
 
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -y libev4 libev-dev
-  - sudo echo "deb http://www.apache.org/dist/cassandra/debian ${CASSANDRA_VERSION}x main" | sudo tee -a /etc/apt/sources.list
-  - sudo echo "deb-src http://www.apache.org/dist/cassandra/debian ${CASSANDRA_VERSION}x main" | sudo tee -a /etc/apt/sources.list
-  - sudo rm -rf ~/.gnupg
-  - sudo gpg --keyserver pgp.mit.edu --recv-keys F758CE318D77295D
-  - sudo gpg --export --armor F758CE318D77295D | sudo apt-key add -
-  - sudo gpg --keyserver pgp.mit.edu --recv-keys 2B5C1B00
-  - sudo gpg --export --armor 2B5C1B00 | sudo apt-key add -
-  - sudo gpg --keyserver pgp.mit.edu --recv-keys 0353B12C
-  - sudo gpg --export --armor 0353B12C | sudo apt-key add -
-  - sudo apt-get update
-  - sudo apt-get -o Dpkg::Options::="--force-confnew" install -y cassandra
-  - sudo sh -c "echo 'JVM_OPTS=\"\${JVM_OPTS} -Djava.net.preferIPv4Stack=false\"' >> /usr/local/cassandra/conf/cassandra-env.sh"
-  - sudo service cassandra start
+addons:
+  apt:
+    packages:
+    - build-essential
+    - python-dev
+    - pypy-dev
+    - libev4
+    - libev-dev
 
 install:
   - "pip install django==${DJANGO_VERSION}"
