@@ -1,7 +1,8 @@
 from itertools import chain
-from unittest import TestCase
+from unittest import TestCase, skipIf
 from mock import patch, call
 
+import django
 from django.core.management import call_command
 from django_cassandra_engine.utils import (
     get_cassandra_connection,
@@ -35,6 +36,7 @@ class SyncCassandraCommandTestCase(TestCase):
         for model in all_models:
             sync_table_mock.assert_has_call(call(model))
 
+    @skipIf(django.VERSION >= (1, 9), "Django >=1.9 does not support syncdb")
     def test_syncdb_of_another_database(self):
         """
         Test if syncdb of another database works as before

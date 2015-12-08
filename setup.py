@@ -23,7 +23,7 @@ setup(
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     install_requires=[
-        'Django<1.9',
+        'Django<=1.9',
         'cassandra-driver==3.0.0'
     ],
     packages=find_packages(

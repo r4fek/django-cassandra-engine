@@ -7,7 +7,7 @@ from subprocess import check_call as execute
 from types import ModuleType
 
 import django
-from django.utils.importlib import import_module
+from importlib import import_module
 
 
 os.environ["DJANGO_SETTINGS_MODULE"] = "settings.default_only_cassandra"

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 0.6.2 (08.12.2015)
+
+* Support Django==1.9
+
 ## Version 0.6.1 (07.12.2015)
 
 * Fix `CassandraConnection.setup` method (thanks @mateuszm!)
