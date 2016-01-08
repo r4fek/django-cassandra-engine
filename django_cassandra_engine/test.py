@@ -5,6 +5,7 @@ from django_cassandra_engine.utils import get_cassandra_connections
 
 
 class TestCase(DjangoTestCase):
+
     def _fixture_teardown(self):
         """
         Allow normal django TestCase fixture teardown, but also flush the test

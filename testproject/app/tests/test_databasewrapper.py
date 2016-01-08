@@ -17,6 +17,7 @@ class DatabaseWrapperTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls):
+        super(DatabaseWrapperTestCase, cls).setUpClass()
         cls.connection = get_cassandra_connection()
         cls.all_models = []
         apps = get_installed_apps()
