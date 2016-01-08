@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 0.6.3 (08.01.2016)
+
+* Major improvement in tests execution time
+
 ## Version 0.6.2 (08.12.2015)
 
 * Support Django==1.9

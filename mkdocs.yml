@@ -1,6 +1,6 @@
 site_name: Django Cassandra Engine
 site_author: Rafał Furmański
-copyright: Copyright 2014-2015, <a href="http://rafal-furmanski.com" title="Rafał Furmański homepage" target="_blank">Rafał Furmański</a>
+copyright: Copyright 2014-2016, <a href="http://rafal-furmanski.com" title="Rafał Furmański homepage" target="_blank">Rafał Furmański</a>
 site_description: Cassandra Database Wrapper for Django
 site_url: http://r4fek.github.io/django-cassandra-engine
 theme: united

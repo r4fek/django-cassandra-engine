@@ -19,4 +19,4 @@ class CassandraDatabaseFeatures(BaseDatabaseFeatures):
     def _supports_transactions(self):
         return False
 
-    supports_transactions = property(_supports_transactions)
+    supports_transactions = _supports_transactions
