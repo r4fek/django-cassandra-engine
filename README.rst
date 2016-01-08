@@ -1,7 +1,12 @@
 
 Django Cassandra Engine
 =======================
-
+.. image:: https://img.shields.io/pypi/v/django-cassandra-engine.svg
+    :target: https://pypi.python.org/pypi/django-cassandra-engine/
+    :alt: Latest Version
+.. image:: https://img.shields.io/pypi/dm/django-cassandra-engine.svg
+    :target: https://pypi.python.org/pypi/django-cassandra-engine/
+    :alt: Downloads
 .. image:: https://api.travis-ci.org/r4fek/django-cassandra-engine.svg?branch=master
     :target: https://travis-ci.org/r4fek/django-cassandra-engine
 .. image:: https://codeclimate.com/github/r4fek/django-cassandra-engine/badges/gpa.svg
