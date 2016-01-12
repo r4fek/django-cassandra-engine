@@ -91,11 +91,11 @@ class CassandraConnection(object):
         Close all db connections
         """
 
+        if connection.cluster is not None:
+            connection.cluster.shutdown()
+
         if connection.session is not None:
             connection.session.shutdown()
-
-        if connection.session.cluster is not None:
-            connection.session.cluster.shutdown()
 
         connection.session = None
         connection.cluster = None
