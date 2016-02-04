@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 0.6.4 (04.02.2016)
+
+* Get rid of race condition in `CassandraConnection.setup`
+
 ## Version 0.6.3 (08.01.2016)
 
 * Major improvement in tests execution time

@@ -110,6 +110,9 @@ class DatabaseWrapper(BaseDatabaseWrapper):
             self.connected = False
         self.connect()
 
+    def close_if_unusable_or_obsolete(self):
+        self.connect()
+
     def close(self):
         pass
 

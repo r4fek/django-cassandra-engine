@@ -8,7 +8,8 @@ https://docs.djangoproject.com/en/1.6/howto/deployment/wsgi/
 """
 
 import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "testproject.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.default_cassandra")
+
 
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()

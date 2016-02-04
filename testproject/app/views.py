@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from django.http import HttpResponse
 
-# Create your views here.
+from .models import ExampleModel
+
+
+def home(_):
+    return HttpResponse(str(list(ExampleModel.objects.all())))

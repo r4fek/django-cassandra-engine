@@ -1,3 +1,5 @@
+from threading import Lock
+
 from cassandra.cluster import Session
 from cassandra.cqlengine import connection
 from cassandra.auth import PlainTextAuthProvider
@@ -50,17 +52,20 @@ class CassandraConnection(object):
                 PlainTextAuthProvider(username=self.user,
                                       password=self.password)
 
+        self.lock = Lock()
         self.setup()
 
     def setup(self):
         from cassandra.cqlengine import connection
-        if connection.cluster is not None:
-            # already connected
-            return
+        with self.lock:
+            if connection.cluster is not None:
+                # already connected
+                return
 
-        for option, value in self.session_options.items():
-            setattr(Session, option, value)
-        connection.setup(self.hosts, self.keyspace, **self.connection_options)
+            for option, value in self.session_options.items():
+                setattr(Session, option, value)
+            connection.setup(self.hosts, self.keyspace,
+                             **self.connection_options)
 
     def commit(self):
         pass
@@ -90,14 +95,14 @@ class CassandraConnection(object):
         """
         Close all db connections
         """
+        with self.lock:
+            if connection.cluster is not None:
+                connection.cluster.shutdown()
 
-        if connection.cluster is not None:
-            connection.cluster.shutdown()
+            if connection.session is not None:
+                connection.session.shutdown()
 
-        if connection.session is not None:
-            connection.session.shutdown()
-
-        connection.session = None
-        connection.cluster = None
-        connection.lazy_connect_args = None
-        connection.default_consistency_level = None
+            connection.session = None
+            connection.cluster = None
+            connection.lazy_connect_args = None
+            connection.default_consistency_level = None
