@@ -53,12 +53,14 @@ class CassandraConnection(object):
                                       password=self.password)
 
         self.lock = Lock()
+        self.session = None
+        self.cluster = None
         self.setup()
 
     def setup(self):
-        from cassandra.cqlengine import connection
         with self.lock:
-            if connection.cluster is not None:
+            self.session = connection.get_session()
+            if not (self.session is None or self.session.is_shutdown):
                 # already connected
                 return
 
@@ -66,6 +68,8 @@ class CassandraConnection(object):
                 setattr(Session, option, value)
             connection.setup(self.hosts, self.keyspace,
                              **self.connection_options)
+            self.session = connection.get_session()
+            self.cluster = connection.get_cluster()
 
     def commit(self):
         pass
@@ -75,14 +79,6 @@ class CassandraConnection(object):
 
     def cursor(self):
         return Cursor(self)
-
-    @property
-    def session(self):
-        return connection.get_session()
-
-    @property
-    def cluster(self):
-        return connection.get_cluster()
 
     def execute(self, qs, *args, **kwargs):
         self.session.set_keyspace(self.keyspace)
@@ -96,13 +92,11 @@ class CassandraConnection(object):
         Close all db connections
         """
         with self.lock:
-            if connection.cluster is not None:
-                connection.cluster.shutdown()
+            if self.cluster is not None:
+                self.cluster.shutdown()
 
-            if connection.session is not None:
-                connection.session.shutdown()
+            if self.session is not None and not self.session.is_shutdown:
+                self.session.shutdown()
 
-            connection.session = None
-            connection.cluster = None
-            connection.lazy_connect_args = None
-            connection.default_consistency_level = None
+            self.session = None
+            self.cluster = None
