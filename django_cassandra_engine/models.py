@@ -1,6 +1,5 @@
-from django_cassandra_engine.utils import get_cassandra_connection
+from django_cassandra_engine.utils import get_cassandra_connections
 
 
-cassandra_connection = get_cassandra_connection()
-if cassandra_connection is not None:
-    cassandra_connection.connect()
+for _, conn in get_cassandra_connections():
+    conn.connect()
