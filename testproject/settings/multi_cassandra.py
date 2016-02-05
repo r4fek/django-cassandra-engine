@@ -21,7 +21,6 @@ DATABASES = {
                 'replication_factor': 1,
             },
             'connection': {
-                'lazy_connect': True,
                 'retry_connect': True,
                 'consistency': ConsistencyLevel.ALL
             },
@@ -41,7 +40,6 @@ DATABASES = {
                 'replication_factor': 1,
             },
             'connection': {
-                'lazy_connect': True,
                 'retry_connect': True,
                 'consistency': ConsistencyLevel.ALL
             },

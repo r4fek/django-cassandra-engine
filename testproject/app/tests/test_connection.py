@@ -1,9 +1,11 @@
+from copy import deepcopy
+
 from cassandra import ConsistencyLevel
 from cassandra.auth import PlainTextAuthProvider
 from cassandra.cluster import Cluster
-from mock import patch
+from mock import patch, Mock
 
-from django.test import TestCase
+from unittest import TestCase
 
 from django_cassandra_engine.connection import CassandraConnection, Cursor
 from django_cassandra_engine.utils import get_cassandra_connection
@@ -13,8 +15,8 @@ class CassandraConnectionTestCase(TestCase):
 
     def setUp(self):
         self.cassandra_connection = get_cassandra_connection()
-        self.connection = CassandraConnection(
-            **self.cassandra_connection.settings_dict)
+        self.connection = self.cassandra_connection.connection
+        self.cassandra_connection.connect()
 
     def test_cursor(self):
 
@@ -46,12 +48,12 @@ class CassandraConnectionTestCase(TestCase):
         self.assertEqual(
             self.connection.connection_options, connection_options)
 
-    @patch("cassandra.cqlengine.connection")
+    @patch("django_cassandra_engine.connection.connection")
     def test_connection_setup_called_first_time_with_proper_options(
             self, connection_mock):
 
         settings = self.cassandra_connection.settings_dict
-        connection_mock.cluster = None
+        connection_mock.get_session.return_value = None
         connection = CassandraConnection(**settings)
 
         connection_mock.setup.assert_called_once_with(
@@ -59,14 +61,28 @@ class CassandraConnectionTestCase(TestCase):
             **settings['OPTIONS']['connection'])
 
     @patch("django_cassandra_engine.connection.connection")
-    def test_connection_setup_called_second_time(
+    def test_connection_setup_called_second_time_session_not_none(
             self, connection_mock):
 
         settings = self.cassandra_connection.settings_dict
-        connection_mock.cluster = Cluster()
+        session_mock = Mock()
+        session_mock.is_shutdown = False
+        connection_mock.get_session.return_value = session_mock
         CassandraConnection(**settings)
 
         self.assertFalse(connection_mock.setup.called)
+
+    @patch("django_cassandra_engine.connection.connection")
+    def test_connection_setup_called_second_time_session_is_shutdown(
+            self, connection_mock):
+
+        settings = self.cassandra_connection.settings_dict
+        session_mock = Mock()
+        session_mock.is_shutdown = True
+        connection_mock.get_session.return_value = session_mock
+        CassandraConnection(**settings)
+
+        self.assertTrue(connection_mock.setup.called)
 
     def test_connection_auth_provider_added_to_connection_options(self):
 
@@ -78,9 +94,10 @@ class CassandraConnectionTestCase(TestCase):
         self.assertIsInstance(connection.connection_options['auth_provider'],
                               PlainTextAuthProvider)
 
-    def test_connection_auth_provider_not_changed(self):
+    @patch('django_cassandra_engine.connection.CassandraConnection.setup')
+    def test_connection_auth_provider_not_changed(self, setup_mock):
 
-        settings = self.cassandra_connection.settings_dict
+        settings = deepcopy(self.cassandra_connection.settings_dict)
         settings['USER'] = 'user'
         settings['PASSWORD'] = 'pass'
         settings['OPTIONS']['connection'] = {}
@@ -89,6 +106,7 @@ class CassandraConnectionTestCase(TestCase):
 
         self.assertEqual(connection.connection_options['auth_provider'],
                          settings['OPTIONS']['connection']['auth_provider'])
+        setup_mock.assert_called_once()
 
     def test_connection_session_options_default_timeout(self):
 
