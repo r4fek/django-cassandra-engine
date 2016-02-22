@@ -22,6 +22,8 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
         from django.core.management import call_command
         from django.conf import settings
 
+        self.connection.connect()
+
         # If using django-nose, its runner has already set the db name
         # to test_*, so restore it here so that all the models for the
         # live keyspace can be found.
@@ -39,7 +41,6 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
             print("Creating test database for alias '%s'%s..." % (
                 self.connection.alias, test_db_repr))
 
-        self.connection.connect()
         options = self.connection.settings_dict.get('OPTIONS', {})
         replication_opts = options.get('replication', {})
         replication_factor = replication_opts.pop('replication_factor', 1)

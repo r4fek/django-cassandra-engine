@@ -48,6 +48,9 @@ def main():
         'settings.secondary_cassandra')
     multi_cassandra = import_module(
         'settings.multi_cassandra')
+    nose_cassandra = import_module(
+        'settings.nose_cassandra'
+    )
 
     if django.VERSION[0:2] >= (1, 7):
         django.setup()
@@ -55,6 +58,7 @@ def main():
     run_tests(default_only_cass)
     run_tests(secondary_cassandra)
     run_tests(multi_cassandra)
+    run_tests(nose_cassandra)
     sys.exit(0)
 
 if __name__ == "__main__":

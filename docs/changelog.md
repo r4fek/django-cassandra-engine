@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 0.6.5 (22.02.2016)
+
+* Fix support for latest `django-nose==1.4.3`
+
 ## Version 0.6.4 (05.02.2016)
 
 * Get rid of race condition in `CassandraConnection.setup`
