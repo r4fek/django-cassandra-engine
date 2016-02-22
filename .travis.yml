@@ -22,7 +22,7 @@ addons:
     - libev-dev
 
 install:
-  - "pip install django==${DJANGO_VERSION}"
+  - "pip install django==${DJANGO_VERSION} django_nose==1.4.3"
   - python setup.py install
 
 script:
