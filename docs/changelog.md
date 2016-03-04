@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 0.6.6 (04.03.2016)
+
+* Update requirements.txt to support `Django<1.10`
+
 ## Version 0.6.5 (22.02.2016)
 
 * Fix support for latest `django-nose==1.4.3`
