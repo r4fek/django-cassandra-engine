@@ -68,6 +68,8 @@ class CassandraConnection(object):
                 setattr(Session, option, value)
             connection.setup(self.hosts, self.keyspace,
                              **self.connection_options)
+            if(self.session_options.has_key('default_timeout')):
+                connection.session.default_timeout = self.session_options['default_timeout']
             self.session = connection.get_session()
             self.cluster = connection.get_cluster()
 
