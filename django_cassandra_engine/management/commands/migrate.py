@@ -15,4 +15,4 @@ class Command(MigrateCommand):
         else:
             self.stdout.write("Migrations are not supported in this engine. "
                               "Calling syncdb instead..")
-            call_command('syncdb', **options)
+            call_command('sync_cassandra', **options)

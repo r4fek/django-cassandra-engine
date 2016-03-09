@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version 0.6.7 (TBD)
+
+* Update `cassandra-driver` to 3.1.0
+* Fix `syncdb` command in `Django>=1.9`
+* Fix not working `django.contrib.admin` app when dce is used
+
 ## Version 0.6.6 (04.03.2016)
 
 * Update requirements.txt to support `Django<1.10`

@@ -1,4 +1,7 @@
-from django.core.management.commands.syncdb import Command as SyncCommand
+try:
+    from django.core.management.commands.syncdb import Command as SyncCommand
+except ImportError:
+    from django_cassandra_engine.management.commands.sync_cassandra import Command as SyncCommand
 
 from django_cassandra_engine.management.commands import sync_cassandra
 from django_cassandra_engine.utils import get_engine_from_db_alias
