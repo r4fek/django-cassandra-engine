@@ -28,4 +28,10 @@ DATABASES = {
 }
 
 # If default and only engine is cassandra
-INSTALLED_APPS = ('django_cassandra_engine', 'django_nose', 'app')
+INSTALLED_APPS = (
+    'django_cassandra_engine',
+    'django_cassandra_engine.sessions',
+    'django_nose',
+    'app',
+    'sessionsapp'
+)

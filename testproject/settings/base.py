@@ -29,18 +29,18 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-INSTALLED_APPS = (
+BASE_APPS = [
+    'django_cassandra_engine',
+    'django_cassandra_engine.sessions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_cassandra_engine',
     'django_nose',
-    'app',
-)
+]
+
+INSTALLED_APPS = BASE_APPS
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -72,3 +72,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+SESSION_BACKEND = 'django_cassandra_engine.sessions.backends.db'

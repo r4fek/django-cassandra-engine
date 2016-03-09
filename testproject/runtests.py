@@ -42,6 +42,8 @@ def run_tests(foo, settings='settings', extra=(), test_builtin=False):
 
 def main():
 
+    default_cass = import_module(
+        'settings.default_cassandra')
     default_only_cass = import_module(
         'settings.default_only_cassandra')
     secondary_cassandra = import_module(
@@ -52,6 +54,7 @@ def main():
     if django.VERSION[0:2] >= (1, 7):
         django.setup()
 
+    run_tests(default_cass)
     run_tests(default_only_cass)
     run_tests(secondary_cassandra)
     run_tests(multi_cassandra)
