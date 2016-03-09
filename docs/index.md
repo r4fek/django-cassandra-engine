@@ -226,11 +226,9 @@ to connect to the host that is listed first.
 ## Working with source code and running tests
 
     git clone https://github.com/r4fek/django-cassandra-engine.git
+    pip install tox
     cd django_cassandra_engine
-    # mkvirtualenv cassengine
-    pip install -r requirements-dev.txt
-    python setup.py install
-    python setup.py test
+    tox
 
 ---
 

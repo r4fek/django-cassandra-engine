@@ -1,4 +1,5 @@
 .idea/
+.tox/
 build/
 dist/
 *.egg-info

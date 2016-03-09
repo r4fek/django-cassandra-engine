@@ -3,10 +3,7 @@ sudo: false
 services: cassandra
 
 env:
-  - DJANGO_VERSION=1.6 CASS_DRIVER_NO_CYTHON=1
-  - DJANGO_VERSION=1.7 CASS_DRIVER_NO_CYTHON=1
-  - DJANGO_VERSION=1.8 CASS_DRIVER_NO_CYTHON=1
-  - DJANGO_VERSION=1.9 CASS_DRIVER_NO_CYTHON=1
+  - CASS_DRIVER_NO_CYTHON=1
 
 python:
   - "2.7"
@@ -22,8 +19,8 @@ addons:
     - libev-dev
 
 install:
-  - "pip install django==${DJANGO_VERSION} django_nose==1.4.3"
-  - python setup.py install
+  - pip install tox
 
 script:
-  - "python setup.py test"
+  - tox
+
