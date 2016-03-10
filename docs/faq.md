@@ -1,4 +1,4 @@
-# Troubleshooting
+# Django Cassandra Engine - Troubleshooting
 
 ## **Q:  `syncdb` only creates a keyspace..**
 
@@ -11,6 +11,7 @@ A: Short answer: YES.
 
 If you use `django_cassandra_engine` as your default backend:
 
+``` python
     # project/tasks.py
     from celery.signals import worker_init
     from django.db import connection
@@ -18,15 +19,18 @@ If you use `django_cassandra_engine` as your default backend:
     @worker_process_init.connect
     def connect_db(**kwargs):
         connection.reconnect()
+```
 
 Or if 'cassandra' is your secondary DB alias:
 
+``` python
     from django.db import connections
     connection = connections['cassandra']
 
     @worker_process_init.connect
     def connect_db(**kwargs):
         connection.reconnect()
+```
 
 ## **Q: is uWSGI supported?**
 

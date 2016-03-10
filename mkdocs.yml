@@ -1,12 +1,40 @@
 site_name: Django Cassandra Engine
+site_description: Apache Cassandra Database Wrapper for Django
+site_url: https://r4fek.github.io/django-cassandra-engine
 site_author: Rafał Furmański
+
 copyright: Copyright 2014-2016, <a href="https://rafal-furmanski.com" title="Rafał Furmański homepage" target="_blank">Rafał Furmański</a>
-site_description: Cassandra Database Wrapper for Django
-site_url: http://r4fek.github.io/django-cassandra-engine
-theme: united
+theme: material
 google_analytics: ['UA-38726443-3', 'auto']
+
+repo_name: GitHub
 repo_url: https://github.com/r4fek/django-cassandra-engine
+
+# Options
+extra:
+  version: 0.6.6
+  logo: images/dj_cassandra.png
+  author:
+    github: r4fek
+    twitter: r4fek
+
+# Extensions
+markdown_extensions:
+  - codehilite(css_class=code)
+  - admonition
+  - toc:
+      permalink: '#'
+
 pages:
-- [index.md, Home]
-- [faq.md, FAQ]
-- [changelog.md, Changelog]
+- Home: 'index.md'
+- Django Cassandra Engine:
+    - 'Installation': 'guide/installation.md'
+    - 'Getting Started': 'guide/getting_started.md'
+    - 'Advanced Usage': 'guide/advanced_usage.md'
+    - 'Management Commands': 'guide/management_commands.md'
+    - 'Sessions': 'guide/sessions.md'
+    - 'Writing Tests': 'guide/tests.md'
+    - 'Contributing': 'guide/contributing.md'
+- FAQ: 'faq.md'
+- Changelog: 'changelog.md'
+- License: 'license.md'

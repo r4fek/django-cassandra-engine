@@ -31,4 +31,4 @@ DATABASES = {
     }
 }
 
-INSTALLED_APPS = BASE_APPS + ['app', 'sessionsapp']
+INSTALLED_APPS = BASE_APPS + ['app']

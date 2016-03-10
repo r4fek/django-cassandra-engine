@@ -1,17 +1,30 @@
 import base64
+import string
 
 import six
 import unittest
 from datetime import timedelta
 
+from mock import Mock
+
 from django.conf import settings
-from django.test import override_settings
-from django.test.utils import patch_logger
+from django.core.cache import InvalidCacheBackendError
+from django.test.utils import override_settings, patch_logger
+try:
+    from django.test.utils import ignore_warnings
+except ImportError:
+    ignore_warnings = Mock()
+
 from django.utils import timezone
 from django.utils.encoding import force_text
 
 from django_cassandra_engine.test import TestCase
-from django_cassandra_engine.sessions.backends.db import SessionStore as DatabaseSession
+from django_cassandra_engine.sessions.backends.db import (
+    SessionStore as DatabaseSession
+)
+from django_cassandra_engine.sessions.backends.cached_db import (
+    SessionStore as CachedDatabaseSession
+)
 
 
 class SessionTestsMixin(object):
@@ -342,3 +355,25 @@ class DatabaseSessionTestCase(SessionTestsMixin, TestCase):
         Test clearsessions command for clearing expired sessions.
         """
         # TODO
+
+
+class CachedDatabaseSessionTestCase(SessionTestsMixin, TestCase):
+
+    backend = CachedDatabaseSession
+    session_engine = 'django_cassandra_engine.sessions.backends.cached_db'
+
+    def test_exists_searches_cache_first(self):
+        self.session.save()
+        with self.assertNumQueries(0):
+            self.assertTrue(self.session.exists(self.session.session_key))
+
+    @ignore_warnings(module="django.core.cache.backends.base")
+    def test_load_overlong_key(self):
+        self.session._session_key = (string.ascii_letters + string.digits) * 20
+        self.assertEqual(self.session.load(), {})
+
+    @override_settings(SESSION_CACHE_ALIAS='sessions')
+    def test_non_default_cache(self):
+        # 21000 - CacheDB backend should respect SESSION_CACHE_ALIAS.
+        with self.assertRaises(InvalidCacheBackendError):
+            self.backend()

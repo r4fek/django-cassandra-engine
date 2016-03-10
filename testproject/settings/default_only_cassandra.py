@@ -32,6 +32,5 @@ INSTALLED_APPS = (
     'django_cassandra_engine',
     'django_cassandra_engine.sessions',
     'django_nose',
-    'app',
-    'sessionsapp'
+    'app'
 )

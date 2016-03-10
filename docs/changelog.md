@@ -1,4 +1,4 @@
-# CHANGELOG
+# Django Cassandra Engine - CHANGELOG
 
 ## Version 0.6.7 (TBD)
 

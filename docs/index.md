@@ -1,238 +1,44 @@
-django-cassandra-engine docs
-============================
+# Django Cassandra Engine - the Cassandra backend for Django
 
-**IMPORTANT: Users of versions <0.6.0, please read this before upgrading!**
+All tools you need to start your journey with Apache Cassandra and Django Framework!
 
-**django-cassandra-engine>=0.6.0 uses python-driver>=0.3.0
-You should read 
-[Upgrade Guide](https://datastax.github.io/python-driver/upgrading.html)
-before installing the new version!**
+Already using <a href="http://datastax.github.io/python-driver/" target="_blank" rel="nofollow">
+    DataStax Python Driver for Apache Cassandra
+</a>?
+That's great! Now you can easily integrate your existing or new Django project with it.
 
 ## Overview
 
-*django-cassandra-engine* is a database wrapper for *Django Framework*.
-It uses latest *Cqlengine*, which is currently the best Cassandra CQL 3 Object
-Mapper for Python.
-
----
+*django-cassandra-engine* is the first Cassandra backend for *Django Framework*.
+It integrates with Django well and allows you to use <a href="https://datastax.github.io/python-driver/object_mapper.html" target="_blank" rel="nofollow">
+    Cqlengine
+</a>
+directly in your project. All your cassandra models are automatically synced
+in the way you're used to. You can focus on writing a good code.
 
 ## Features
 
+* integration with latest `python-driver` from DataStax
 * working `flush`, `syncdb`, `migrate`, `sync_cassandra`, `inspectdb` and 
   `dbshell` commands
 * support for creating/destroying test database
-* accepts all `Cqlengine` and `cassandra.cluster.Cluster` connection options
+* accepts all `cqlengine` and `cassandra.cluster.Cluster` connection options
 * automatic connection/disconnection handling
 * works well along with relational databases
 
----
+## Plans (TODO) ##
+
+* User model stored in Cassandra (auth module)
+* Admin panel for Cassandra models
+* Forms
 
 ## Requirements
 
 * Python>=2.7
 * Cassandra>=2.0 (of course)
 * cassandra-driver>=2.5
-* Django>=1.5
+* Django>=1.6
 
 ---
 
-## Download
-
-[Github](https://github.com/r4fek/django-cassandra-engine)
-
-[PyPi](https://pypi.python.org/pypi/django-cassandra-engine)
-
----
-
-## Installation
-
-You can install it easily from PyPi by single command:
-
-    pip install django-cassandra-engine
-
-or clone source code and run:
-
-    python setup.py install
-
----
-
-## Getting started
-
-1.  Add django-cassandra-engine to `INSTALLED_APPS` in your settings.py file:
-
-        INSTALLED_APPS = ('django_cassandra_engine',) + INSTALLED_APPS
-
-`IMPORTANT`: This app should be **the first app** on `INSTALLED_APPS` list.
-This rule applies only to Django >= 1.7.
-
-2.  Change `DATABASES` setting:
-
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django_cassandra_engine',
-                'NAME': 'db',
-                'TEST_NAME': 'test_db',
-                'HOST': 'db1.example.com,db2.example.com',
-                'OPTIONS': {
-                    'replication': {
-                        'strategy_class': 'SimpleStrategy',
-                        'replication_factor': 1
-                    }
-                }
-            }
-        }
-
-3.  Define some model(s):
-
-        #  myapp/models.py
-        import uuid
-        from cassandra.cqlengine import columns
-        from cassandra.cqlengine.models import Model
-
-        class ExampleModel(Model):
-            example_id      = columns.UUID(primary_key=True, default=uuid.uuid4)
-            example_type    = columns.Integer(index=True)
-            created_at      = columns.DateTime()
-            description     = columns.Text(required=False)
-
-4.  Run `./manage.py sync_cassandra` in order to sync your models with Cassandra.
-
-5.  Thats all!
-
----
-
-## Advanced usage
-
-Sometimes you want to use cassandra database along with your relational database.
-This is also possible! Just define your `DATABASES` like here:
-
-    from cassandra import ConsistencyLevel
-
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        },
-        'cassandra': {
-            'ENGINE': 'django_cassandra_engine',
-            'NAME': 'db',
-            'USER': 'user',
-            'PASSWORD': 'pass',
-            'TEST_NAME': 'test_db',
-            'HOST': '127.0.0.1',
-            'OPTIONS': {
-                'replication': {
-                    'strategy_class': 'SimpleStrategy',
-                    'replication_factor': 1
-                },
-                'connection': {
-                    'consistency': ConsistencyLevel.LOCAL_ONE,
-                    'retry_connect': True
-                    # + All connection options for cassandra.cluster.Cluster()
-                },
-                'session': {
-                    'default_timeout': 10,
-                    'default_fetch_size': 10000
-                    # + All options for cassandra.cluster.Session()
-                }
-            }
-        }
-    }
-
-Then run `./manage.py syncdb` for your regular database and
-`./manage.py sync_cassandra` or `./manage.py syncdb --database cassandra`
-for Cassandra DB.
-
-All `cassandra.cluster.Cluster` and `cassandra.cluster.Session` options are well described
-<a href="http://datastax.github.io/python-driver/api/cassandra/cluster.html" target="_blank" rel="nofollow">
-    here
-</a>.
-
----
-
-## Using internal authorization
-
-If you want to use
-<a href="http://www.datastax.com/documentation/cassandra/2.1/cassandra/security/secure_config_native_authorize_t.html" target="_blank" rel="nofollow">
-    internal authorization
-</a>
-just provide `USER` and `PASSWORD` in cassandra's database alias.
-
-    ...
-    'cassandra' {
-        'ENGINE': 'django_cassandra_engine',
-        'NAME': 'db',
-        'USER': 'user',
-        'PASSWORD': 'pass'
-    }
-
-You can also pass custom
-<a href="http://datastax.github.io/python-driver/api/cassandra/auth.html#cassandra.auth.PlainTextAuthProvider" target="_blank" rel="nofollow">
-    auth_provider
-</a>
-to `connection` dict:
-
-    ...
-    'connection': {
-        'consistency': ConsistencyLevel.LOCAL_ONE,
-        'retry_connect': True,
-        'port': 9042,
-        'auth_provider': PlainTextAuthProvider(username='user', password='password')
-        # + All connection options for cassandra.cluster.Cluster()
-    }
-
----
-
-## Writing tests
-
-You can write tests the way you used to. Just subclass `django.test.TestCase`
-if `django_cassandra_engine` is your primary (default) database backend.
-
-If not, just use `django_cassandra_engine.test.TestCase`.
-
----
-
-## Performing raw database queries
-
-You might need to perform queries that don't map cleanly to models,
-or directly execute `UPDATE`, `INSERT`, or `DELETE` queries.
-
-In these cases, you can always access the database directly,
-routing around the model layer entirely:
-
-    from django.db import connection
-    cursor = connection.cursor()
-    result = cursor.execute("SELECT COUNT(*) FROM users")
-    print result[0]['count']
-
----
-
-## Quick access to dbshell via cqlsh
-
-If you need to perform raw CQL query on your keyspace just run:
-
-    $ python manage.py dbshell                                                                                                                                                                master 
-    Connected to Test Cluster at 127.0.0.1:9042.
-    [cqlsh 5.0.1 | Cassandra 2.1.4 | CQL spec 3.2.0 | Native protocol v3]
-    Use HELP for help.
-    cqlsh:your_keyspace>
-
-It will connect directly to your database using credentials from settings.py.
-If the database has multiple Cassandra hosts in settings.py, dbshell attempts
-to connect to the host that is listed first.
-
----
-
-## Working with source code and running tests
-
-    git clone https://github.com/r4fek/django-cassandra-engine.git
-    pip install tox
-    cd django_cassandra_engine
-    tox
-
----
-
-## Contributing
-
-You are highly encouraged to participate in the development,
-simply use GitHub's fork/pull request system.
+Can't wait? [Install me](guide/installation.md)!

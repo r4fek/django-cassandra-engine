@@ -1,9 +1,15 @@
 from django.contrib.sessions.backends.cached_db import (
     SessionStore as CachedStore
 )
+from django.contrib.sessions.backends import cached_db
 
-from .db import SessionStore as DBStore
+from django_cassandra_engine.sessions.backends.db import (
+    SessionStore as DBStore
+)
 
+# monkey patch for Django versions older than 1.9
+from django_cassandra_engine.sessions.models import Session as CassandraSession
+cached_db.Session = CassandraSession
 
 KEY_PREFIX = "dce.sessions.cached_db"
 
