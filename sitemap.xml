@@ -3,24 +3,78 @@
 
     
     <url>
-     <loc>http://r4fek.github.io/django-cassandra-engine/</loc>
-     <lastmod>2016-03-04</lastmod>
+     <loc>https://r4fek.github.io/django-cassandra-engine/</loc>
+     <lastmod>2016-03-11</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+        
+    <url>
+     <loc>https://r4fek.github.io/django-cassandra-engine/guide/installation/</loc>
+     <lastmod>2016-03-11</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://r4fek.github.io/django-cassandra-engine/guide/getting_started/</loc>
+     <lastmod>2016-03-11</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://r4fek.github.io/django-cassandra-engine/guide/advanced_usage/</loc>
+     <lastmod>2016-03-11</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://r4fek.github.io/django-cassandra-engine/guide/management_commands/</loc>
+     <lastmod>2016-03-11</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://r4fek.github.io/django-cassandra-engine/guide/sessions/</loc>
+     <lastmod>2016-03-11</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://r4fek.github.io/django-cassandra-engine/guide/tests/</loc>
+     <lastmod>2016-03-11</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://r4fek.github.io/django-cassandra-engine/guide/contributing/</loc>
+     <lastmod>2016-03-11</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+    <url>
+     <loc>https://r4fek.github.io/django-cassandra-engine/faq/</loc>
+     <lastmod>2016-03-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>http://r4fek.github.io/django-cassandra-engine/faq/</loc>
-     <lastmod>2016-03-04</lastmod>
+     <loc>https://r4fek.github.io/django-cassandra-engine/changelog/</loc>
+     <lastmod>2016-03-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>http://r4fek.github.io/django-cassandra-engine/changelog/</loc>
-     <lastmod>2016-03-04</lastmod>
+     <loc>https://r4fek.github.io/django-cassandra-engine/license/</loc>
+     <lastmod>2016-03-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
     

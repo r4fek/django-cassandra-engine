@@ -1,276 +1,635 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+<!--[if lt IE 7 ]><html class="no-js ie6"><![endif]-->
+<!--[if IE 7 ]><html class="no-js ie7"><![endif]-->
+<!--[if IE 8 ]><html class="no-js ie8"><![endif]-->
+<!--[if IE 9 ]><html class="no-js ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
+    
+      
+        <title>Changelog - Django Cassandra Engine</title>
+      
+      
+      
+        <link rel="canonical" href="https://r4fek.github.io/django-cassandra-engine/changelog/">
+      
+      
         <meta name="author" content="Rafał Furmański">
-        <link rel="canonical" href="http://r4fek.github.io/django-cassandra-engine/changelog/">
-        <link rel="shortcut icon" href="../img/favicon.ico">
-
-	<title>Changelog - Django Cassandra Engine</title>
-
-        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
-        <link rel="stylesheet" href="../css/highlight.css">
-        <link href="../css/base.css" rel="stylesheet">
-
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-        <![endif]-->
-
-        
-        <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-            ga('create', 'UA-38726443-3', 'auto');
-            ga('send', 'pageview');
-        </script>
-        
-    </head>
-
-    <body>
-
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-
-        <!-- Collapsed navigation -->
-        <div class="navbar-header">
-            <!-- Expander button -->
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-
-            <!-- Main title -->
-            <a class="navbar-brand" href="..">Django Cassandra Engine</a>
-        </div>
-
-        <!-- Expanded navigation -->
-        <div class="navbar-collapse collapse">
-            <!-- Main navigation -->
-            <ul class="nav navbar-nav">
-            
-            
-                <li >
-                    <a href="..">Home</a>
-                </li>
-            
-            
-            
-                <li >
-                    <a href="../faq/">FAQ</a>
-                </li>
-            
-            
-            
-                <li class="active">
-                    <a href="./">Changelog</a>
-                </li>
-            
-            
-            </ul>
-
-            <!-- Search, Navigation and Repo links -->
-            <ul class="nav navbar-nav navbar-right">
-                <li >
-                    <a rel="next" href="../faq/">
-                        <i class="fa fa-arrow-left"></i> Previous
-                    </a>
-                </li>
-                <li class="disabled">
-                    <a rel="prev" >
-                        Next <i class="fa fa-arrow-right"></i>
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="https://github.com/r4fek/django-cassandra-engine">
-                        
-                            <i class="fa fa-github"></i>
-                        
-                        GitHub
-                    </a>
-                </li>
-                
-            </ul>
-        </div>
+      
+    
+    <meta property="og:url" content="https://r4fek.github.io/django-cassandra-engine/changelog/">
+    <meta property="og:title" content="Django Cassandra Engine">
+    <meta property="og:image" content="https://r4fek.github.io/django-cassandra-engine/changelog//../images/dj_cassandra.png">
+    <meta name="apple-mobile-web-app-title" content="Django Cassandra Engine">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+      <link rel="apple-touch-icon" href="../images/dj_cassandra.png">
+    
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../assets/images/favicon-e565ddfa3b.ico">
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon-e565ddfa3b.ico">
+    <style>
+      @font-face {
+      	font-family: 'Icon';
+      	src: url('../assets/fonts/icon.eot?52m981');
+      	src: url('../assets/fonts/icon.eot?#iefix52m981')
+               format('embedded-opentype'),
+      		   url('../assets/fonts/icon.woff?52m981')
+               format('woff'),
+      		   url('../assets/fonts/icon.ttf?52m981')
+               format('truetype'),
+      		   url('../assets/fonts/icon.svg?52m981#icon')
+               format('svg');
+      	font-weight: normal;
+      	font-style: normal;
+      }
+    </style>
+    <link rel="stylesheet" href="../assets/stylesheets/application-b64b728552.css">
+    
+    
+      
+      
+      
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
+      <style>
+        body, input {
+          font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+        }
+        pre, code {
+          font-family: 'Ubuntu Mono', 'Courier New', 'Courier', monospace;
+        }
+      </style>
+    
+    
+    <script src="../assets/javascripts/modernizr-4ab42b99fd.js"></script>
+    
+  </head>
+  
+  
+  
+  <body class=" ">
+    
+      
+      
+    
+    <div class="backdrop">
+      <div class="backdrop-paper"></div>
     </div>
-</div>
+    <input class="toggle" type="checkbox" id="toggle-drawer">
+    <input class="toggle" type="checkbox" id="toggle-search">
+    <label class="toggle-button overlay" for="toggle-drawer"></label>
+    <header class="header">
+      <nav aria-label="Header">
+  <div class="bar default">
+    <div class="button button-menu" role="button" aria-label="Menu">
+      <label class="toggle-button icon icon-menu" for="toggle-drawer">
+        <span></span>
+      </label>
+    </div>
+    <div class="stretch">
+      <div class="title">
+        
+          <span class="path">
+            
+          </span>
+        
+        Changelog
+      </div>
+    </div>
+    
+      
+      <div class="button button-twitter" role="button" aria-label="Twitter">
+        <a href="https://twitter.com/r4fek" title="@r4fek on Twitter" target="_blank" class="toggle-button icon icon-twitter"></a>
+      </div>
+    
+    
+      
+      <div class="button button-github" role="button" aria-label="GitHub">
+        <a href="https://github.com/r4fek" title="@r4fek on GitHub" target="_blank" class="toggle-button icon icon-github"></a>
+      </div>
+    
+    <div class="button button-search" role="button" aria-label="Search">
+      <label class="toggle-button icon icon-search" title="Search" for="toggle-search"></label>
+    </div>
+  </div>
+  <div class="bar search">
+    <div class="button button-close" role="button" aria-label="Close">
+      <label class="toggle-button icon icon-back" for="toggle-search"></label>
+    </div>
+    <div class="stretch">
+      <div class="field">
+        <input class="query" type="text" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck>
+      </div>
+    </div>
+    <div class="button button-reset" role="button" aria-label="Search">
+      <button class="toggle-button icon icon-close" id="reset-search"></button>
+    </div>
+  </div>
+</nav>
+    </header>
+    <main class="main">
+      
+      <div class="drawer">
+        <nav aria-label="Navigation">
+  
+  <a href="https://github.com/r4fek/django-cassandra-engine" class="project">
+    <div class="banner">
+      
+        <div class="logo">
+          <img src="../images/dj_cassandra.png">
+        </div>
+      
+      <div class="name">
+        <strong>Django Cassandra Engine 0.7.0</strong>
+        
+          <br>
+          r4fek/django-cassandra-engine
+        
+      </div>
+    </div>
+  </a>
+  <div class="scrollable">
+    <div class="wrapper">
+      
+        <ul class="repo">
+          <li class="repo-download">
+            
+            <a href="https://github.com/r4fek/django-cassandra-engine/archive/0.7.0.zip" target="_blank" title="Download" data-action="download">
+              <i class="icon icon-download"></i> Download
+            </a>
+          </li>
+          <li class="repo-stars">
+            <a href="https://github.com/r4fek/django-cassandra-engine/stargazers" target="_blank" title="Stargazers" data-action="star">
+              <i class="icon icon-star"></i> Stars
+              <span class="count">&ndash;</span>
+            </a>
+          </li>
+        </ul>
+        <hr>
+      
+      <div class="toc">
+        <ul>
+          
+            
+  <li>
+    <a class="" title="Home" href="..">
+      Home
+    </a>
+    
+  </li>
 
-        <div class="container">
-            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
-    <ul class="nav bs-sidenav">
+          
+            
+  <li>
+    <span class="section">Django Cassandra Engine</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="Installation" href="../guide/installation/">
+      Installation
+    </a>
     
-        <li class="main active"><a href="#changelog">CHANGELOG</a></li>
+  </li>
+
+      
         
-            <li><a href="#version-066-04032016">Version 0.6.6 (04.03.2016)</a></li>
-        
-            <li><a href="#version-065-22022016">Version 0.6.5 (22.02.2016)</a></li>
-        
-            <li><a href="#version-064-05022016">Version 0.6.4 (05.02.2016)</a></li>
-        
-            <li><a href="#version-063-08012016">Version 0.6.3 (08.01.2016)</a></li>
-        
-            <li><a href="#version-062-08122015">Version 0.6.2 (08.12.2015)</a></li>
-        
-            <li><a href="#version-061-07122015">Version 0.6.1 (07.12.2015)</a></li>
-        
-            <li><a href="#version-060-25112015">Version 0.6.0 (25.11.2015)</a></li>
-        
-            <li><a href="#version-052-04102015">Version 0.5.2 (04.10.2015)</a></li>
-        
-            <li><a href="#version-051-14092015">Version 0.5.1 (14.09.2015)</a></li>
-        
-            <li><a href="#version-050-26082015">Version 0.5.0 (26.08.2015)</a></li>
-        
-            <li><a href="#version-040-21072015">Version 0.4.0 (21.07.2015)</a></li>
-        
-            <li><a href="#version-034-01072015">Version 0.3.4 (01.07.2015)</a></li>
-        
-            <li><a href="#version-033-25052015">Version 0.3.3 (25.05.2015)</a></li>
-        
-            <li><a href="#version-032-04052015">Version 0.3.2 (04.05.2015)</a></li>
-        
-            <li><a href="#version-031-10042015">Version 0.3.1 (10.04.2015)</a></li>
-        
-            <li><a href="#version-030-03042015">Version 0.3.0 (03.04.2015)</a></li>
-        
-            <li><a href="#version-023-25032015">Version 0.2.3 (25.03.2015)</a></li>
-        
-            <li><a href="#version-022-19012015">Version 0.2.2 (19.01.2015)</a></li>
-        
-            <li><a href="#version-021-16012015">Version 0.2.1 (16.01.2015)</a></li>
-        
-            <li><a href="#version-018-13122014">Version 0.1.8 (13.12.2014)</a></li>
-        
-            <li><a href="#version-017-24112014">Version 0.1.7 (24.11.2014)</a></li>
-        
-            <li><a href="#version-016-24112014">Version 0.1.6 (24.11.2014)</a></li>
-        
-            <li><a href="#version-015-17112014">Version 0.1.5 (17.11.2014)</a></li>
-        
-            <li><a href="#version-014-01112014">Version 0.1.4 (01.11.2014)</a></li>
-        
-            <li><a href="#version-013-20102014">Version 0.1.3 (20.10.2014)</a></li>
-        
-            <li><a href="#version-012-20102014">Version 0.1.2 (20.10.2014)</a></li>
-        
-            <li><a href="#version-011-17102014">Version 0.1.1 (17.10.2014)</a></li>
-        
-            <li><a href="#version-010-08102014">Version 0.1.0 (08.10.2014)</a></li>
-        
-            <li><a href="#version-007-02102014">Version 0.0.7 (02.10.2014)</a></li>
-        
-            <li><a href="#version-006-03092014">Version 0.0.6 (03.09.2014)</a></li>
-        
-            <li><a href="#version-005-29082014">Version 0.0.5 (29.08.2014)</a></li>
-        
-            <li><a href="#version-004-22082014">Version 0.0.4 (22.08.2014)</a></li>
-        
-            <li><a href="#version-003-21082014">Version 0.0.3 (21.08.2014)</a></li>
-        
-            <li><a href="#version-002-04082014">Version 0.0.2 (04.08.2014)</a></li>
-        
-            <li><a href="#version-001-31072014">Version 0.0.1 (31.07.2014)</a></li>
-        
+  <li>
+    <a class="" title="Getting Started" href="../guide/getting_started/">
+      Getting Started
+    </a>
     
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Advanced Usage" href="../guide/advanced_usage/">
+      Advanced Usage
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Management Commands" href="../guide/management_commands/">
+      Management Commands
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Sessions" href="../guide/sessions/">
+      Sessions
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Writing Tests" href="../guide/tests/">
+      Writing Tests
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Contributing" href="../guide/contributing/">
+      Contributing
+    </a>
+    
+  </li>
+
+      
     </ul>
-</div></div>
-            <div class="col-md-9" role="main">
+  </li>
 
-<h1 id="changelog">CHANGELOG</h1>
-<h2 id="version-066-04032016">Version 0.6.6 (04.03.2016)</h2>
+          
+            
+  <li>
+    <a class="" title="FAQ" href="../faq/">
+      FAQ
+    </a>
+    
+  </li>
+
+          
+            
+  <li>
+    <a class="current" title="Changelog" href="./">
+      Changelog
+    </a>
+    
+      
+        
+      
+      
+        <ul>
+          
+            <li class="anchor">
+              <a title="Version 0.7.0 (11.03.2016)" href="#version-070-11032016">
+                Version 0.7.0 (11.03.2016)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.6.6 (04.03.2016)" href="#version-066-04032016">
+                Version 0.6.6 (04.03.2016)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.6.5 (22.02.2016)" href="#version-065-22022016">
+                Version 0.6.5 (22.02.2016)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.6.4 (05.02.2016)" href="#version-064-05022016">
+                Version 0.6.4 (05.02.2016)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.6.3 (08.01.2016)" href="#version-063-08012016">
+                Version 0.6.3 (08.01.2016)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.6.2 (08.12.2015)" href="#version-062-08122015">
+                Version 0.6.2 (08.12.2015)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.6.1 (07.12.2015)" href="#version-061-07122015">
+                Version 0.6.1 (07.12.2015)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.6.0 (25.11.2015)" href="#version-060-25112015">
+                Version 0.6.0 (25.11.2015)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.5.2 (04.10.2015)" href="#version-052-04102015">
+                Version 0.5.2 (04.10.2015)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.5.1 (14.09.2015)" href="#version-051-14092015">
+                Version 0.5.1 (14.09.2015)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.5.0 (26.08.2015)" href="#version-050-26082015">
+                Version 0.5.0 (26.08.2015)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.4.0 (21.07.2015)" href="#version-040-21072015">
+                Version 0.4.0 (21.07.2015)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.3.4 (01.07.2015)" href="#version-034-01072015">
+                Version 0.3.4 (01.07.2015)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.3.3 (25.05.2015)" href="#version-033-25052015">
+                Version 0.3.3 (25.05.2015)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.3.2 (04.05.2015)" href="#version-032-04052015">
+                Version 0.3.2 (04.05.2015)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.3.1 (10.04.2015)" href="#version-031-10042015">
+                Version 0.3.1 (10.04.2015)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.3.0 (03.04.2015)" href="#version-030-03042015">
+                Version 0.3.0 (03.04.2015)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.2.3 (25.03.2015)" href="#version-023-25032015">
+                Version 0.2.3 (25.03.2015)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.2.2 (19.01.2015)" href="#version-022-19012015">
+                Version 0.2.2 (19.01.2015)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.2.1 (16.01.2015)" href="#version-021-16012015">
+                Version 0.2.1 (16.01.2015)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.1.8 (13.12.2014)" href="#version-018-13122014">
+                Version 0.1.8 (13.12.2014)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.1.7 (24.11.2014)" href="#version-017-24112014">
+                Version 0.1.7 (24.11.2014)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.1.6 (24.11.2014)" href="#version-016-24112014">
+                Version 0.1.6 (24.11.2014)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.1.5 (17.11.2014)" href="#version-015-17112014">
+                Version 0.1.5 (17.11.2014)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.1.4 (01.11.2014)" href="#version-014-01112014">
+                Version 0.1.4 (01.11.2014)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.1.3 (20.10.2014)" href="#version-013-20102014">
+                Version 0.1.3 (20.10.2014)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.1.2 (20.10.2014)" href="#version-012-20102014">
+                Version 0.1.2 (20.10.2014)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.1.1 (17.10.2014)" href="#version-011-17102014">
+                Version 0.1.1 (17.10.2014)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.1.0 (08.10.2014)" href="#version-010-08102014">
+                Version 0.1.0 (08.10.2014)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.0.7 (02.10.2014)" href="#version-007-02102014">
+                Version 0.0.7 (02.10.2014)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.0.6 (03.09.2014)" href="#version-006-03092014">
+                Version 0.0.6 (03.09.2014)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.0.5 (29.08.2014)" href="#version-005-29082014">
+                Version 0.0.5 (29.08.2014)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.0.4 (22.08.2014)" href="#version-004-22082014">
+                Version 0.0.4 (22.08.2014)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.0.3 (21.08.2014)" href="#version-003-21082014">
+                Version 0.0.3 (21.08.2014)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.0.2 (04.08.2014)" href="#version-002-04082014">
+                Version 0.0.2 (04.08.2014)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Version 0.0.1 (31.07.2014)" href="#version-001-31072014">
+                Version 0.0.1 (31.07.2014)
+              </a>
+            </li>
+          
+        </ul>
+      
+    
+  </li>
+
+          
+            
+  <li>
+    <a class="" title="License" href="../license/">
+      License
+    </a>
+    
+  </li>
+
+          
+        </ul>
+        
+          <hr>
+          <span class="section">The author</span>
+          <ul>
+            
+              
+              <li>
+                <a href="https://twitter.com/r4fek" target="_blank" title="@r4fek on Twitter">
+                  @r4fek on Twitter
+                </a>
+              </li>
+            
+            
+              
+              <li>
+                <a href="https://github.com/r4fek" target="_blank" title="@r4fek on GitHub">
+                  @r4fek on GitHub
+                </a>
+              </li>
+            
+          </ul>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+      </div>
+      <article class="article">
+        <div class="wrapper">
+          
+          <h1 id="django-cassandra-engine-changelog">Django Cassandra Engine - CHANGELOG<a class="headerlink" href="#django-cassandra-engine-changelog" title="Permanent link">#</a></h1>
+<h2 id="version-070-11032016">Version 0.7.0 (11.03.2016)<a class="headerlink" href="#version-070-11032016" title="Permanent link">#</a></h2>
+<ul>
+<li>Update <code>cassandra-driver</code> to 3.1.0</li>
+<li>Fix <code>syncdb</code> command in <code>Django&gt;=1.9</code></li>
+<li>Fix not working <code>django.contrib.admin</code> app when <code>dce</code> is used</li>
+<li>Add <code>tox</code> for running tests easily</li>
+<li>Introduce <code>sessions</code> app</li>
+<li>Update docs</li>
+</ul>
+<h2 id="version-066-04032016">Version 0.6.6 (04.03.2016)<a class="headerlink" href="#version-066-04032016" title="Permanent link">#</a></h2>
 <ul>
 <li>Update requirements.txt to support <code>Django&lt;1.10</code></li>
 </ul>
-<h2 id="version-065-22022016">Version 0.6.5 (22.02.2016)</h2>
+<h2 id="version-065-22022016">Version 0.6.5 (22.02.2016)<a class="headerlink" href="#version-065-22022016" title="Permanent link">#</a></h2>
 <ul>
 <li>Fix support for latest <code>django-nose==1.4.3</code></li>
 </ul>
-<h2 id="version-064-05022016">Version 0.6.4 (05.02.2016)</h2>
+<h2 id="version-064-05022016">Version 0.6.4 (05.02.2016)<a class="headerlink" href="#version-064-05022016" title="Permanent link">#</a></h2>
 <ul>
 <li>Get rid of race condition in <code>CassandraConnection.setup</code></li>
 <li>Remove not needed reconnecting on <code>@postfork</code></li>
 </ul>
-<h2 id="version-063-08012016">Version 0.6.3 (08.01.2016)</h2>
+<h2 id="version-063-08012016">Version 0.6.3 (08.01.2016)<a class="headerlink" href="#version-063-08012016" title="Permanent link">#</a></h2>
 <ul>
 <li>Major improvement in tests execution time</li>
 </ul>
-<h2 id="version-062-08122015">Version 0.6.2 (08.12.2015)</h2>
+<h2 id="version-062-08122015">Version 0.6.2 (08.12.2015)<a class="headerlink" href="#version-062-08122015" title="Permanent link">#</a></h2>
 <ul>
 <li>Support Django==1.9</li>
 </ul>
-<h2 id="version-061-07122015">Version 0.6.1 (07.12.2015)</h2>
+<h2 id="version-061-07122015">Version 0.6.1 (07.12.2015)<a class="headerlink" href="#version-061-07122015" title="Permanent link">#</a></h2>
 <ul>
 <li>Fix <code>CassandraConnection.setup</code> method (thanks @mateuszm!)</li>
 </ul>
-<h2 id="version-060-25112015">Version 0.6.0 (25.11.2015)</h2>
+<h2 id="version-060-25112015">Version 0.6.0 (25.11.2015)<a class="headerlink" href="#version-060-25112015" title="Permanent link">#</a></h2>
 <ul>
 <li>Update cassandra-driver to 0.3.0</li>
 </ul>
-<h2 id="version-052-04102015">Version 0.5.2 (04.10.2015)</h2>
+<h2 id="version-052-04102015">Version 0.5.2 (04.10.2015)<a class="headerlink" href="#version-052-04102015" title="Permanent link">#</a></h2>
 <ul>
 <li>Update cassandra-driver to 2.7.2</li>
 </ul>
-<h2 id="version-051-14092015">Version 0.5.1 (14.09.2015)</h2>
+<h2 id="version-051-14092015">Version 0.5.1 (14.09.2015)<a class="headerlink" href="#version-051-14092015" title="Permanent link">#</a></h2>
 <ul>
 <li>fix #44: Fix migrate command when working in a multi db environment (by @paksu)</li>
 </ul>
-<h2 id="version-050-26082015">Version 0.5.0 (26.08.2015)</h2>
+<h2 id="version-050-26082015">Version 0.5.0 (26.08.2015)<a class="headerlink" href="#version-050-26082015" title="Permanent link">#</a></h2>
 <ul>
 <li>Fix <code>CassandraDatabaseFeatures.supports_transactions</code> (thanks @slurms)</li>
 <li>Update cassandra-driver to 2.7.1</li>
 </ul>
-<h2 id="version-040-21072015">Version 0.4.0 (21.07.2015)</h2>
+<h2 id="version-040-21072015">Version 0.4.0 (21.07.2015)<a class="headerlink" href="#version-040-21072015" title="Permanent link">#</a></h2>
 <ul>
 <li>Update cassandra-driver to 2.6.0</li>
 </ul>
-<h2 id="version-034-01072015">Version 0.3.4 (01.07.2015)</h2>
+<h2 id="version-034-01072015">Version 0.3.4 (01.07.2015)<a class="headerlink" href="#version-034-01072015" title="Permanent link">#</a></h2>
 <ul>
 <li>Set Session attributes in class instead of local instance (by @mateuszm)</li>
 </ul>
-<h2 id="version-033-25052015">Version 0.3.3 (25.05.2015)</h2>
+<h2 id="version-033-25052015">Version 0.3.3 (25.05.2015)<a class="headerlink" href="#version-033-25052015" title="Permanent link">#</a></h2>
 <ul>
 <li>RemovedInDjango19Warnings when using Django &gt;= 1.7 (by @paksu)</li>
 <li>set session.default_consistency_level</li>
 </ul>
-<h2 id="version-032-04052015">Version 0.3.2 (04.05.2015)</h2>
+<h2 id="version-032-04052015">Version 0.3.2 (04.05.2015)<a class="headerlink" href="#version-032-04052015" title="Permanent link">#</a></h2>
 <ul>
 <li>upgrade cassandra-driver to 2.5.1</li>
 </ul>
-<h2 id="version-031-10042015">Version 0.3.1 (10.04.2015)</h2>
+<h2 id="version-031-10042015">Version 0.3.1 (10.04.2015)<a class="headerlink" href="#version-031-10042015" title="Permanent link">#</a></h2>
 <ul>
 <li>fix #30: Add support for Django&gt;=1.8</li>
 <li>remove djangotoolbox dependency</li>
 <li>fix #21: Python 3 compatibility</li>
 </ul>
-<h2 id="version-030-03042015">Version 0.3.0 (03.04.2015)</h2>
+<h2 id="version-030-03042015">Version 0.3.0 (03.04.2015)<a class="headerlink" href="#version-030-03042015" title="Permanent link">#</a></h2>
 <ul>
 <li>fix #29: Update to use integrated cqlengine via cassandra-driver&gt;=2.5.0
   (by @mbeacom and @r4fek)</li>
 </ul>
-<h2 id="version-023-25032015">Version 0.2.3 (25.03.2015)</h2>
+<h2 id="version-023-25032015">Version 0.2.3 (25.03.2015)<a class="headerlink" href="#version-023-25032015" title="Permanent link">#</a></h2>
 <ul>
 <li>fix #15: test database not used by code under test (by @lsmithso)</li>
 <li>fix #25: working fixtures in <code>django_cassandra_engine.test.TestCase</code> 
   (by @slurms)</li>
 </ul>
-<h2 id="version-022-19012015">Version 0.2.2 (19.01.2015)</h2>
+<h2 id="version-022-19012015">Version 0.2.2 (19.01.2015)<a class="headerlink" href="#version-022-19012015" title="Permanent link">#</a></h2>
 <ul>
 <li>add support for Django==1.5</li>
 <li>add support for Django&gt;=1.7.2</li>
 <li>add <code>get_engine_from_db_alias</code> util function</li>
 </ul>
-<h2 id="version-021-16012015">Version 0.2.1 (16.01.2015)</h2>
+<h2 id="version-021-16012015">Version 0.2.1 (16.01.2015)<a class="headerlink" href="#version-021-16012015" title="Permanent link">#</a></h2>
 <ul>
 <li>update cqlengine to 0.21.0</li>
 <li>move syncing code to <code>sync_cassandra</code> command</li>
@@ -282,7 +641,7 @@
 <li><code>get_cassandra_connection</code> now accepts alias and name parameters</li>
 <li><code>get_cql_models</code> now returns models for given keyspace</li>
 </ul>
-<h2 id="version-018-13122014">Version 0.1.8 (13.12.2014)</h2>
+<h2 id="version-018-13122014">Version 0.1.8 (13.12.2014)<a class="headerlink" href="#version-018-13122014" title="Permanent link">#</a></h2>
 <ul>
 <li>add working <code>Cursor</code> implementation</li>
 <li>ability to perform raw CQL queries</li>
@@ -290,95 +649,180 @@
 <li>present <code>get_cassandra_connection</code> helper</li>
 <li>add more tests</li>
 </ul>
-<h2 id="version-017-24112014">Version 0.1.7 (24.11.2014)</h2>
+<h2 id="version-017-24112014">Version 0.1.7 (24.11.2014)<a class="headerlink" href="#version-017-24112014" title="Permanent link">#</a></h2>
 <ul>
 <li>revert broken consistency fix (thanks to @danandersonasc)</li>
 </ul>
-<h2 id="version-016-24112014">Version 0.1.6 (24.11.2014)</h2>
+<h2 id="version-016-24112014">Version 0.1.6 (24.11.2014)<a class="headerlink" href="#version-016-24112014" title="Permanent link">#</a></h2>
 <ul>
 <li>fix passing proper consistency option to <code>cqlengine.setup</code></li>
 <li>add more tests</li>
 <li>bump cqlengine to 0.20.0</li>
 </ul>
-<h2 id="version-015-17112014">Version 0.1.5 (17.11.2014)</h2>
+<h2 id="version-015-17112014">Version 0.1.5 (17.11.2014)<a class="headerlink" href="#version-015-17112014" title="Permanent link">#</a></h2>
 <ul>
 <li>ability to set <code>cassandra.cluster.Session</code> options like <code>default_timeout</code>
 (thanks @danpilch)</li>
 </ul>
-<h2 id="version-014-01112014">Version 0.1.4 (01.11.2014)</h2>
+<h2 id="version-014-01112014">Version 0.1.4 (01.11.2014)<a class="headerlink" href="#version-014-01112014" title="Permanent link">#</a></h2>
 <ul>
 <li>add support for authorization (thanks to @drivard)</li>
 </ul>
-<h2 id="version-013-20102014">Version 0.1.3 (20.10.2014)</h2>
+<h2 id="version-013-20102014">Version 0.1.3 (20.10.2014)<a class="headerlink" href="#version-013-20102014" title="Permanent link">#</a></h2>
 <ul>
 <li>more tests for Connection class</li>
 <li>presesnt <code>sync_cassandra</code> management command</li>
 </ul>
-<h2 id="version-012-20102014">Version 0.1.2 (20.10.2014)</h2>
+<h2 id="version-012-20102014">Version 0.1.2 (20.10.2014)<a class="headerlink" href="#version-012-20102014" title="Permanent link">#</a></h2>
 <ul>
 <li>add support for uWSGI</li>
 </ul>
-<h2 id="version-011-17102014">Version 0.1.1 (17.10.2014)</h2>
+<h2 id="version-011-17102014">Version 0.1.1 (17.10.2014)<a class="headerlink" href="#version-011-17102014" title="Permanent link">#</a></h2>
 <ul>
 <li>fix exceptions in Django 1.7</li>
 <li>override migrate and runserver commands</li>
 </ul>
-<h2 id="version-010-08102014">Version 0.1.0 (08.10.2014)</h2>
+<h2 id="version-010-08102014">Version 0.1.0 (08.10.2014)<a class="headerlink" href="#version-010-08102014" title="Permanent link">#</a></h2>
 <ul>
 <li>Change status to <strong>Production/Stable</strong></li>
 <li>Bump cqlengine to v.0.19</li>
 <li>Update docs</li>
 </ul>
-<h2 id="version-007-02102014">Version 0.0.7 (02.10.2014)</h2>
+<h2 id="version-007-02102014">Version 0.0.7 (02.10.2014)<a class="headerlink" href="#version-007-02102014" title="Permanent link">#</a></h2>
 <ul>
 <li>Support for more connection options (thanks to @mwiewiorski)</li>
 </ul>
-<h2 id="version-006-03092014">Version 0.0.6 (03.09.2014)</h2>
+<h2 id="version-006-03092014">Version 0.0.6 (03.09.2014)<a class="headerlink" href="#version-006-03092014" title="Permanent link">#</a></h2>
 <ul>
 <li>Add support for Django 1.7</li>
 </ul>
-<h2 id="version-005-29082014">Version 0.0.5 (29.08.2014)</h2>
+<h2 id="version-005-29082014">Version 0.0.5 (29.08.2014)<a class="headerlink" href="#version-005-29082014" title="Permanent link">#</a></h2>
 <ul>
 <li>Improved models discovery</li>
 <li>Call the standard syncdb if the engine is not django_cassandra_engine
   (thanks to @ratm)</li>
 <li>Travis integration</li>
 </ul>
-<h2 id="version-004-22082014">Version 0.0.4 (22.08.2014)</h2>
+<h2 id="version-004-22082014">Version 0.0.4 (22.08.2014)<a class="headerlink" href="#version-004-22082014" title="Permanent link">#</a></h2>
 <ul>
 <li>Feature: add support for <em>flush</em> management command</li>
 <li>Bugfix: lock dependencies in setup.py</li>
 <li>add more tests</li>
 </ul>
-<h2 id="version-003-21082014">Version 0.0.3 (21.08.2014)</h2>
+<h2 id="version-003-21082014">Version 0.0.3 (21.08.2014)<a class="headerlink" href="#version-003-21082014" title="Permanent link">#</a></h2>
 <ul>
 <li>Bugfix: Fix some issue in <em>flush</em> command (add dummy support for Django 1.6.6)</li>
 </ul>
-<h2 id="version-002-04082014">Version 0.0.2 (04.08.2014)</h2>
+<h2 id="version-002-04082014">Version 0.0.2 (04.08.2014)<a class="headerlink" href="#version-002-04082014" title="Permanent link">#</a></h2>
 <ul>
 <li>Bugfix: Do not reconnect on every request</li>
 </ul>
-<h2 id="version-001-31072014">Version 0.0.1 (31.07.2014)</h2>
+<h2 id="version-001-31072014">Version 0.0.1 (31.07.2014)<a class="headerlink" href="#version-001-31072014" title="Permanent link">#</a></h2>
 <ul>
 <li>Feature: allow to define cassandra backend in settings.py</li>
 <li>Feature: connect to the Cassandra database automatically on app startup</li>
 <li>Feature: <em>syncdb</em> management command</li>
 <li>Feature: support for django test framework</li>
 <li>Feature: Support for Cqlengine Object Mapper</li>
-</ul></div>
+</ul>
+          <aside class="copyright" role="note">
+            
+              Copyright 2014-2016, <a href="https://rafal-furmanski.com" title="Rafał Furmański homepage" target="_blank">Rafał Furmański</a> &ndash;
+            
+            Documentation built with
+            <a href="http://www.mkdocs.org" target="_blank">MkDocs</a>
+            using the
+            <a href="http://squidfunk.github.io/mkdocs-material/" target="_blank">
+              Material
+            </a>
+            theme.
+          </aside>
+          
+            <footer class="footer">
+              
+  <nav class="pagination" aria-label="Footer">
+    <div class="previous">
+      
+        <a href="../faq/" title="FAQ">
+          <span class="direction">
+            Previous
+          </span>
+          <div class="page">
+            <div class="button button-previous" role="button" aria-label="Previous">
+              <i class="icon icon-back"></i>
+            </div>
+            <div class="stretch">
+              <div class="title">
+                FAQ
+              </div>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+    <div class="next">
+      
+        <a href="../license/" title="License">
+          <span class="direction">
+            Next
+          </span>
+          <div class="page">
+            <div class="stretch">
+              <div class="title">
+                License
+              </div>
+            </div>
+            <div class="button button-next" role="button" aria-label="Next">
+              <i class="icon icon-forward"></i>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+  </nav>
+
+            </footer>
+          
+        </div></article>
+      <div class="results" role="status" aria-live="polite">
+        <div class="scrollable">
+          <div class="wrapper">
+            <div class="meta"></div>
+            <div class="list"></div>
+          </div>
         </div>
-
-        <footer class="col-md-12">
-            <hr>
-            
-                <center>Copyright 2014-2016, <a href="https://rafal-furmanski.com" title="Rafał Furmański homepage" target="_blank">Rafał Furmański</a></center>
-            
-            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
-        </footer>
-
-        <script src="../js/jquery-1.10.2.min.js"></script>
-        <script src="../js/bootstrap-3.0.3.min.js"></script>
-        <script src="../js/highlight.pack.js"></script>
-        <script src="../js/base.js"></script>
-    </body>
+      </div>
+    </main>
+    <script>
+      var base_url = '..';
+      var repo_id  = 'r4fek/django-cassandra-engine';
+    </script>
+    <script src="../assets/javascripts/application-a10a824a49.js"></script>
+    
+    
+      <script>
+        (function(i,s,o,g,r,a,m){
+          i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||
+          []).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;
+          m.parentNode.insertBefore(a,m)
+        })(window, document,
+          'script', '//www.google-analytics.com/analytics.js', 'ga');
+        /* General initialization */
+        ga('create', 'UA-38726443-3', 'auto');
+        ga('set', 'anonymizeIp', true);
+        ga('send', 'pageview');
+        /* Track outbound links */
+        var buttons = document.querySelectorAll('a');
+        Array.prototype.map.call(buttons, function(item) {
+          if (item.host != window.location.host) {
+            item.addEventListener('click', function() {
+              var action = item.getAttribute('data-action') || 'follow';
+              ga('send', 'event', 'outbound', action, item.href);
+            });
+          }
+        });
+      </script>
+    
+  </body>
 </html>
