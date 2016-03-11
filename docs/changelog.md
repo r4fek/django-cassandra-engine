@@ -1,11 +1,13 @@
 # Django Cassandra Engine - CHANGELOG
 
-## Version 0.6.7 (TBD)
+## Version 0.7.0 (11.03.2016)
 
 * Update `cassandra-driver` to 3.1.0
 * Fix `syncdb` command in `Django>=1.9`
-* Fix not working `django.contrib.admin` app when dce is used
-* add `tox` for running tests easily
+* Fix not working `django.contrib.admin` app when `dce` is used
+* Add `tox` for running tests easily
+* Introduce `sessions` app
+* Update docs
 
 ## Version 0.6.6 (04.03.2016)
 

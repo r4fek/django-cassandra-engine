@@ -6,7 +6,7 @@
     INSTALLED_APPS = ['django_cassandra_engine'] + INSTALLED_APPS
 ```
 
-!!! warning "Important note"
+!!! note "Important note"
     This app should be **the first app** on **INSTALLED_APPS** list.
     This rule applies only to Django >= 1.7.
 

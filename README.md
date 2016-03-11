@@ -17,7 +17,7 @@ All tools you need to start your journey with Apache Cassandra and Django Framew
 * accepts all `Cqlengine` and `cassandra.cluster.Cluster` connection options
 * automatic connection/disconnection handling
 * works well along with relational databases (as secondary DB)
-* session backend using Cassandra (NEW!)
+* storing sessions in Cassandra (NEW!)
 
 ## Plans (TODO) ##
 

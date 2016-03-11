@@ -1,9 +1,13 @@
 # Django Cassandra Engine - Troubleshooting
 
+In case of any question please don't hesitate to ask!
+
 ## **Q:  `syncdb` only creates a keyspace..**
 
 A: Please make sure that `django_cassandra_engine` is 
 **the first application** in `INSTALLED_APPS` list.
+
+It's also important to include your app to that list too.
 
 ## **Q:  Is it possible to use it with Celery?**
 

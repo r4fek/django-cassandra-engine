@@ -25,6 +25,7 @@ in the way you're used to. You can focus on writing a good code.
 * accepts all `cqlengine` and `cassandra.cluster.Cluster` connection options
 * automatic connection/disconnection handling
 * works well along with relational databases
+* storing [sessions](guide/sessions.md) in Cassandra
 
 ## Plans (TODO) ##
 
