@@ -54,7 +54,7 @@ Recommended installation:
             }
         }
 
-3. Define some model::
+3. Define some model:
 
         # myapp/models.py
         
