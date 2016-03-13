@@ -6,4 +6,5 @@ dist/
 *.pyc
 *.sqlite3
 site/
+README.rst
 
