@@ -1,5 +1,9 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 0.7.2 (15.03.2016)
+
+* Locked `cassandra-driver` version in `setup.py` (fixup)
+
 ## Version 0.7.1 (15.03.2016)
 
 * Update `cassandra-driver` to 3.1.1 due to `PYTHON-522`
