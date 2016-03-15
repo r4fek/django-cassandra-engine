@@ -1,5 +1,10 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 0.7.1 (15.03.2016)
+
+* Update `cassandra-driver` to 3.1.1 due to `PYTHON-522`
+* Fix #55: pypi page looks strange
+
 ## Version 0.7.0 (11.03.2016)
 
 * Update `cassandra-driver` to 3.1.0
