@@ -2,13 +2,15 @@ from setuptools import setup, find_packages
 
 import django_cassandra_engine as meta
 
-DESCRIPTION = 'Django Cassandra Engine - the Cassandra backend for Django'
-LONG_DESCRIPTION = None
 
-try:
-    LONG_DESCRIPTION = open('README.rst').read()
-except IOError:
-    pass
+DESCRIPTION = 'Django Cassandra Engine - the Cassandra backend for Django'
+
+with open('README.rst', 'r') as f:
+    LONG_DESCRIPTION = f.read()
+
+with open('requirements.txt', 'r') as f:
+    DEPENDENCIES = f.read().splitlines()
+
 
 setup(
     name='django-cassandra-engine',
@@ -18,14 +20,11 @@ setup(
     url=meta.__homepage__,
     keywords='django cassandra engine backend driver wrapper database nonrel '
              'cqlengine',
-    download_url='http://github.com/r4fek/django-cassandra-engine/tarball/master',
+    download_url='https://github.com/r4fek/django-cassandra-engine/tarball/master',
     license='2-clause BSD',
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
-    install_requires=[
-        'Django<1.10',
-        'cassandra-driver==3.1.1'
-    ],
+    install_requires=DEPENDENCIES,
     packages=find_packages(
         exclude=['tests', 'tests.*', 'testproject', 'testproject.*']),
     test_suite='testproject.runtests.main',

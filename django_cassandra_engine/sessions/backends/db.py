@@ -64,10 +64,7 @@ class SessionStore(DjangoSessionStore):
                 return
             session_key = self.session_key
 
-        try:
-            self.model.objects.get(session_key=session_key).delete()
-        except self.model.DoesNotExist:
-            pass
+        self.model.objects.filter(session_key=session_key).delete()
 
     @classmethod
     def clear_expired(cls):
