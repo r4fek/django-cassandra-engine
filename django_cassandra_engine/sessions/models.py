@@ -6,7 +6,7 @@ class AbstractBaseSession(Model):
     __abstract__ = True
 
     session_key = columns.Text(primary_key=True, max_length=40)
-    expire_date = columns.DateTime(primary_key=True, clustering_order='DESC')
+    expire_date = columns.DateTime()
 
     session_data = columns.Text()
 
