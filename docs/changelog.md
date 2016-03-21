@@ -1,5 +1,9 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 0.7.3 (21.03.2016)
+
+* Minor fix in sessions backend (remove pk from `Session.expire_date`)
+
 ## Version 0.7.2 (15.03.2016)
 
 * Locked `cassandra-driver` version in `setup.py` (fixup)
