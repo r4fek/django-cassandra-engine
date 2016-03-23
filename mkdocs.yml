@@ -12,7 +12,7 @@ repo_url: https://github.com/r4fek/django-cassandra-engine
 
 # Options
 extra:
-  version: 0.7.3
+  version: 0.7.4
   logo: images/dj_cassandra.png
   author:
     github: r4fek

@@ -52,6 +52,9 @@ class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
         """
         Returns all table names in current keyspace
         """
+        # Avoid migration code being executed
+        if cursor:
+            return []
 
         connection = self.connection.connection
         keyspace_name = connection.keyspace
@@ -60,7 +63,7 @@ class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
         return keyspace.tables
 
     def get_table_list(self, cursor):
-        return self.table_names()
+        return self.table_names(cursor)
 
     def sequence_list(self):
         """
@@ -84,4 +87,3 @@ class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
 
     def get_indexes(self, cursor, table_name):
         return {}
-

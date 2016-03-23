@@ -62,3 +62,10 @@ class FlushCommandTestCase(TestCase):
         db_alias = get_cassandra_db_alias()
         call_command('flush', database=db_alias, noinput=True,
                      interactive=False)
+
+
+class RunserverCommandTestCase(TestCase):
+
+    @patch('django.core.management.commands.runserver.Command.run')
+    def test_runserver_works(self, _):
+        call_command('runserver')

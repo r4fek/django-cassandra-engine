@@ -1,10 +1,8 @@
-try:
+import django
+if django.VERSION[0:2] >= (1, 8):
     from django.db.backends.base.schema import BaseDatabaseSchemaEditor
-except ImportError:
-    try:
-        from django.db.backends import BaseDatabaseSchemaEditor
-    except ImportError:
-        BaseDatabaseSchemaEditor = object
+else:
+    from django.db.backends.schema import BaseDatabaseSchemaEditor
 
 
 class CassandraDatabaseSchemaEditor(BaseDatabaseSchemaEditor):

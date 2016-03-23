@@ -1,5 +1,9 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 0.7.4 (23.03.2016)
+
+* Fix error thrown in `runserver` command
+
 ## Version 0.7.3 (21.03.2016)
 
 * Minor fix in sessions backend (remove pk from `Session.expire_date`)
