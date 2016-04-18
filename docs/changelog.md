@@ -1,5 +1,9 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 0.8.0 (18.04.2016)
+
+* Update `cassandra-driver` to 3.2.1
+
 ## Version 0.7.4 (23.03.2016)
 
 * Fix error thrown in `runserver` command

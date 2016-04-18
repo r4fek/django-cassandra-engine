@@ -6,8 +6,12 @@ import django_cassandra_engine as meta
 DESCRIPTION = 'Django Cassandra Engine - the Cassandra backend for Django'
 
 
-with open('README.rst', 'w+') as f:
-    LONG_DESCRIPTION = f.read()
+try:
+    with open('README.rst', 'r') as f:
+        LONG_DESCRIPTION = f.read()
+except IOError:
+    with open('README.md', 'r') as f:
+        LONG_DESCRIPTION = f.read()
 
 with open('requirements.txt', 'r') as f:
     DEPENDENCIES = f.read().splitlines()
