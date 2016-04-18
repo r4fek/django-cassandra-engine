@@ -7,6 +7,7 @@ All tools you need to start your journey with Apache Cassandra and Django Framew
 [![Downloads](https://img.shields.io/pypi/dm/django-cassandra-engine.svg "Downloads")](https://pypi.python.org/pypi/django-cassandra-engine/)
 [![CI](https://api.travis-ci.org/r4fek/django-cassandra-engine.svg?branch=master "CI")](https://travis-ci.org/r4fek/django-cassandra-engine)
 [![Code climate](https://codeclimate.com/github/r4fek/django-cassandra-engine/badges/gpa.svg "Code climate")](https://codeclimate.com/github/r4fek/django-cassandra-engine)
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/r4fek/django-cassandra-engine/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 ## Features ##
 
