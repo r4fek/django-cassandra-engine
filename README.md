@@ -79,3 +79,7 @@ The documentation can be found online [here](http://r4fek.github.io/django-cassa
 Copyright (c) 2014-2016, [Rafał Furmański](https://rafal-furmanski.com).
 
 All rights reserved. Licensed under BSD 2-Clause License.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/r4fek/django-cassandra-engine/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
