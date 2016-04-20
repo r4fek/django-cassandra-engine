@@ -1,5 +1,9 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 0.8.1 (20.04.2016)
+
+* Update `cassandra-driver` to 3.2.2 (check PYTHON-547).
+
 ## Version 0.8.0 (18.04.2016)
 
 * Update `cassandra-driver` to 3.2.1
