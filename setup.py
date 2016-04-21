@@ -8,10 +8,10 @@ DESCRIPTION = 'Django Cassandra Engine - the Cassandra backend for Django'
 
 
 try:
-    with open('README.rst', 'r') as f:
+    with open('README.rst', 'rb') as f:
         LONG_DESCRIPTION = f.read().decode('utf-8')
 except IOError:
-    with open('README.md', 'r') as f:
+    with open('README.md', 'rb') as f:
         LONG_DESCRIPTION = f.read().decode('utf-8')
 
 with open('requirements.txt', 'r') as f:
