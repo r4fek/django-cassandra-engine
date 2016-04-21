@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 
 import django_cassandra_engine as meta
@@ -8,10 +9,10 @@ DESCRIPTION = 'Django Cassandra Engine - the Cassandra backend for Django'
 
 try:
     with open('README.rst', 'r') as f:
-        LONG_DESCRIPTION = f.read()
+        LONG_DESCRIPTION = f.read().decode('utf-8')
 except IOError:
     with open('README.md', 'r') as f:
-        LONG_DESCRIPTION = f.read()
+        LONG_DESCRIPTION = f.read().decode('utf-8')
 
 with open('requirements.txt', 'r') as f:
     DEPENDENCIES = f.read().splitlines()
