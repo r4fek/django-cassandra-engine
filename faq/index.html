@@ -143,7 +143,7 @@
         </div>
       
       <div class="name">
-        <strong>Django Cassandra Engine 0.8.1</strong>
+        <strong>Django Cassandra Engine 0.9.0</strong>
         
           <br>
           r4fek/django-cassandra-engine
@@ -157,7 +157,7 @@
         <ul class="repo">
           <li class="repo-download">
             
-            <a href="https://github.com/r4fek/django-cassandra-engine/archive/0.8.1.zip" target="_blank" title="Download" data-action="download">
+            <a href="https://github.com/r4fek/django-cassandra-engine/archive/0.9.0.zip" target="_blank" title="Download" data-action="download">
               <i class="icon icon-download"></i> Download
             </a>
           </li>
@@ -370,7 +370,8 @@
 
 <h2 id="q-is-uwsgi-supported"><strong>Q: is uWSGI supported?</strong><a class="headerlink" href="#q-is-uwsgi-supported" title="Permanent link">#</a></h2>
 <p>A: Yes, uWSGI is supported by default. 
-It works best with <code>retry_connect</code> set to <code>True</code>.</p>
+It works best with <code>retry_connect</code> set to <code>True</code> (in django settings).
+It also requires that <code>lazy-apps = True</code> is set in <code>uwsgi.ini</code>.</p>
           <aside class="copyright" role="note">
             
               Copyright 2014-2016, <a href="https://rafal-furmanski.com" title="Rafał Furmański homepage" target="_blank">Rafał Furmański</a> &ndash;
