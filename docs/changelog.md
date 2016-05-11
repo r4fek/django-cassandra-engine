@@ -1,5 +1,10 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 0.9.0 (11.05.2016)
+
+* Update `cassandra-driver` to 3.3.0
+* Update FAQ about uwsgi support
+
 ## Version 0.8.1 (20.04.2016)
 
 * Update `cassandra-driver` to 3.2.2 (check PYTHON-547).
