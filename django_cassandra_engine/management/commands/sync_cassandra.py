@@ -10,6 +10,23 @@ from cassandra.cqlengine.management import (
     sync_table
 )
 from django_cassandra_engine.utils import get_engine_from_db_alias
+from django.apps import apps
+from django.db.models.signals import post_migrate
+
+
+def emit_post_migrate_signal(verbosity, interactive, db):
+    # Emit the post_migrate signal for every application.
+    for app_config in apps.get_app_configs():
+        if app_config.models_module is None:
+            continue
+        if verbosity >= 2:
+            print("Running post-migrate handlers for application %s" % app_config.label)
+        post_migrate.send(
+            sender=app_config,
+            app_config=app_config,
+            verbosity=verbosity,
+            interactive=interactive,
+            using=db)
 
 
 class Command(NoArgsCommand):
@@ -93,3 +110,7 @@ class Command(NoArgsCommand):
         if cassandra_alias is None:
             raise CommandError(
                 'Please add django_cassandra_engine backend to DATABASES!')
+
+        # Send the post_migrate signal, so individual apps can do whatever they need
+        # to do at this point.
+        emit_post_migrate_signal(1, False, cassandra_alias)
