@@ -31,6 +31,8 @@ DATABASES = {
 INSTALLED_APPS = (
     'django_cassandra_engine',
     'django_cassandra_engine.sessions',
+    'django.contrib.contenttypes',
     'django_nose',
-    'app'
+    'app',
+    'model_meta',
 )

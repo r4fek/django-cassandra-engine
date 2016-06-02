@@ -4,14 +4,13 @@ from django.core.management.base import NoArgsCommand, CommandError
 from django.db import connections
 from django.conf import settings
 
-from cassandra.cqlengine.management import (
-    create_keyspace_simple,
-    create_keyspace_network_topology,
-    sync_table
-)
-from django_cassandra_engine.utils import get_engine_from_db_alias
+from cassandra.cqlengine import management
+from cassandra.cqlengine.models import Model
 from django.apps import apps
 from django.db.models.signals import post_migrate
+
+from django_cassandra_engine.django_compat_models import DjangoModel
+from django_cassandra_engine.utils import get_engine_from_db_alias
 
 
 def emit_post_migrate_signal(verbosity, interactive, db):
@@ -82,15 +81,17 @@ class Command(NoArgsCommand):
         self.stdout.write('Creating keyspace {}..'.format(keyspace))
 
         if strategy_class == 'SimpleStrategy':
-            create_keyspace_simple(keyspace, replication_factor)
+            management.create_keyspace_simple(keyspace, replication_factor)
         else:
-            create_keyspace_network_topology(keyspace, replication_opts)
+            management.create_keyspace_network_topology(keyspace, replication_opts)
 
         for app_name, app_models \
                 in connection.introspection.cql_models.items():
             for model in app_models:
                 self.stdout.write('Syncing %s.%s' % (app_name, model.__name__))
-                sync_table(model)
+                # patch this object used for type check in management.sync_table()
+                management.Model = (Model, DjangoModel)
+                management.sync_table(model)
 
     def handle_noargs(self, **options):
 

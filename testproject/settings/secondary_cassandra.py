@@ -31,4 +31,4 @@ DATABASES = {
     }
 }
 
-INSTALLED_APPS = BASE_APPS + ['app']
+INSTALLED_APPS = BASE_APPS + ['app', 'model_meta']
