@@ -7,4 +7,4 @@ dist/
 *.sqlite3
 site/
 README.rst
-
+.cache/

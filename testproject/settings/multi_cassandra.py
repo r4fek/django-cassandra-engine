@@ -50,4 +50,4 @@ DATABASES = {
     },
 }
 
-INSTALLED_APPS = BASE_APPS + ['multiapp']
+INSTALLED_APPS = BASE_APPS + ['multiapp', 'common', 'model_meta']

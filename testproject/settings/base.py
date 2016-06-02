@@ -73,3 +73,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 SESSION_BACKEND = 'django_cassandra_engine.sessions.backends.db'
+CASSANDRA_FALLBACK_ORDER_BY_PYTHON = True

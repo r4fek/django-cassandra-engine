@@ -13,6 +13,8 @@ from importlib import import_module
 os.environ["DJANGO_SETTINGS_MODULE"] = "settings.default_only_cassandra"
 
 test_dir = os.path.dirname(__file__)
+test_dir_abspath = os.path.split(os.path.abspath(__file__))[0]
+
 sys.path.insert(0, test_dir)
 
 
@@ -28,6 +30,12 @@ def run_tests(foo, settings='settings', extra=(), test_builtin=False):
             name for name in apps if not name.startswith('django.contrib.')]
 
     os.chdir(test_dir)
+    # pre-1.6 test runners don't understand full module names
+    if django.VERSION < (1, 6):
+        apps = [app.replace('django.contrib.', '') for app in apps]
+        apps = [name for name in apps if not name.startswith('testproject.')]
+
+    os.chdir(test_dir_abspath)
     print('\n============================\n'
           'Running tests with settings: {}\n'
           '============================\n'.format(settings))
@@ -55,5 +63,6 @@ def main():
     run_tests(multi_cassandra)
     sys.exit(0)
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     main()

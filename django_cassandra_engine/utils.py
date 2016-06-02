@@ -72,12 +72,19 @@ def get_cql_models(app, keyspace=None):
     synced to keyspace.
     """
     from cassandra.cqlengine.models import DEFAULT_KEYSPACE
+    from .models import DjangoCassandraModel
     keyspace = keyspace or DEFAULT_KEYSPACE
 
     models = []
     for name, obj in inspect.getmembers(app):
-        if inspect.isclass(obj) and issubclass(obj, cqlengine.models.Model) \
-                and not obj.__abstract__:
+        cql_model_types = (
+            cqlengine.models.Model,
+            DjangoCassandraModel
+        )
+        if (
+            inspect.isclass(obj) and issubclass(obj, cql_model_types) and
+            not obj.__abstract__
+        ):
             if (obj.__keyspace__ is None and keyspace == DEFAULT_KEYSPACE) \
                     or obj.__keyspace__ == keyspace:
                 models.append(obj)
