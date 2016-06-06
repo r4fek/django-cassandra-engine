@@ -58,10 +58,6 @@ class DjangoCassandraOptions(Options):
         self.pk = self.get_pk
         self.managed = False
 
-    def _get_pk_columns(self):
-        return [col for col in self._defined_columns.values()
-                if col.is_primary_key]
-
     def can_migrate(self, connection):
         return False
 
@@ -89,7 +85,7 @@ class DjangoCassandraOptions(Options):
     @property
     def get_pk(self):
         try:
-            return self._get_pk_columns()[0]
+            return list(self.model_inst._primary_keys.values())[0]
         except IndexError:
             return None
 

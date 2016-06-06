@@ -17,11 +17,6 @@ class TestModelManager(test.SimpleTestCase):
     def test_manager_has_a_name(self):
         self.assertEqual(self.model._default_manager.name, 'objects')
 
-    def test_get_primary_key_columns(self):
-        columns = self.model._meta._get_pk_columns()
-        expected_column_names = ['id']
-        self.assertEqual(expected_column_names, [c.name for c in columns])
-
     def test_can_migrate(self):
         self.assertFalse(self.model._meta.can_migrate(connection=None))
 
