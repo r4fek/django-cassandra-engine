@@ -380,6 +380,16 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
         clone._order.extend(conditions)
         return clone
 
+    def values_list(self, *fields, **kwargs):
+        if 'pk' in fields:
+            pk_columns = (c for c in self.model._columns.values()
+                          if c.is_primary_key is True)
+            pk_field_names = tuple(field.db_field_name for field in pk_columns)
+            fields = [f for f in fields if f != 'pk']
+            fields.extend(pk_field_names)
+
+        return super(DjangoCassandraQuerySet, self).values_list(*fields, **kwargs)
+
 
 class DjangoModel(six.with_metaclass(DjangoModelMetaClass, BaseModel)):
     __queryset__ = DjangoCassandraQuerySet
