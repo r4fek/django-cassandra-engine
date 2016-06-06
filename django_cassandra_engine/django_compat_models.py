@@ -45,10 +45,8 @@ class DjangoCassandraOptions(Options):
             col.attname = name
             col.field = col
             col.model = self.model_inst
-            col.proxy_for_model = lambda x: self.model_inst
-            col.concrete_model = lambda x: self.model_inst
             col.name = col.db_field_name
-            col.field.related_query_name = lambda x: None
+            col.field.related_query_name = lambda: None
 
         super(DjangoCassandraOptions, self).__init__(*args, **kwargs)
         for column in self._defined_columns.values():
@@ -57,6 +55,7 @@ class DjangoCassandraOptions(Options):
         self.concrete_model = self.model_inst
         self.pk = self.get_pk
         self.managed = False
+        self.swappable = False
 
     def can_migrate(self, connection):
         return False
@@ -296,11 +295,12 @@ class DjangoModelMetaClass(ModelMetaClass, ModelBase):
         # end code taken from python-driver 3.3.0 ModelMetaClass.__new__
         # ################################################################
 
-        klass = cls._add_django_meta_and_register_model(
-            klass=klass,
-            attrs=attrs,
-            name=name
-        )
+        if not is_abstract:
+            klass = cls._add_django_meta_and_register_model(
+                klass=klass,
+                attrs=attrs,
+                name=name
+            )
         return klass
 
     def add_to_class(cls, name, value):

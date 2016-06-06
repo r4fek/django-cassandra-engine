@@ -34,3 +34,20 @@ class TestModelManager(test.SimpleTestCase):
         fields = self.model._meta._get_fields()
         self.assertEqual(len(fields), len(expected_field_names))
         self.assertEqual([f.name for f in fields], expected_field_names)
+
+    def test_fields_have_attributes_for_django(self):
+        fields = self.model._meta._get_fields()
+
+        for field in fields:
+            self.assertEqual(field.name, field.db_field_name)
+            self.assertEqual(field.field, field)
+            self.assertEqual(field.model, self.model)
+            self.assertEqual(field.related_query_name(), None)
+            self.assertEqual(field.auto_created, False)
+            self.assertEqual(field.is_relation, False)
+            self.assertEqual(field.remote_field, None)
+
+    def test_meta_attrs(self):
+        self.assertEqual(self.model._meta.model_name, 'cassandrathing')
+        self.assertEqual(self.model._meta.swappable, False)
+        self.assertEqual(self.model._meta.managed, False)
