@@ -330,6 +330,7 @@ class DjangoModelMetaClass(ModelMetaClass, ModelBase):
             else:
                 app_label = app_config.label
         new_class.add_to_class('_meta', DjangoCassandraOptions(meta, app_label, cls=new_class))
+        new_class.add_to_class('_default_manager', new_class.objects)
 
         # new_class._prepare()
         new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
@@ -343,6 +344,8 @@ class DjangoModelMetaClass(ModelMetaClass, ModelBase):
 
 
 class DjangoCassandraQuerySet(query.ModelQuerySet):
+    name = 'objects'
+    use_in_migrations = False
 
     def order_by(self, *colnames):
         if len(colnames) == 0:
