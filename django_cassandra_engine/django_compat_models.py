@@ -42,9 +42,9 @@ class DjangoCassandraOptions(Options):
             col.name = col.db_field_name
             col.field.related_query_name = lambda x: None
 
+        super(DjangoCassandraOptions, self).__init__(*args, **kwargs)
         for column in self._defined_columns.values():
             self.add_field(column)
-        super(DjangoCassandraOptions, self).__init__(*args, **kwargs)
         self.proxy_for_model = self.model_inst
         self.concrete_model = self.model_inst
         self.pk = self.get_pk

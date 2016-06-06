@@ -170,10 +170,6 @@ TEST_RESULTS = {
     },
     'local_fields': {
         CassandraThing: [],
-        # CassandraThing: [
-        #     'id',
-        #     'data_abstract'
-        # ],
         Person: [
             'baseperson_ptr_id',
             'data_inherited',
@@ -213,10 +209,6 @@ TEST_RESULTS = {
         ],
     },
     'local_concrete_fields': {
-        # CassandraThing: [
-        #     'id',
-        #     'data_abstract'
-        # ],
         CassandraThing: [],
         Person: [
             'baseperson_ptr_id',
@@ -804,7 +796,10 @@ TEST_RESULTS = {
         ],
     },
     'virtual_fields': {
-        CassandraThing: [],
+        CassandraThing: [
+            'id',
+            'data_abstract'
+        ],
         AbstractPerson: [
             'generic_relation_abstract',
             'content_object_abstract',
