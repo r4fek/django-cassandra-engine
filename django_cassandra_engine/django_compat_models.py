@@ -19,7 +19,7 @@ from cassandra.util import OrderedDict
 
 PROXY_PARENTS = object()
 EMPTY_RELATION_TREE = tuple()
-CASSANDRA_DRIVER_COMPAT_VERSIONS = ('3.3.0')
+CASSANDRA_DRIVER_COMPAT_VERSIONS = ('3.3.0', '3.4.0')
 
 log = logging.getLogger(__name__)
 
