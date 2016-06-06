@@ -58,6 +58,16 @@ class DjangoCassandraOptions(Options):
         self.pk = self.get_pk
         self.managed = False
 
+    def _get_pk_columns(self):
+        return [col for col in self._defined_columns.values()
+                if col.is_primary_key]
+
+    def can_migrate(self, connection):
+        return False
+
+    def get_all_related_objects_with_model(self, *args, **kwargs):
+        return []
+
     def add_field(self, field):
         self.virtual_fields.append(field)
         self.setup_pk(field)
@@ -73,21 +83,15 @@ class DjangoCassandraOptions(Options):
         else:
             self._expire_cache(reverse=False)
 
-    @property
-    def get_pk(self):
-        try:
-            return [col for col in self._defined_columns.values() if col.is_primary_key][0]
-        except IndexError:
-            return None
-
-    def get_all_related_objects_with_model(self, *args, **kwargs):
-        return []
-
     def _get_fields(self, *args, **kwargs):
         return self._defined_columns.values()
 
-    def can_migrate(self, connection):
-        return False
+    @property
+    def get_pk(self):
+        try:
+            return self._get_pk_columns()[0]
+        except IndexError:
+            return None
 
 
 class DjangoModelMetaClass(ModelMetaClass, ModelBase):
