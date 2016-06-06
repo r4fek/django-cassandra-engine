@@ -8,7 +8,7 @@ from django.apps import apps
 from django.db.models.base import ModelBase
 from django.db.models.options import Options
 
-
+import cassandra
 from cassandra.cqlengine import query
 from cassandra.cqlengine import columns
 from cassandra.cqlengine.models import (
@@ -19,8 +19,16 @@ from cassandra.util import OrderedDict
 
 PROXY_PARENTS = object()
 EMPTY_RELATION_TREE = tuple()
+CASSANDRA_DRIVER_COMPAT_VERSIONS = ('3.3.0')
 
 log = logging.getLogger(__name__)
+
+if cassandra.__version__ not in CASSANDRA_DRIVER_COMPAT_VERSIONS:
+    raise RuntimeError(
+        'Django Cassandra Models require cassandra-driver versions {} '
+        'Version "{}" found'.format(CASSANDRA_DRIVER_COMPAT_VERSIONS,
+                                    cassandra.__version__)
+    )
 
 
 class DjangoCassandraOptions(Options):
