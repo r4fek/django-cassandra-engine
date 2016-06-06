@@ -101,7 +101,9 @@ class DjangoModelMetaClass(ModelMetaClass, ModelBase):
         if not parents:
             return super(ModelBase, cls).__new__(cls, name, bases, attrs)
 
+        # ################################################################
         # start code taken from python-driver 3.3.0 ModelMetaClass.__new__
+        # ################################################################
 
         # move column definitions into columns dict
         # and set default column names
@@ -294,7 +296,9 @@ class DjangoModelMetaClass(ModelMetaClass, ModelBase):
         for user_type in set(udts):
             user_type.register_for_keyspace(klass._get_keyspace())
 
+        # ################################################################
         # end code taken from python-driver 3.3.0 ModelMetaClass.__new__
+        # ################################################################
 
         klass = cls._add_django_meta_and_register_model(
             klass=klass,
@@ -344,7 +348,6 @@ class DjangoModelMetaClass(ModelMetaClass, ModelBase):
         new_class.add_to_class('_meta', DjangoCassandraOptions(meta, app_label, cls=new_class))
         new_class.add_to_class('_default_manager', new_class.objects)
 
-        # new_class._prepare()
         new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
         return new_class
 
