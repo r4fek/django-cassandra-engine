@@ -3,7 +3,7 @@ from cassandra import cqlengine
 import django
 from django.conf import settings
 
-from .django_compat_models import DjangoCassandraModel
+from .models import DjangoCassandraModel
 
 
 class CursorWrapper(object):

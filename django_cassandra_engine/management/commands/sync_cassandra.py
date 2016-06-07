@@ -9,7 +9,7 @@ from cassandra.cqlengine.models import Model
 from django.apps import apps
 from django.db.models.signals import post_migrate
 
-from django_cassandra_engine.django_compat_models import DjangoCassandraModel
+from django_cassandra_engine.models import DjangoCassandraModel
 from django_cassandra_engine.utils import get_engine_from_db_alias
 
 

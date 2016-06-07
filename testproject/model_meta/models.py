@@ -5,7 +5,7 @@ from django.contrib.contenttypes.fields import (
 )
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django_cassandra_engine.django_compat_models import DjangoCassandraModel
+from django_cassandra_engine.models import DjangoCassandraModel
 from cassandra.cqlengine import columns as cassandra_columns
 
 
