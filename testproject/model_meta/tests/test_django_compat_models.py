@@ -67,7 +67,6 @@ class TestDjangoCompatModel(test.SimpleTestCase):
             list(all_things.values_list('id', flat=True)), [some_uuid]
         )
 
-
     def test_values_list_with_pk_returns_the_primary_key_field_uuid(self):
         some_uuid = uuid.uuid4()
         CassandraThing.objects.create(
@@ -102,3 +101,12 @@ class TestDjangoCompatModel(test.SimpleTestCase):
     def test_virtual_fields_are_set(self):
         virtual_fields = [f.name for f in self.model._meta.virtual_fields]
         self.assertEqual(virtual_fields, ['id', 'data_abstract'])
+
+    def test_get_by_pk_queries_using_the_first_pk_in_defined_columns(self):
+        some_uuid = uuid.uuid4()
+        CassandraThingMultiplePK.objects.create(
+            id=some_uuid,
+            another_id=uuid.uuid4(),
+            data_abstract='Some data',
+        )
+        self.assertIsNotNone(CassandraThingMultiplePK.objects.get(pk=some_uuid))
