@@ -2,7 +2,7 @@ import uuid
 
 from django import test
 
-from model_meta.models import CassandraThing
+from model_meta.models import CassandraThing, CassandraThingMultiplePK
 
 
 class TestDjangoCompatModel(test.SimpleTestCase):
@@ -67,6 +67,7 @@ class TestDjangoCompatModel(test.SimpleTestCase):
             list(all_things.values_list('id', flat=True)), [some_uuid]
         )
 
+
     def test_values_list_with_pk_returns_the_primary_key_field_uuid(self):
         some_uuid = uuid.uuid4()
         CassandraThing.objects.create(
@@ -78,6 +79,24 @@ class TestDjangoCompatModel(test.SimpleTestCase):
 
         self.assertEqual(
             list(all_things.values_list('pk', flat=True)), [some_uuid]
+        )
+
+    def test_values_list_with_pk_can_return_multiple_pks(self):
+        some_uuid = uuid.uuid4()
+        another_uuid = uuid.uuid4()
+        CassandraThingMultiplePK.objects.create(
+            id=some_uuid,
+            another_id=another_uuid,
+            data_abstract='Some data',
+        )
+
+        all_things = CassandraThingMultiplePK.objects.filter(
+            id=some_uuid,
+            another_id=another_uuid,
+        )
+
+        self.assertEqual(
+            list(all_things.values_list('pk')), [[some_uuid, another_uuid]]
         )
 
     def test_virtual_fields_are_set(self):

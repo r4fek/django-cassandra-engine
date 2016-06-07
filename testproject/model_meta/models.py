@@ -22,6 +22,12 @@ class CassandraThing(DjangoModel):
     data_abstract = cassandra_columns.Text(max_length=10)
 
 
+class CassandraThingMultiplePK(DjangoModel):
+    id = cassandra_columns.UUID(primary_key=True, default=uuid.uuid4)
+    another_id = cassandra_columns.UUID(primary_key=True, default=uuid.uuid4)
+    data_abstract = cassandra_columns.Text(max_length=10)
+
+
 class AbstractPerson(models.Model):
     # DATA fields
     data_abstract = models.CharField(max_length=10)
