@@ -5,7 +5,6 @@ import warnings
 
 import six
 from django.apps import apps
-from django.db.models.manager import ensure_default_manager
 from django.db.models.base import ModelBase
 from django.db.models.options import Options
 
