@@ -13,6 +13,9 @@ class TestDjangoCompatModel(test.SimpleTestCase):
         self.assertTrue(
             isinstance(self.model._default_manager, type(self.model.objects))
         )
+        self.assertTrue(
+            isinstance(self.model._base_manager, type(self.model.objects))
+        )
         self.assertTrue(hasattr(self.model._default_manager, 'all'))
         self.assertTrue(hasattr(self.model._default_manager, 'filter'))
 

@@ -5,6 +5,7 @@ import warnings
 
 import six
 from django.apps import apps
+from django.db.models.manager import ensure_default_manager
 from django.db.models.base import ModelBase
 from django.db.models.options import Options
 
@@ -351,6 +352,7 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
         new_class.add_to_class(
             '_meta', DjangoCassandraOptions(meta, app_label, cls=new_class))
         new_class.add_to_class('_default_manager', new_class.objects)
+        new_class.add_to_class('_base_manager', new_class.objects)
         new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
         return new_class
 
