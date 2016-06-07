@@ -3,6 +3,7 @@ from setuptools import setup, find_packages
 
 import django_cassandra_engine as meta
 
+
 DESCRIPTION = 'Django Cassandra Engine - the Cassandra backend for Django'
 
 

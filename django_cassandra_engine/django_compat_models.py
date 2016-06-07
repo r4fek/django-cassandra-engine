@@ -34,65 +34,70 @@ if cassandra.__version__ not in CASSANDRA_DRIVER_COMPAT_VERSIONS:
 class DjangoCassandraOptions(Options):
 
     def __init__(self, *args, **kwargs):
-        self.model_inst = kwargs.pop('cls', None)
-        super(DjangoCassandraOptions, self).__init__(*args, **kwargs)
+        self.model_inst = kwargs.pop('cls')
         self._defined_columns = self.model_inst.__dict__['_defined_columns']
 
-        for name, col in self._defined_columns.items():
-            col.auto_created = False
-            col.is_relation = False
-            col.remote_field = None
-            col.attname = name
-            col.field = col
-            col.model = self.model_inst
-            col.name = col.db_field_name
-            col.field.related_query_name = lambda: None
+        # Add Django attibutes to Columns
+        self._give_column_django_field_attributes()
 
+        # Call Django to create _meta object
         super(DjangoCassandraOptions, self).__init__(*args, **kwargs)
+
+        # Add Columns as Django Fields
         for column in self._defined_columns.values():
             self.add_field(column)
-        self.proxy_for_model = self.model_inst
-        self.concrete_model = self.model_inst
-        self.pk = self.get_pk
+
+        # Set further _meta attributes explicitly
+        self.proxy_for_model = self.concrete_model = self.model_inst
+        self.pk = self._get_first_primary_key_column
         self.managed = False
         self.swappable = False
 
-    def can_migrate(self, connection):
+    def can_migrate(self, *args, **kwargs):
         return False
 
     def get_all_related_objects_with_model(self, *args, **kwargs):
         return []
 
     def add_field(self, field):
+        """Add each field as a virtual_field."""
         self.virtual_fields.append(field)
         self.setup_pk(field)
-
-        self._expire_cache()
-
-        if field.is_relation and hasattr(field.remote_field, 'model') and field.remote_field.model:
-            try:
-                field.remote_field.model._meta._expire_cache(forward=False)
-            except AttributeError:
-                pass
-            self._expire_cache()
-        else:
-            self._expire_cache(reverse=False)
+        self._expire_cache(reverse=True)
+        self._expire_cache(reverse=False)
 
     def _get_fields(self, *args, **kwargs):
         return self._defined_columns.values()
 
     @property
-    def get_pk(self):
+    def _get_first_primary_key_column(self):
         try:
             return list(self.model_inst._primary_keys.values())[0]
         except IndexError:
             return None
 
+    def _give_column_django_field_attributes(self):
+        """
+        Add Django Field attributes to each cqlengine.Column instance.
 
-class DjangoModelMetaClass(ModelMetaClass, ModelBase):
+        So that the Django Options class may interact with it as if it were
+        a Django Field.
+        """
+        for name, cql_column in self._defined_columns.items():
+            cql_column.auto_created = False
+            cql_column.is_relation = False
+            cql_column.remote_field = None
+            cql_column.attname = name
+            cql_column.field = cql_column
+            cql_column.model = self.model_inst
+            cql_column.name = cql_column.db_field_name
+            cql_column.field.related_query_name = lambda: None
+
+
+class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
 
     def __new__(cls, name, bases, attrs):
-        parents = [b for b in bases if isinstance(b, DjangoModelMetaClass)]
+        parents = [b for b in bases if isinstance(b, DjangoCassandraModelMetaClass)]
         if not parents:
             return super(ModelBase, cls).__new__(cls, name, bases, attrs)
 
@@ -295,6 +300,7 @@ class DjangoModelMetaClass(ModelMetaClass, ModelBase):
         # end code taken from python-driver 3.3.0 ModelMetaClass.__new__
         # ################################################################
 
+        klass._deferred = False
         if not is_abstract:
             klass = cls._add_django_meta_and_register_model(
                 klass=klass,
@@ -341,15 +347,15 @@ class DjangoModelMetaClass(ModelMetaClass, ModelBase):
 
             else:
                 app_label = app_config.label
-        new_class.add_to_class('_meta', DjangoCassandraOptions(meta, app_label, cls=new_class))
-        new_class.add_to_class('_default_manager', new_class.objects)
 
+        new_class.add_to_class(
+            '_meta', DjangoCassandraOptions(meta, app_label, cls=new_class))
+        new_class.add_to_class('_default_manager', new_class.objects)
         new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
         return new_class
 
     @classmethod
     def check(cls, **kwargs):
-        # TODO: REIMPLEMENT THIS
         errors = []
         return errors
 
@@ -367,7 +373,9 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
         conditions = []
         for colname in colnames:
             try:
-                conditions.append('"{0}" {1}'.format(*self._get_ordering_condition(colname)))
+                conditions.append('"{0}" {1}'.format(
+                    *self._get_ordering_condition(colname))
+                )
             except query.QueryException as err:
                 msg = (
                     '.order_by() with column "{}" failed! '
@@ -385,15 +393,17 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
             pk_columns = (c for c in self.model._columns.values()
                           if c.is_primary_key is True)
             pk_field_names = tuple(field.db_field_name for field in pk_columns)
-            fields = [f for f in fields if f != 'pk']
+            fields = [fld_name for fld_name in fields if fld_name != 'pk']
             fields.extend(pk_field_names)
 
-        return super(DjangoCassandraQuerySet, self).values_list(*fields, **kwargs)
+        return super(DjangoCassandraQuerySet, self).values_list(
+            *fields, **kwargs)
 
 
-class DjangoModel(six.with_metaclass(DjangoModelMetaClass, BaseModel)):
+class DjangoCassandraModel(
+    six.with_metaclass(DjangoCassandraModelMetaClass, BaseModel)
+):
     __queryset__ = DjangoCassandraQuerySet
-    _deferred = False
     __abstract__ = True
     __table_name__ = None
     __table_name_case_sensitive__ = False
@@ -406,12 +416,12 @@ class DjangoModel(six.with_metaclass(DjangoModelMetaClass, BaseModel)):
     @classmethod
     def _get_column(cls, name):
         """
-        Returns the column matching the given name, raising a key error if
-        it doesn't exist
+        Based on cqlengine.models.BaseModel._get_column.
 
-        :param name: the name of the column to return
-        :rtype: Column
+        But to work with 'pk'
         """
         if name == 'pk':
-            return [v for v in cls._columns.values() if v.is_primary_key is True][0]
+            pk_columns = tuple(c for c in cls._columns.values()
+                               if c.is_primary_key is True)
+            return pk_columns[0]
         return cls._columns[name]

@@ -3,7 +3,7 @@ from cassandra import cqlengine
 import django
 from django.conf import settings
 
-from .django_compat_models import DjangoModel
+from .django_compat_models import DjangoCassandraModel
 
 
 class CursorWrapper(object):
@@ -80,7 +80,7 @@ def get_cql_models(app, keyspace=None):
     for name, obj in inspect.getmembers(app):
         cql_model_types = (
             cqlengine.models.Model,
-            DjangoModel
+            DjangoCassandraModel
         )
         if (
             inspect.isclass(obj) and issubclass(obj, cql_model_types) and

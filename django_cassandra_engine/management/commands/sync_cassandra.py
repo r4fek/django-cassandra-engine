@@ -9,7 +9,7 @@ from cassandra.cqlengine.models import Model
 from django.apps import apps
 from django.db.models.signals import post_migrate
 
-from django_cassandra_engine.django_compat_models import DjangoModel
+from django_cassandra_engine.django_compat_models import DjangoCassandraModel
 from django_cassandra_engine.utils import get_engine_from_db_alias
 
 
@@ -90,7 +90,7 @@ class Command(NoArgsCommand):
             for model in app_models:
                 self.stdout.write('Syncing %s.%s' % (app_name, model.__name__))
                 # patch this object used for type check in management.sync_table()
-                management.Model = (Model, DjangoModel)
+                management.Model = (Model, DjangoCassandraModel)
                 management.sync_table(model)
 
     def handle_noargs(self, **options):

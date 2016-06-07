@@ -5,7 +5,7 @@ from django.contrib.contenttypes.fields import (
 )
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django_cassandra_engine.django_compat_models import DjangoModel
+from django_cassandra_engine.django_compat_models import DjangoCassandraModel
 from cassandra.cqlengine import columns as cassandra_columns
 
 
@@ -17,12 +17,12 @@ class Thing(object):
     pass
 
 
-class CassandraThing(DjangoModel):
+class CassandraThing(DjangoCassandraModel):
     id = cassandra_columns.UUID(primary_key=True, default=uuid.uuid4)
     data_abstract = cassandra_columns.Text(max_length=10)
 
 
-class CassandraThingMultiplePK(DjangoModel):
+class CassandraThingMultiplePK(DjangoCassandraModel):
     id = cassandra_columns.UUID(primary_key=True, default=uuid.uuid4)
     another_id = cassandra_columns.UUID(primary_key=True, default=uuid.uuid4)
     data_abstract = cassandra_columns.Text(max_length=10)
