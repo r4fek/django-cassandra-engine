@@ -2,6 +2,7 @@ import logging
 import inspect
 import copy
 import warnings
+from operator import itemgetter
 
 import six
 from django.apps import apps
@@ -366,6 +367,8 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
     use_in_migrations = False
 
     def order_by(self, *colnames):
+        order_using_python = False
+
         if len(colnames) == 0:
             clone = copy.deepcopy(self)
             clone._order = []
@@ -378,16 +381,35 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
                     *self._get_ordering_condition(colname))
                 )
             except query.QueryException as err:
+                if 'Can\'t order on' not in err.message:
+                    # if the exception isn't due to ordering, raise it up!
+                    raise err
+
                 msg = (
                     '.order_by() with column "{}" failed! '
-                    'falling back to unordered. '
+                    'falling back to ordering in python. '
                     'Exception was:\n{}'
                 ).format(colname, err.message)
                 warnings.warn(msg)
+                order_using_python = True
 
         clone = copy.deepcopy(self)
         clone._order.extend(conditions)
-        return clone
+
+        if order_using_python is True:
+            any_cols_revesed = any(c.startswith('-') for c in colnames)
+            if any_cols_revesed:
+                for colname in colnames:
+                    should_reverse = colname.startswith('-')
+                    if should_reverse:
+                        colname = colname[1:]
+                    clone = sorted(
+                        clone, key=itemgetter(colname), reverse=should_reverse)
+            else:
+                clone = sorted(clone, key=itemgetter(*colnames))
+            return clone
+        else:
+            return clone
 
     def values_list(self, *fields, **kwargs):
         if 'pk' in fields:
