@@ -3,6 +3,7 @@ import uuid
 from django import test
 
 from model_meta.models import CassandraThing, CassandraThingMultiplePK
+from django_cassandra_engine.models import ReadOnlyDjangoCassandraQuerySet
 
 
 class TestDjangoCompatModel(test.SimpleTestCase):
@@ -113,3 +114,60 @@ class TestDjangoCompatModel(test.SimpleTestCase):
             data_abstract='Some data',
         )
         self.assertIsNotNone(CassandraThingMultiplePK.objects.get(pk=some_uuid))
+
+
+class TestReadOnlyDjangoCassandraQuerySet(test.SimpleTestCase):
+    def setUp(self):
+        self.thing = CassandraThing.objects.create(
+            id=uuid.uuid4(),
+            data_abstract='Some data',
+        )
+        self.thing2 = CassandraThing.objects.create(
+            id=uuid.uuid4(),
+            data_abstract='Some data2',
+        )
+        self.queryset = ReadOnlyDjangoCassandraQuerySet(
+            data=[self.thing, self.thing2], model_class=CassandraThing)
+
+    def test_non_implemented_fields_raise_exception_when_called(self):
+        methods_expected_to_raise = []
+
+        for method in methods_expected_to_raise:
+            self.assertRaises(ValueError, getattr(self.queryset, method))
+
+    def test_count(self):
+        self.assertEqual(self.queryset.count(), 2)
+
+    def test_first(self):
+        self.assertEqual(self.queryset.first(), self.thing)
+
+    def test_all(self):
+        self.assertEqual(self.queryset.all(), self.queryset)
+
+    def test_objects(self):
+        self.assertEqual(self.queryset.objects, self.queryset)
+
+    def test_values_list_with_pk_field_specified_exactly(self):
+        expected_vals = [[self.thing.id], [self.thing2.id]]
+        vals = self.queryset.values_list('id')
+        self.assertEqual(vals, expected_vals)
+
+    def test_values_list_flat_with_pk_field_specified_exactly(self):
+        expected_vals = [self.thing.id, self.thing2.id]
+        vals = self.queryset.values_list('id', flat=True)
+        self.assertEqual(vals, expected_vals)
+
+    def test_values_list_with_pk(self):
+        expected_vals = [[self.thing.id], [self.thing2.id]]
+        vals = self.queryset.values_list('pk')
+        self.assertEqual(vals, expected_vals)
+
+    def test_values_list_flat_with_pk(self):
+        expected_vals = [self.thing.id, self.thing2.id]
+        vals = self.queryset.values_list('pk', flat=True)
+        self.assertEqual(vals, expected_vals)
+
+    def test_values_list_flat_with_pk_and_exact_pk_field(self):
+        expected_vals = [self.thing.id, self.thing2.id]
+        vals = self.queryset.values_list('pk', 'id', flat=True)
+        self.assertEqual(vals, expected_vals)

@@ -24,6 +24,9 @@ from django_cassandra_engine.utils import get_cassandra_connections
 
 
 log = logging.getLogger(__name__)
+FALLBACK_ORDER_BY_PYTHON = getattr(
+    settings, 'CASSANDRA_FALLBACK_ORDER_BY_PYTHON', False
+)
 CASSANDRA_DRIVER_COMPAT_VERSIONS = ('3.3.0', '3.4.0', '3.4.1')
 if cassandra.__version__ not in CASSANDRA_DRIVER_COMPAT_VERSIONS:
     raise RuntimeError(
@@ -365,6 +368,33 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
         return errors
 
 
+def _convert_pk_field_names_to_real(model, field_names):
+    """
+    Convert field names including 'pk' to the real field names:
+
+    >>> _convert_pk_field_names_to_real(['pk', 'another_field'])
+    ['real_pk_field', 'another_field']
+    """
+    real_field_names = []
+    primary_field_names = tuple(
+        f.name for f in model._get_primary_key_columns())
+
+    def append_field(field_name):
+        if field_name not in real_field_names:
+            real_field_names.append(field_name)
+
+    for name in field_names:
+        if name == 'pk':
+            for pk_name in primary_field_names:
+                append_field(pk_name)
+        elif name == '-pk':
+            for pk_name in primary_field_names:
+                append_field('-' + pk_name)
+        else:
+            append_field(name)
+    return real_field_names
+
+
 class ReadOnlyDjangoCassandraQuerySet(list):
     name = 'objects'
     use_in_migrations = False
@@ -374,7 +404,7 @@ class ReadOnlyDjangoCassandraQuerySet(list):
             raise TypeError(
                 'ReadOnlyDjangoCassandraQuerySet requires iterable data')
         super(ReadOnlyDjangoCassandraQuerySet, self).__init__(data)
-        self._model_class = model_class
+        self.model = model_class
 
     @property
     def objects(self):
@@ -390,17 +420,8 @@ class ReadOnlyDjangoCassandraQuerySet(list):
         return len(self)
 
     def values_list(self, *fields, **kwargs):
-        if 'pk' in fields:
-            pk_columns = (
-                c for c in self._model_class._meta.get_fields()
-                if c.is_primary_key is True
-            )
-            pk_field_names = tuple(field.db_field_name for field in pk_columns)
-            fields = [fld_name for fld_name in fields if fld_name != 'pk']
-            fields.extend(pk_field_names)
-        else:
-            fields = [fld_name for fld_name in fields if fld_name != 'pk']
-            fields.extend(pk_field_names)
+        fields = _convert_pk_field_names_to_real(model=self.model,
+                                                 field_names=fields)
 
         values_list = []
         for model_record in self:
@@ -457,57 +478,64 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
             return clone
 
         conditions = []
-        for colname in colnames:
+        for col in colnames:
             try:
                 conditions.append('"{0}" {1}'.format(
-                    *self._get_ordering_condition(colname))
+                    *self._get_ordering_condition(col))
                 )
-            except query.QueryException as err:
-                if 'Can\'t order' not in err.message:
-                    # if the exception isn't due to ordering, raise it up!
-                    raise err
+            except query.QueryException as exc:
+                order_by_exception = 'Can\'t order' in exc.message
+                if not order_by_exception:
+                    raise exc
                 else:
-                    order_using_python = getattr(
-                        settings, 'CASSANDRA_FALLBACK_ORDER_BY_PYTHON', None)
+                    order_using_python = FALLBACK_ORDER_BY_PYTHON
                     if order_using_python:
                         msg = (
                             '.order_by() with column "{}" failed! '
                             'falling back to ordering in python. '
                             'Exception was:\n{}'
-                        ).format(colname, err.message)
+                        ).format(col, exc.message)
                         warnings.warn(msg)
                     else:
-                        raise err
+                        raise exc
 
         clone = copy.deepcopy(self)
-        clone._order.extend(conditions)
 
         if order_using_python is True:
+            colnames = _convert_pk_field_names_to_real(model=self.model,
+                                                       field_names=colnames)
             any_cols_revesed = any(c.startswith('-') for c in colnames)
             if any_cols_revesed:
-                for colname in colnames:
-                    should_reverse = colname.startswith('-')
+                for col in colnames:
+                    should_reverse = col.startswith('-')
                     if should_reverse:
-                        colname = colname[1:]
+                        col = col[1:]
                     clone = sorted(
-                        clone, key=itemgetter(colname), reverse=should_reverse)
+                        clone, key=itemgetter(col), reverse=should_reverse)
             else:
-                clone = sorted(clone, key=itemgetter(*colnames))
+                new_colnames = []
+                for col in colnames:
+                    if col == 'pk':
+                        pk_cols = self.model._get_primary_key_column_names()
+                        for pk_name in pk_cols:
+                            new_colnames.append(pk_name)
+                    else:
+                        new_colnames.append(col)
+                clone = sorted(clone, key=itemgetter(*new_colnames))
+
             return ReadOnlyDjangoCassandraQuerySet(
                 clone, model_class=self.model)
         else:
+            clone._order.extend(conditions)
             return clone
 
     def values_list(self, *fields, **kwargs):
         if 'pk' in fields:
-            pk_columns = (c for c in self.model._columns.values()
-                          if c.is_primary_key is True)
-            pk_field_names = tuple(field.db_field_name for field in pk_columns)
-            fields = [fld_name for fld_name in fields if fld_name != 'pk']
-            fields.extend(pk_field_names)
+            fields = _convert_pk_field_names_to_real(
+                model=self.model, field_names=fields)
 
-        return super(DjangoCassandraQuerySet, self).values_list(
-            *fields, **kwargs)
+        super_values_list = super(DjangoCassandraQuerySet, self).values_list
+        return super_values_list(*fields, **kwargs)
 
 
 class DjangoCassandraModel(
@@ -524,6 +552,15 @@ class DjangoCassandraModel(
     __compute_routing_key__ = True
 
     @classmethod
+    def _get_primary_key_columns(cls):
+        return tuple(
+            c for c in cls._columns.values() if c.is_primary_key is True)
+
+    @classmethod
+    def _get_primary_key_column_names(cls):
+        return tuple(c.name for c in cls._get_primary_key_columns())
+
+    @classmethod
     def _get_column(cls, name):
         """
         Based on cqlengine.models.BaseModel._get_column.
@@ -531,7 +568,6 @@ class DjangoCassandraModel(
         But to work with 'pk'
         """
         if name == 'pk':
-            pk_columns = tuple(c for c in cls._columns.values()
-                               if c.is_primary_key is True)
-            return pk_columns[0]
+            first_primary_column = cls._get_primary_key_columns()[0]
+            return first_primary_column
         return cls._columns[name]
