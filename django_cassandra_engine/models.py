@@ -469,14 +469,39 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
     name = 'objects'
     use_in_migrations = False
 
-    def order_by(self, *colnames):
-        order_using_python = False
+    def python_order_by(self, queryset, colnames):
+        colnames = _convert_pk_field_names_to_real(model=self.model,
+                                                   field_names=colnames)
 
+        any_cols_revesed = any(c.startswith('-') for c in colnames)
+        if any_cols_revesed:
+            for col in colnames:
+                should_reverse = col.startswith('-')
+                if should_reverse:
+                    col = col[1:]
+
+                queryset = sorted(queryset, key=itemgetter(col), reverse=should_reverse)
+        else:
+            new_colnames = []
+            for col in colnames:
+                if col == 'pk':
+                    pk_cols = self.model._get_primary_key_column_names()
+                    for pk_name in pk_cols:
+                        new_colnames.append(pk_name)
+                else:
+                    new_colnames.append(col)
+            queryset = sorted(queryset, key=itemgetter(*new_colnames))
+
+        return ReadOnlyDjangoCassandraQuerySet(
+            queryset, model_class=self.model)
+
+    def order_by(self, *colnames):
         if len(colnames) == 0:
             clone = copy.deepcopy(self)
             clone._order = []
             return clone
 
+        order_using_python = False
         conditions = []
         for col in colnames:
             try:
@@ -484,47 +509,26 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
                     *self._get_ordering_condition(col))
                 )
             except query.QueryException as exc:
-                order_by_exception = 'Can\'t order' in exc.message
-                if not order_by_exception:
-                    raise exc
-                else:
+                order_by_exception = 'Can\'t order' in exc.message or 'Can\'t resolve the column name' in exc.message
+                if order_by_exception:
                     order_using_python = FALLBACK_ORDER_BY_PYTHON
                     if order_using_python:
                         msg = (
                             '.order_by() with column "{}" failed! '
-                            'falling back to ordering in python. '
+                            'Falling back to ordering in python. \n'
                             'Exception was:\n{}'
                         ).format(col, exc.message)
+                        log.debug('ordering in python column "%s"', col)
                         warnings.warn(msg)
                     else:
                         raise exc
+                else:
+                    raise exc
 
         clone = copy.deepcopy(self)
 
         if order_using_python is True:
-            colnames = _convert_pk_field_names_to_real(model=self.model,
-                                                       field_names=colnames)
-            any_cols_revesed = any(c.startswith('-') for c in colnames)
-            if any_cols_revesed:
-                for col in colnames:
-                    should_reverse = col.startswith('-')
-                    if should_reverse:
-                        col = col[1:]
-                    clone = sorted(
-                        clone, key=itemgetter(col), reverse=should_reverse)
-            else:
-                new_colnames = []
-                for col in colnames:
-                    if col == 'pk':
-                        pk_cols = self.model._get_primary_key_column_names()
-                        for pk_name in pk_cols:
-                            new_colnames.append(pk_name)
-                    else:
-                        new_colnames.append(col)
-                clone = sorted(clone, key=itemgetter(*new_colnames))
-
-            return ReadOnlyDjangoCassandraQuerySet(
-                clone, model_class=self.model)
+            return self.python_order_by(queryset=sorted(clone), colnames=colnames)
         else:
             clone._order.extend(conditions)
             return clone

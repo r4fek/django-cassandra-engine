@@ -3,7 +3,9 @@ import uuid
 from django import test
 
 from model_meta.models import CassandraThing, CassandraThingMultiplePK
-from django_cassandra_engine.models import ReadOnlyDjangoCassandraQuerySet
+from django_cassandra_engine.models import (
+    ReadOnlyDjangoCassandraQuerySet, DjangoCassandraQuerySet
+)
 
 
 class TestDjangoCompatModel(test.SimpleTestCase):
@@ -170,4 +172,31 @@ class TestReadOnlyDjangoCassandraQuerySet(test.SimpleTestCase):
     def test_values_list_flat_with_pk_and_exact_pk_field(self):
         expected_vals = [self.thing.id, self.thing2.id]
         vals = self.queryset.values_list('pk', 'id', flat=True)
+        self.assertEqual(vals, expected_vals)
+
+
+class TestDjangoCassandraQuerySet(test.SimpleTestCase):
+    def setUp(self):
+        self.thing = CassandraThing.objects.create(
+            id=uuid.uuid4(),
+            data_abstract='Some data',
+        )
+        self.thing2 = CassandraThing.objects.create(
+            id=uuid.uuid4(),
+            data_abstract='Some data2',
+        )
+        self.queryset = CassandraThing.objects.all()
+
+    def tearDown(self):
+        CassandraThing.objects.filter(
+            id__in=[self.thing.id, self.thing2.id]).delete()
+
+    def test_order_by_data_abstract(self):
+        expected_vals = [self.thing, self.thing2]
+        vals = list(self.queryset.order_by('data_abstract'))
+        self.assertEqual(vals, expected_vals)
+
+    def test_order_by_data_abstract_reversed(self):
+        expected_vals = [self.thing2, self.thing]
+        vals = list(self.queryset.order_by('-data_abstract'))
         self.assertEqual(vals, expected_vals)
