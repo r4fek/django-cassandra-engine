@@ -3,8 +3,6 @@ from cassandra import cqlengine
 import django
 from django.conf import settings
 
-from .models import DjangoCassandraModel
-
 
 class CursorWrapper(object):
     """
@@ -74,6 +72,7 @@ def get_cql_models(app, keyspace=None):
     synced to keyspace.
     """
     from cassandra.cqlengine.models import DEFAULT_KEYSPACE
+    from .models import DjangoCassandraModel
     keyspace = keyspace or DEFAULT_KEYSPACE
 
     models = []

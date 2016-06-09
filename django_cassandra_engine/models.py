@@ -3,6 +3,8 @@ import inspect
 import copy
 import warnings
 from operator import itemgetter
+import collections
+from itertools import chain
 
 import six
 from django.apps import apps
@@ -17,19 +19,19 @@ from cassandra.cqlengine.models import (
     ModelDefinitionException
 )
 from cassandra.util import OrderedDict
+from django_cassandra_engine.utils import get_cassandra_connections
 
-PROXY_PARENTS = object()
-EMPTY_RELATION_TREE = tuple()
-CASSANDRA_DRIVER_COMPAT_VERSIONS = ('3.3.0', '3.4.0', '3.4.1')
 
 log = logging.getLogger(__name__)
-
+CASSANDRA_DRIVER_COMPAT_VERSIONS = ('3.3.0', '3.4.0', '3.4.1')
 if cassandra.__version__ not in CASSANDRA_DRIVER_COMPAT_VERSIONS:
     raise RuntimeError(
         'Django Cassandra Models require cassandra-driver versions {} '
         'Version "{}" found'.format(CASSANDRA_DRIVER_COMPAT_VERSIONS,
                                     cassandra.__version__)
     )
+for _, conn in get_cassandra_connections():
+    conn.connect()
 
 
 class DjangoCassandraOptions(Options):
@@ -362,6 +364,83 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
         return errors
 
 
+class ReadOnlyDjangoCassandraQuerySet(list):
+
+    def __init__(self, data, model_class):
+        if not isinstance(data, collections.Iterable):
+            raise TypeError(
+                'ReadOnlyDjangoCassandraQuerySet requires iterable data')
+        super(ReadOnlyDjangoCassandraQuerySet, self).__init__(data)
+        self._model_class = model_class
+
+    @property
+    def objects(self):
+        return self
+
+    def first(self):
+        return next(iter(self), None)
+
+    def all(self):
+        return self
+
+    def count(self):
+        return len(self)
+
+    def values_list(self, *fields, **kwargs):
+        if 'pk' in fields:
+            pk_columns = (
+                c for c in self._model_class._meta.get_fields()
+                if c.is_primary_key is True
+            )
+            pk_field_names = tuple(field.db_field_name for field in pk_columns)
+            fields = [fld_name for fld_name in fields if fld_name != 'pk']
+            fields.extend(pk_field_names)
+        else:
+            fields = [fld_name for fld_name in fields if fld_name != 'pk']
+            fields.extend(pk_field_names)
+
+        values_list = []
+        for model_record in self:
+            values_list_item = []
+            for field_name in fields:
+                values_list_item.append(model_record[field_name])
+            values_list.append(values_list_item)
+
+        if kwargs.get('flat') is True:
+            values_list = list(chain.from_iterable(values_list))
+        return values_list
+
+    def _raise_not_implemented(self, method_name):
+        raise NotImplementedError(
+            'You cannot .{}() on a DjangoCassandraQuerySet which '
+            'has been ordered using python'.format(method_name)
+        )
+
+    def filter(self, **kwargs):
+        self._raise_not_implemented(method_name='filter')
+
+    def get(self, **kwargs):
+        self._raise_not_implemented(method_name='get')
+
+    def distinct(self, *args, **kwargs):
+        self._raise_not_implemented(method_name='distinct')
+
+    def limit(self, *args, **kwargs):
+        self._raise_not_implemented(method_name='limit')
+
+    def only(self, *args, **kwargs):
+        self._raise_not_implemented(method_name='only')
+
+    def create(self, *args, **kwargs):
+        self._raise_not_implemented(method_name='create')
+
+    def delete(self, *args, **kwargs):
+        self._raise_not_implemented(method_name='delete')
+
+    def defer(self, *args, **kwargs):
+        self._raise_not_implemented(method_name='defer')
+
+
 class DjangoCassandraQuerySet(query.ModelQuerySet):
     name = 'objects'
     use_in_migrations = False
@@ -381,7 +460,7 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
                     *self._get_ordering_condition(colname))
                 )
             except query.QueryException as err:
-                if 'Can\'t order on' not in err.message:
+                if 'Can\'t order' not in err.message:
                     # if the exception isn't due to ordering, raise it up!
                     raise err
 
@@ -407,7 +486,8 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
                         clone, key=itemgetter(colname), reverse=should_reverse)
             else:
                 clone = sorted(clone, key=itemgetter(*colnames))
-            return clone
+            return ReadOnlyDjangoCassandraQuerySet(
+                clone, model_class=self.model)
         else:
             return clone
 
