@@ -200,3 +200,5 @@ class TestDjangoCassandraQuerySet(test.SimpleTestCase):
         expected_vals = [self.thing2, self.thing]
         vals = list(self.queryset.order_by('-data_abstract'))
         self.assertEqual(vals, expected_vals)
+
+    # TODO: test for unknown column, check query exp raises
