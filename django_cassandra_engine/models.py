@@ -7,6 +7,7 @@ import collections
 from itertools import chain
 
 import six
+from django.conf import settings
 from django.apps import apps
 from django.db.models.base import ModelBase
 from django.db.models.options import Options
@@ -365,6 +366,8 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
 
 
 class ReadOnlyDjangoCassandraQuerySet(list):
+    name = 'objects'
+    use_in_migrations = False
 
     def __init__(self, data, model_class):
         if not isinstance(data, collections.Iterable):
@@ -463,14 +466,18 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
                 if 'Can\'t order' not in err.message:
                     # if the exception isn't due to ordering, raise it up!
                     raise err
-
-                msg = (
-                    '.order_by() with column "{}" failed! '
-                    'falling back to ordering in python. '
-                    'Exception was:\n{}'
-                ).format(colname, err.message)
-                warnings.warn(msg)
-                order_using_python = True
+                else:
+                    order_using_python = getattr(
+                        settings, 'CASSANDRA_FALLBACK_ORDER_BY_PYTHON', None)
+                    if order_using_python:
+                        msg = (
+                            '.order_by() with column "{}" failed! '
+                            'falling back to ordering in python. '
+                            'Exception was:\n{}'
+                        ).format(colname, err.message)
+                        warnings.warn(msg)
+                    else:
+                        raise err
 
         clone = copy.deepcopy(self)
         clone._order.extend(conditions)
