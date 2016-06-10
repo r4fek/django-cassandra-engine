@@ -113,3 +113,8 @@ class TestDjangoCassandraModel(test.SimpleTestCase):
             data_abstract='Some data',
         )
         self.assertIsNotNone(CassandraThingMultiplePK.objects.get(pk=some_uuid))
+
+    def test_model_doesnotexist_is_raised_when_record_not_found(self):
+        with self.assertRaises(CassandraThingMultiplePK.DoesNotExist):
+            not_found_uuid = uuid.uuid4()
+            CassandraThingMultiplePK.objects.get(id=not_found_uuid)
