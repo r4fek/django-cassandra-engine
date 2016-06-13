@@ -45,12 +45,15 @@ class TestDjangoCassandraModel(test.SimpleTestCase):
 
         for field in fields:
             self.assertEqual(field.name, field.db_field_name)
+            self.assertEqual(field.verbose_name, field.db_field_name)
+            self.assertEqual(field._verbose_name, field.db_field_name)
             self.assertEqual(field.field, field)
             self.assertEqual(field.model, self.model)
             self.assertEqual(field.related_query_name(), None)
             self.assertEqual(field.auto_created, False)
             self.assertEqual(field.is_relation, False)
             self.assertEqual(field.remote_field, None)
+            self.assertEqual(field.rel, None)
 
     def test_meta_attrs(self):
         self.assertEqual(self.model._meta.model_name, 'cassandrathing')

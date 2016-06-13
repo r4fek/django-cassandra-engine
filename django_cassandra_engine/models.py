@@ -93,10 +93,13 @@ class DjangoCassandraOptions(Options):
             cql_column.auto_created = False
             cql_column.is_relation = False
             cql_column.remote_field = None
+            cql_column.rel = None
             cql_column.attname = name
             cql_column.field = cql_column
             cql_column.model = self.model_inst
             cql_column.name = cql_column.db_field_name
+            cql_column.verbose_name = cql_column.db_field_name
+            cql_column._verbose_name = cql_column.db_field_name
             cql_column.field.related_query_name = lambda: None
 
 
