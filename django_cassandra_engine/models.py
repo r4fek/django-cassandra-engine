@@ -90,6 +90,7 @@ class DjangoCassandraOptions(Options):
         a Django Field.
         """
         for name, cql_column in self._defined_columns.items():
+            cql_column.serialize = not cql_column.is_primary_key
             cql_column.auto_created = False
             cql_column.is_relation = False
             cql_column.remote_field = None

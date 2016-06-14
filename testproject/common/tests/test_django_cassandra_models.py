@@ -44,6 +44,7 @@ class TestDjangoCassandraModel(test.SimpleTestCase):
         fields = self.model._meta._get_fields()
 
         for field in fields:
+            self.assertEqual(field.serialize, not field.is_primary_key)
             self.assertEqual(field.name, field.db_field_name)
             self.assertEqual(field.verbose_name, field.db_field_name)
             self.assertEqual(field._verbose_name, field.db_field_name)
