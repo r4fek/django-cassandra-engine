@@ -31,6 +31,9 @@ class TestDjangoCassandraModel(test.SimpleTestCase):
             []
         )
 
+    def test_related_objects_property(self):
+        self.assertEqual(self.model._meta.related_objects, [])
+
     def test_pk_attribute(self):
         self.assertEqual(self.model._meta.pk, self.model._meta.get_field('id'))
 
@@ -44,6 +47,19 @@ class TestDjangoCassandraModel(test.SimpleTestCase):
         fields = self.model._meta._get_fields()
 
         for field in fields:
+            self.assertEqual(field.unique_for_date, None)
+            self.assertEqual(field.unique_for_month, None)
+            self.assertEqual(field.unique_for_year, None)
+            self.assertEqual(field.null, False)
+            self.assertEqual(field.blank, False)
+            self.assertEqual(field.choices, [])
+            self.assertEqual(field.help_text, '')
+            self.assertEqual(field.editable, True)
+            self.assertEqual(field.many_to_many, False)
+            self.assertEqual(field.many_to_one, False)
+            self.assertEqual(field.one_to_many, False)
+            self.assertEqual(field.one_to_one, False)
+            self.assertEqual(field.hidden, False)
             self.assertEqual(field.serialize, not field.is_primary_key)
             self.assertEqual(field.name, field.db_field_name)
             self.assertEqual(field.verbose_name, field.db_field_name)

@@ -65,6 +65,10 @@ class DjangoCassandraOptions(Options):
     def get_all_related_objects_with_model(self, *args, **kwargs):
         return []
 
+    @property
+    def related_objects(self):
+        return []
+
     def add_field(self, field):
         """Add each field as a virtual_field."""
         self.virtual_fields.append(field)
@@ -91,9 +95,22 @@ class DjangoCassandraOptions(Options):
         """
         for name, cql_column in self._defined_columns.items():
             cql_column.serialize = not cql_column.is_primary_key
+            cql_column.hidden = False
             cql_column.auto_created = False
+            cql_column.help_text = ''
+            cql_column.blank = False
+            cql_column.null = False
+            cql_column.choices = []
+            cql_column.editable = True
+            cql_column.many_to_many = False
+            cql_column.many_to_one = False
+            cql_column.one_to_many = False
+            cql_column.one_to_one = False
             cql_column.is_relation = False
             cql_column.remote_field = None
+            cql_column.unique_for_date = None
+            cql_column.unique_for_month = None
+            cql_column.unique_for_year = None
             cql_column.rel = None
             cql_column.attname = name
             cql_column.field = cql_column
