@@ -98,8 +98,8 @@ class DjangoCassandraOptions(Options):
             cql_column.hidden = False
             cql_column.auto_created = False
             cql_column.help_text = ''
-            cql_column.blank = False
-            cql_column.null = False
+            cql_column.blank = not cql_column.required
+            cql_column.null = not cql_column.required
             cql_column.choices = []
             cql_column.editable = True
             cql_column.many_to_many = False
