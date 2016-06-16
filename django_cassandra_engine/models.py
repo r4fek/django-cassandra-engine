@@ -586,6 +586,18 @@ class DjangoCassandraModel(
     __compute_routing_key__ = True
 
     @classmethod
+    def get(cls, *args, **kwargs):
+        raise AttributeError('model has no attribute \'get\'')
+
+    @classmethod
+    def filter(cls, *args, **kwargs):
+        raise AttributeError('model has no attribute \'filter\'')
+
+    @classmethod
+    def all(cls, *args, **kwargs):
+        raise AttributeError('model has no attribute \'all\'')
+
+    @classmethod
     def _get_primary_key_columns(cls):
         return tuple(
             c for c in cls._columns.values() if c.is_primary_key is True)

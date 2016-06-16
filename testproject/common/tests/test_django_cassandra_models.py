@@ -19,6 +19,16 @@ class TestDjangoCassandraModel(test.SimpleTestCase):
         self.assertTrue(hasattr(self.model._default_manager, 'all'))
         self.assertTrue(hasattr(self.model._default_manager, 'filter'))
 
+    def test_calling_queryset_methods_not_through_manager_raises(self):
+        with self.assertRaises(AttributeError):
+            self.model.all()
+
+        with self.assertRaises(AttributeError):
+            self.model.get()
+
+        with self.assertRaises(AttributeError):
+            self.model.filter()
+
     def test_manager_has_a_name(self):
         self.assertEqual(self.model._default_manager.name, 'objects')
 
