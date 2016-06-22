@@ -44,6 +44,9 @@ class TestDjangoCassandraModel(test.SimpleTestCase):
     def test_related_objects_property(self):
         self.assertEqual(self.model._meta.related_objects, [])
 
+    def test_db_table(self):
+        self.assertEqual(self.model._meta.db_table, 'model_meta_cassandrathing')
+
     def test_pk_attribute(self):
         self.assertEqual(self.model._meta.pk, self.model._meta.get_field('id'))
 
@@ -55,6 +58,11 @@ class TestDjangoCassandraModel(test.SimpleTestCase):
 
     def test_fields_have_attributes_for_django(self):
         fields = self.model._meta._get_fields()
+        some_uuid = uuid.uuid4()
+        model_instance = CassandraThing.objects.create(
+            id=some_uuid,
+            data_abstract='Some data',
+        )
 
         for field in fields:
             self.assertEqual(field.unique_for_date, None)
@@ -81,6 +89,9 @@ class TestDjangoCassandraModel(test.SimpleTestCase):
             self.assertEqual(field.is_relation, False)
             self.assertEqual(field.remote_field, None)
             self.assertEqual(field.rel, None)
+            self.assertEqual(field.attname, field.column_name)
+            self.assertEqual(field.value_to_string(model_instance),
+                             str(getattr(model_instance, field.name)))
 
     def test_meta_attrs(self):
         self.assertEqual(self.model._meta.model_name, 'cassandrathing')

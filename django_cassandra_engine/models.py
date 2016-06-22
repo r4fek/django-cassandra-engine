@@ -5,6 +5,7 @@ import warnings
 from operator import attrgetter
 import collections
 from itertools import chain
+from types import MethodType
 
 import six
 from django.conf import settings
@@ -25,6 +26,7 @@ from .constants import (
     ORDER_BY_ERROR_HELP,
     CASSANDRA_DRIVER_COMPAT_VERSIONS
 )
+from .django_field import value_to_string, value_from_object
 
 
 log = logging.getLogger(__name__)
@@ -119,6 +121,10 @@ class DjangoCassandraOptions(Options):
             cql_column.verbose_name = cql_column.db_field_name
             cql_column._verbose_name = cql_column.db_field_name
             cql_column.field.related_query_name = lambda: None
+            cql_column.value_from_object = MethodType(
+                value_from_object, cql_column, type(cql_column))
+            cql_column.value_to_string = MethodType(
+                value_to_string, cql_column, type(cql_column))
 
 
 class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
