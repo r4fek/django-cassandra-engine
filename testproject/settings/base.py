@@ -42,6 +42,7 @@ BASE_APPS = [
 
 INSTALLED_APPS = BASE_APPS
 
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
