@@ -4,17 +4,17 @@ from datetime import datetime
 from django import test
 from cassandra.cqlengine.query import QueryException
 
-from common.models import CassandraThingWithDate, CassandraThingMultiplePK
+from common.models import CassandraThingMultiplePK
 
 
 class TestDjangoCassandraQuerySet(test.SimpleTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.thing = CassandraThingWithDate.objects.create(
+        cls.thing = CassandraThingMultiplePK.objects.create(
             id=uuid.uuid4(),
             created_on=datetime(2015, 6, 10),
         )
-        cls.thing2 = CassandraThingWithDate.objects.create(
+        cls.thing2 = CassandraThingMultiplePK.objects.create(
             id=uuid.uuid4(),
             created_on=datetime(2016, 6, 10),
         )
@@ -24,10 +24,10 @@ class TestDjangoCassandraQuerySet(test.SimpleTestCase):
         pass
 
     def get_queryset(self):
-        return CassandraThingWithDate.objects.all()
+        return CassandraThingMultiplePK.objects.all()
 
     def get_queryset_ordered(self):
-        return CassandraThingWithDate.objects.all().order_by('created_on')
+        return CassandraThingMultiplePK.objects.all().order_by('created_on')
 
     def test_non_implemented_fields_raise_exception_when_called(self):
         methods_expected_to_raise = []
@@ -40,7 +40,7 @@ class TestDjangoCassandraQuerySet(test.SimpleTestCase):
 
     def test_first(self):
         self.assertEqual(
-            CassandraThingWithDate.objects.order_by('created_on').first(),
+            CassandraThingMultiplePK.objects.order_by('created_on').first(),
             self.thing
         )
 
@@ -58,36 +58,45 @@ class TestDjangoCassandraQuerySet(test.SimpleTestCase):
         self.assertEqual(vals, expected_vals)
 
     def test_values_list_with_pk(self):
-        expected_vals = [[self.thing.id], [self.thing2.id]]
+        expected_vals = [
+            [self.thing.id, self.thing.another_id],
+            [self.thing2.id, self.thing2.another_id]
+        ]
         vals = list(self.get_queryset_ordered().values_list('pk'))
         self.assertEqual(vals, expected_vals)
 
     def test_values_list_flat_with_pk(self):
-        expected_vals = [self.thing.id, self.thing2.id]
+        expected_vals = [
+            self.thing.id, self.thing.another_id,
+            self.thing2.id, self.thing2.another_id
+        ]
         vals = list(self.get_queryset_ordered().values_list('pk', flat=True))
         self.assertEqual(vals, expected_vals)
 
     def test_values_list_flat_with_pk_and_exact_pk_field(self):
-        expected_vals = [self.thing.id, self.thing2.id]
+        expected_vals = [
+            self.thing.id, self.thing.another_id,
+            self.thing2.id, self.thing2.another_id
+        ]
         vals = list(self.get_queryset_ordered().values_list('pk', 'id', flat=True))
         self.assertEqual(vals, expected_vals)
 
     def test_order_by_created_on_ascending(self):
         expected_vals = [self.thing, self.thing2]
-        vals = list(CassandraThingWithDate.objects.order_by('created_on'))
+        vals = list(CassandraThingMultiplePK.objects.order_by('created_on'))
         self.assertEqual(vals, expected_vals)
 
     def test_order_by_created_on_descending(self):
         expected_vals = [self.thing2, self.thing]
-        vals = list(CassandraThingWithDate.objects.order_by('-created_on'))
+        vals = list(CassandraThingMultiplePK.objects.order_by('-created_on'))
         self.assertEqual(vals, expected_vals)
 
     def test_order_by_unknown_column_raises_exception(self):
         with self.assertRaises(QueryException):
-            CassandraThingWithDate.objects.order_by('unknown', 'also_unkown')
+            CassandraThingMultiplePK.objects.order_by('unknown', 'also_unkown')
 
     def test_order_by_with_fallback_off_raises(self):
-        queryset = CassandraThingWithDate.objects
+        queryset = CassandraThingMultiplePK.objects
         queryset._USE_FALLBACK_ORDER_BY = False
         with self.assertRaises(QueryException):
             queryset.order_by('created_on')

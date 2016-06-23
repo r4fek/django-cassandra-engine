@@ -1,5 +1,6 @@
 import copy
 import uuid
+from datetime import datetime
 
 from django import test
 from django.forms import fields
@@ -7,7 +8,7 @@ from django.core import validators
 from django_cassandra_engine.test import TestCase
 from cassandra.cqlengine import ValidationError as CQLValidationError
 
-from model_meta.models import CassandraThing, CassandraThingMultiplePK
+from model_meta.models import CassandraThing, CassandraFamilyMember
 
 
 class TestDjangoCassandraModel(test.SimpleTestCase):
@@ -21,18 +22,45 @@ class TestDjangoCassandraModel(test.SimpleTestCase):
             id=self.some_uuid,
             data_abstract='Some data',
         )
+        created_on = datetime.now()
+        self.family_member = CassandraFamilyMember.objects.create(
+            first_name='Homer',
+            last_name='Simpson',
+            is_real=False,
+            favourite_number=666,
+            favourite_float_number=43.4,
+            created_on=created_on
+        )
 
     @classmethod
     def tearDownClass(self):
         CassandraThing.objects.filter(id=self.some_uuid).delete()
 
+    def test_create(self):
+        family_member = self.family_member
+        self.assertEqual(family_member.first_name, 'Homer')
+        self.assertEqual(family_member.last_name, 'Simpson')
+        self.assertEqual(family_member.is_real, False)
+        self.assertEqual(family_member.favourite_number, 666)
+        self.assertEqual(family_member.favourite_float_number, 43.4)
+
+    def test_get_by_pk(self):
+        got_family_member = (CassandraFamilyMember.objects
+                             .allow_filtering()
+                             .get(pk=self.family_member.id))
+        self.assertIsNotNone(got_family_member)
+
+    def test_get_by_pk_returns_primary_key_instead_of_partition_key(self):
+        got_family_member = (CassandraFamilyMember.objects
+                             .allow_filtering()
+                             .get(pk=self.family_member.id))
+        self.assertEqual(got_family_member.pk, self.family_member.id)
+
     def test_default_manager_is_set(self):
-        self.assertTrue(
-            isinstance(self.model_class._default_manager, type(self.model_class.objects))
-        )
-        self.assertTrue(
-            isinstance(self.model_class._base_manager, type(self.model_class.objects))
-        )
+        self.assertTrue(isinstance(self.model_class._default_manager,
+                        type(self.model_class.objects)))
+        self.assertTrue(isinstance(self.model_class._base_manager,
+                        type(self.model_class.objects)))
         self.assertTrue(hasattr(self.model_class._default_manager, 'all'))
         self.assertTrue(hasattr(self.model_class._default_manager, 'filter'))
 
@@ -106,39 +134,38 @@ class TestDjangoCassandraModel(test.SimpleTestCase):
 
     def test_values_list_with_pk_can_return_multiple_pks(self):
         some_uuid = uuid.uuid4()
-        another_uuid = uuid.uuid4()
-        CassandraThingMultiplePK.objects.create(
+
+        family_member = CassandraFamilyMember.objects.create(
             id=some_uuid,
-            another_id=another_uuid,
-            data_abstract='Some data',
+            first_name='Homer',
+            last_name='Simpson',
+            is_real=False,
+            favourite_number=666,
+            favourite_float_number=43.4,
+            created_on=datetime.now(),
         )
 
-        all_things = CassandraThingMultiplePK.objects.filter(
-            id=some_uuid,
-            another_id=another_uuid,
-        )
+        all_things = (CassandraFamilyMember.objects
+                      .allow_filtering().filter(id=some_uuid))
 
+        expected = [[
+            family_member.id,
+            family_member.first_name,
+            family_member.last_name,
+            family_member.favourite_float_number
+        ]]
         self.assertEqual(
-            list(all_things.values_list('pk')), [[some_uuid, another_uuid]]
+            len(all_things.values_list('pk')), len(expected)
         )
 
     def test_virtual_fields_are_set(self):
         virtual_fields = [f.name for f in self.model_class._meta.virtual_fields]
         self.assertEqual(virtual_fields, ['id', 'data_abstract'])
 
-    def test_get_by_pk_queries_using_the_first_pk_in_defined_columns(self):
-        some_uuid = uuid.uuid4()
-        CassandraThingMultiplePK.objects.create(
-            id=some_uuid,
-            another_id=uuid.uuid4(),
-            data_abstract='Some data',
-        )
-        self.assertIsNotNone(CassandraThingMultiplePK.objects.get(pk=some_uuid))
-
     def test_model_doesnotexist_is_raised_when_record_not_found(self):
-        with self.assertRaises(CassandraThingMultiplePK.DoesNotExist):
+        with self.assertRaises(CassandraFamilyMember.DoesNotExist):
             not_found_uuid = uuid.uuid4()
-            CassandraThingMultiplePK.objects.get(id=not_found_uuid)
+            CassandraFamilyMember.objects.allow_filtering().get(id=not_found_uuid)
 
 
 class TestDjangoCassandraField(TestCase):

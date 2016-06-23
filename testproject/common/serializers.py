@@ -1,10 +1,10 @@
 from django_cassandra_engine.serializers import DjangoCassandraModelSerializer
 
-from common.models import CassandraThingWithDate
+from common.models import CassandraThingMultiplePK
 
 
 class ThingSerializer(DjangoCassandraModelSerializer):
 
     class Meta:
-        model = CassandraThingWithDate
+        model = CassandraThingMultiplePK
         fields = '__all__'

@@ -12,7 +12,7 @@ from django.apps import apps
 from django.core import validators
 from django.db.models.base import ModelBase
 from django.utils.translation import ugettext_lazy as _
-from django.db.models.options import Options
+from django.db.models import options
 import cassandra
 from cassandra.cqlengine import query
 from cassandra.cqlengine import columns
@@ -25,7 +25,8 @@ from cassandra.util import OrderedDict
 from .constants import (
     ORDER_BY_WARN,
     ORDER_BY_ERROR_HELP,
-    CASSANDRA_DRIVER_COMPAT_VERSIONS
+    CASSANDRA_DRIVER_COMPAT_VERSIONS,
+    PK_META_MISSING_HELP
 )
 from . import django_field_methods
 
@@ -40,7 +41,7 @@ if cassandra.__version__ not in CASSANDRA_DRIVER_COMPAT_VERSIONS:
                                     cassandra.__version__))
 
 
-class DjangoCassandraOptions(Options):
+class DjangoCassandraOptions(options.Options):
 
     def __init__(self, *args, **kwargs):
         self.model_inst = kwargs.pop('cls')
@@ -58,8 +59,9 @@ class DjangoCassandraOptions(Options):
 
         # Set further _meta attributes explicitly
         self.proxy_for_model = self.concrete_model = self.model_inst
-        self.pk = self._get_first_primary_key_column
+        self.pk = self._get_primary_key_column
         self.managed = False
+
         self.swappable = False
 
     def can_migrate(self, *args, **kwargs):
@@ -83,9 +85,17 @@ class DjangoCassandraOptions(Options):
         return self._defined_columns.values()
 
     @property
-    def _get_first_primary_key_column(self):
+    def _get_primary_key_column(self):
         try:
-            return list(self.model_inst._primary_keys.values())[0]
+            if len(self.model_inst._primary_keys) > 1:
+                try:
+                    pk_field = self.model_inst.Meta.get_pk_field
+                except AttributeError:
+                    raise RuntimeError(
+                        PK_META_MISSING_HELP.format(self.model_inst))
+                return self.model_inst._primary_keys[pk_field]
+            else:
+                return list(self.model_inst._primary_keys.values())[0]
         except IndexError:
             return None
 
@@ -135,18 +145,15 @@ class DjangoCassandraOptions(Options):
             'blank': _('This field cannot be blank.'),
             'unique': _('%(model_name)s with this %(field_label)s '
                         'already exists.'),
-            # Translators: The 'lookup_type' is one of 'date', 'year' or 'month'.
-            # Eg: "Title must be unique for pub_date year"
             'unique_for_date': _("%(field_label)s must be unique for "
                                  "%(date_field_label)s %(lookup_type)s."),
         }
 
         for name, cql_column in self._defined_columns.items():
-            # import ipdb; ipdb.set_trace()
             cql_column.error_messages = default_error_messages
             cql_column.empty_values = list(validators.EMPTY_VALUES)
             cql_column.db_index = cql_column.index
-            cql_column.serialize = not cql_column.is_primary_key
+            cql_column.serialize = True
             cql_column.unique = cql_column.is_primary_key
             cql_column.hidden = False
             cql_column.auto_created = False
@@ -403,11 +410,17 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
         return klass
 
     def add_to_class(cls, name, value):
+        django_meta_default_names = options.DEFAULT_NAMES
+
+        # patch django so Meta.get_pk_field can be specified these models
+        options.DEFAULT_NAMES = django_meta_default_names + ('get_pk_field',)
+
         # We should call the contribute_to_class method only if it's bound
         if not inspect.isclass(value) and hasattr(value, 'contribute_to_class'):
             value.contribute_to_class(cls, name)
         else:
             setattr(cls, name, value)
+        options.DEFAULT_NAMES = django_meta_default_names
 
     @classmethod
     def _add_django_meta_and_register_model(cls, klass, attrs, name):
@@ -445,8 +458,25 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
             '_meta', DjangoCassandraOptions(meta, app_label, cls=new_class))
         new_class.add_to_class('_default_manager', new_class.objects)
         new_class.add_to_class('_base_manager', new_class.objects)
+        new_class.add_to_class('pk', cls._get_primary_key_value)
         new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
         return new_class
+
+    @property
+    def _get_primary_key_value(self):
+        try:
+            if len(self._primary_keys) > 1:
+                try:
+                    pk_field_name = self.Meta.get_pk_field.name
+                    return getattr(self, pk_field_name)
+                except AttributeError:
+                    raise RuntimeError(
+                        PK_META_MISSING_HELP.format(self))
+            else:
+                pk_field_name = self._primary_keys.values()[0].name
+                return getattr(self, pk_field_name)
+        except IndexError:
+            return None
 
     @classmethod
     def check(cls, **kwargs):
@@ -680,6 +710,5 @@ class DjangoCassandraModel(
         But to work with 'pk'
         """
         if name == 'pk':
-            first_primary_column = cls._get_primary_key_columns()[0]
-            return first_primary_column
+            return cls._columns[cls._meta.get_pk_field]
         return cls._columns[name]

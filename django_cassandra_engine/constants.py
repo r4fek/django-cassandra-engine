@@ -9,3 +9,13 @@ ORDER_BY_ERROR_HELP = (
     'set "CASSANDRA_FALLBACK_ORDER_BY_PYTHON = True" in Django Settings.'
 )
 CASSANDRA_DRIVER_COMPAT_VERSIONS = ('3.3.0', '3.4.0', '3.4.1')
+
+PK_META_MISSING_HELP = (
+    '\nOn Django Cassandra Models with more than one primary_key field,\n'
+    'The model {} must specify class Meta attribute \'get_pk_field\'.\n'
+    'E.g.\n'
+    'class Meta:\n'
+    '  get_pk_field=\'id\'\n'
+    'So that Django knows which primary key field to use in queryies '
+    'such as Model.objects.get(pk=123)'
+)
