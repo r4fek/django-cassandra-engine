@@ -11,6 +11,7 @@ from django.conf import settings
 from django.apps import apps
 from django.core import validators
 from django.db.models.base import ModelBase
+from django.utils.translation import ugettext_lazy as _
 from django.db.models.options import Options
 import cassandra
 from cassandra.cqlengine import query
@@ -128,8 +129,21 @@ class DjangoCassandraOptions(Options):
             django_field_methods.get_col,
         ]
 
+        default_error_messages = {
+            'invalid_choice': _('Value %(value)r is not a valid choice.'),
+            'null': _('This field cannot be null.'),
+            'blank': _('This field cannot be blank.'),
+            'unique': _('%(model_name)s with this %(field_label)s '
+                        'already exists.'),
+            # Translators: The 'lookup_type' is one of 'date', 'year' or 'month'.
+            # Eg: "Title must be unique for pub_date year"
+            'unique_for_date': _("%(field_label)s must be unique for "
+                                 "%(date_field_label)s %(lookup_type)s."),
+        }
+
         for name, cql_column in self._defined_columns.items():
             # import ipdb; ipdb.set_trace()
+            cql_column.error_messages = default_error_messages
             cql_column.empty_values = list(validators.EMPTY_VALUES)
             cql_column.db_index = cql_column.index
             cql_column.serialize = not cql_column.is_primary_key
