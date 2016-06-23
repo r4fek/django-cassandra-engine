@@ -5,11 +5,11 @@ import warnings
 from operator import attrgetter
 import collections
 from itertools import chain
-from types import MethodType
 
 import six
 from django.conf import settings
 from django.apps import apps
+from django.core import validators
 from django.db.models.base import ModelBase
 from django.db.models.options import Options
 import cassandra
@@ -26,7 +26,7 @@ from .constants import (
     ORDER_BY_ERROR_HELP,
     CASSANDRA_DRIVER_COMPAT_VERSIONS
 )
-from .django_field import value_to_string, value_from_object
+from . import django_field_methods
 
 
 log = logging.getLogger(__name__)
@@ -95,14 +95,53 @@ class DjangoCassandraOptions(Options):
         So that the Django Options class may interact with it as if it were
         a Django Field.
         """
+        methods_to_add = [
+            django_field_methods.value_from_object,
+            django_field_methods.value_to_string,
+            django_field_methods.get_attname,
+            django_field_methods.get_cache_name,
+            django_field_methods.pre_save,
+            django_field_methods.get_prep_value,
+            django_field_methods.get_choices,
+            django_field_methods.get_choices_default,
+            django_field_methods.save_form_data,
+            django_field_methods.formfield,
+            django_field_methods.get_db_prep_value,
+            django_field_methods.get_db_prep_save,
+            django_field_methods.db_type_suffix,
+            django_field_methods.select_format,
+            django_field_methods.get_internal_type,
+            django_field_methods.get_attname_column,
+            django_field_methods.check,
+            django_field_methods._check_field_name,
+            django_field_methods._check_db_index,
+            django_field_methods.deconstruct,
+            django_field_methods.run_validators,
+            django_field_methods.clean,
+            django_field_methods.get_db_converters,
+            django_field_methods.get_prep_lookup,
+            django_field_methods.get_db_prep_lookup,
+            django_field_methods.get_filter_kwargs_for_object,
+            django_field_methods.set_attributes_from_name,
+            django_field_methods.db_parameters,
+            django_field_methods.get_pk_value_on_save,
+            django_field_methods.get_col,
+        ]
+
         for name, cql_column in self._defined_columns.items():
+            # import ipdb; ipdb.set_trace()
+            cql_column.empty_values = list(validators.EMPTY_VALUES)
+            cql_column.db_index = cql_column.index
             cql_column.serialize = not cql_column.is_primary_key
+            cql_column.unique = cql_column.is_primary_key
             cql_column.hidden = False
             cql_column.auto_created = False
             cql_column.help_text = ''
             cql_column.blank = not cql_column.required
             cql_column.null = not cql_column.required
             cql_column.choices = []
+            cql_column.flatchoices = []
+            cql_column.validators = []
             cql_column.editable = True
             cql_column.many_to_many = False
             cql_column.many_to_one = False
@@ -113,6 +152,7 @@ class DjangoCassandraOptions(Options):
             cql_column.unique_for_date = None
             cql_column.unique_for_month = None
             cql_column.unique_for_year = None
+            cql_column.db_column = None
             cql_column.rel = None
             cql_column.attname = name
             cql_column.field = cql_column
@@ -121,10 +161,16 @@ class DjangoCassandraOptions(Options):
             cql_column.verbose_name = cql_column.db_field_name
             cql_column._verbose_name = cql_column.db_field_name
             cql_column.field.related_query_name = lambda: None
-            cql_column.value_from_object = MethodType(
-                value_from_object, cql_column, type(cql_column))
-            cql_column.value_to_string = MethodType(
-                value_to_string, cql_column, type(cql_column))
+
+            for method in methods_to_add:
+                try:
+                    method_name = method.func_name
+                except AttributeError:
+                    # python 3
+                    method_name = method.__name__
+
+                new_method = six.create_bound_method(method, cql_column)
+                setattr(cql_column, method_name, new_method)
 
 
 class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
