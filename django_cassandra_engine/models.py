@@ -42,13 +42,22 @@ if cassandra.__version__ not in CASSANDRA_DRIVER_COMPAT_VERSIONS:
 
 
 class DjangoCassandraOptions(options.Options):
+    default_error_messages = {
+        'invalid_choice': _('Value %(value)r is not a valid choice.'),
+        'null': _('This field cannot be null.'),
+        'blank': _('This field cannot be blank.'),
+        'unique': _('%(model_name)s with this %(field_label)s '
+                    'already exists.'),
+        'unique_for_date': _("%(field_label)s must be unique for "
+                             "%(date_field_label)s %(lookup_type)s."),
+    }
 
     def __init__(self, *args, **kwargs):
         self.model_inst = kwargs.pop('cls')
         self._defined_columns = self.model_inst.__dict__['_defined_columns']
 
         # Add Django attibutes to Columns
-        self._give_column_django_field_attributes()
+        self._give_columns_django_field_attributes()
 
         # Call Django to create _meta object
         super(DjangoCassandraOptions, self).__init__(*args, **kwargs)
@@ -57,9 +66,10 @@ class DjangoCassandraOptions(options.Options):
         for column in self._defined_columns.values():
             self.add_field(column)
 
+        self.setup_pk()
+
         # Set further _meta attributes explicitly
         self.proxy_for_model = self.concrete_model = self.model_inst
-        self.pk = self.model_inst._get_explicit_pk_column()
         self.managed = False
 
         self.swappable = False
@@ -74,17 +84,53 @@ class DjangoCassandraOptions(options.Options):
     def related_objects(self):
         return []
 
+    def setup_pk(self):
+        self.pk = self.model_inst._get_explicit_pk_column()
+
     def add_field(self, field):
         """Add each field as a virtual_field."""
         self.virtual_fields.append(field)
-        self.setup_pk(field)
         self._expire_cache(reverse=True)
         self._expire_cache(reverse=False)
 
     def _get_fields(self, *args, **kwargs):
         return self._defined_columns.values()
 
-    def _give_column_django_field_attributes(self):
+    def _set_column_django_attributes(self, cql_column, name):
+        cql_column.error_messages = self.default_error_messages
+        cql_column.empty_values = list(validators.EMPTY_VALUES)
+        cql_column.db_index = cql_column.index
+        cql_column.serialize = True
+        cql_column.unique = cql_column.is_primary_key
+        cql_column.hidden = False
+        cql_column.auto_created = False
+        cql_column.help_text = ''
+        cql_column.blank = not cql_column.required
+        cql_column.null = not cql_column.required
+        cql_column.choices = []
+        cql_column.flatchoices = []
+        cql_column.validators = []
+        cql_column.editable = True
+        cql_column.many_to_many = False
+        cql_column.many_to_one = False
+        cql_column.one_to_many = False
+        cql_column.one_to_one = False
+        cql_column.is_relation = False
+        cql_column.remote_field = None
+        cql_column.unique_for_date = None
+        cql_column.unique_for_month = None
+        cql_column.unique_for_year = None
+        cql_column.db_column = None
+        cql_column.rel = None
+        cql_column.attname = name
+        cql_column.field = cql_column
+        cql_column.model = self.model_inst
+        cql_column.name = cql_column.db_field_name
+        cql_column.verbose_name = cql_column.db_field_name
+        cql_column._verbose_name = cql_column.db_field_name
+        cql_column.field.related_query_name = lambda: None
+
+    def _give_columns_django_field_attributes(self):
         """
         Add Django Field attributes to each cqlengine.Column instance.
 
@@ -124,49 +170,8 @@ class DjangoCassandraOptions(options.Options):
             django_field_methods.get_col,
         ]
 
-        default_error_messages = {
-            'invalid_choice': _('Value %(value)r is not a valid choice.'),
-            'null': _('This field cannot be null.'),
-            'blank': _('This field cannot be blank.'),
-            'unique': _('%(model_name)s with this %(field_label)s '
-                        'already exists.'),
-            'unique_for_date': _("%(field_label)s must be unique for "
-                                 "%(date_field_label)s %(lookup_type)s."),
-        }
-
         for name, cql_column in self._defined_columns.items():
-            cql_column.error_messages = default_error_messages
-            cql_column.empty_values = list(validators.EMPTY_VALUES)
-            cql_column.db_index = cql_column.index
-            cql_column.serialize = True
-            cql_column.unique = cql_column.is_primary_key
-            cql_column.hidden = False
-            cql_column.auto_created = False
-            cql_column.help_text = ''
-            cql_column.blank = not cql_column.required
-            cql_column.null = not cql_column.required
-            cql_column.choices = []
-            cql_column.flatchoices = []
-            cql_column.validators = []
-            cql_column.editable = True
-            cql_column.many_to_many = False
-            cql_column.many_to_one = False
-            cql_column.one_to_many = False
-            cql_column.one_to_one = False
-            cql_column.is_relation = False
-            cql_column.remote_field = None
-            cql_column.unique_for_date = None
-            cql_column.unique_for_month = None
-            cql_column.unique_for_year = None
-            cql_column.db_column = None
-            cql_column.rel = None
-            cql_column.attname = name
-            cql_column.field = cql_column
-            cql_column.model = self.model_inst
-            cql_column.name = cql_column.db_field_name
-            cql_column.verbose_name = cql_column.db_field_name
-            cql_column._verbose_name = cql_column.db_field_name
-            cql_column.field.related_query_name = lambda: None
+            self._set_column_django_attributes(cql_column=cql_column, name=name)
 
             for method in methods_to_add:
                 try:
@@ -177,6 +182,8 @@ class DjangoCassandraOptions(options.Options):
 
                 new_method = six.create_bound_method(method, cql_column)
                 setattr(cql_column, method_name, new_method)
+        for name, col in self._defined_columns.items():
+            assert col.serialize is True, name
 
 
 class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):

@@ -1,13 +1,8 @@
-import uuid
-
 from django.contrib.contenttypes.fields import (
     GenericForeignKey, GenericRelation,
 )
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from cassandra.cqlengine import columns as cassandra_columns
-
-from django_cassandra_engine.models import DjangoCassandraModel
 
 
 class Relation(models.Model):
@@ -16,44 +11,6 @@ class Relation(models.Model):
 
 class Thing(object):
     pass
-
-
-class CassandraThing(DjangoCassandraModel):
-    id = cassandra_columns.UUID(primary_key=True, default=uuid.uuid4)
-    data_abstract = cassandra_columns.Text(max_length=10)
-
-    class Meta:
-        get_pk_field = 'id'
-
-
-class CassandraThingWithDate(DjangoCassandraModel):
-    id = cassandra_columns.UUID(primary_key=True, default=uuid.uuid4)
-    created_on = cassandra_columns.DateTime()
-
-    class Meta:
-        get_pk_field = 'id'
-
-
-class CassandraThingMultiplePK(DjangoCassandraModel):
-    id = cassandra_columns.UUID(primary_key=True, default=uuid.uuid4)
-    another_id = cassandra_columns.UUID(primary_key=True, default=uuid.uuid4)
-    data_abstract = cassandra_columns.Text(max_length=10)
-
-    class Meta:
-        get_pk_field = 'id'
-
-
-class CassandraFamilyMember(DjangoCassandraModel):
-    id = cassandra_columns.UUID(primary_key=True, default=uuid.uuid4)
-    first_name = cassandra_columns.Text(primary_key=True)
-    last_name = cassandra_columns.Text(primary_key=True)
-    is_real = cassandra_columns.Boolean(default=False)
-    favourite_number = cassandra_columns.Integer(required=False)
-    favourite_float_number = cassandra_columns.Float(partition_key=True)
-    created_on = cassandra_columns.DateTime()
-
-    class Meta:
-        get_pk_field = 'id'
 
 
 class AbstractPerson(models.Model):

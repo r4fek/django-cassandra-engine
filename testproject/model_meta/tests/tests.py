@@ -9,8 +9,9 @@ from django.test import SimpleTestCase
 
 from model_meta.models import (
     AbstractPerson, BasePerson, Child, CommonAncestor, FirstParent, Person,
-    ProxyPerson, Relating, Relation, SecondParent, CassandraThing
+    ProxyPerson, Relating, Relation, SecondParent
 )
+from common.models import CassandraThing
 from model_meta.results import TEST_RESULTS
 
 

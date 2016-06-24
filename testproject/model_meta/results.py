@@ -1,4 +1,5 @@
-from .models import AbstractPerson, BasePerson, Person, Relating, Relation, CassandraThing
+from common.models import CassandraThing
+from .models import AbstractPerson, BasePerson, Person, Relating, Relation
 
 TEST_RESULTS = {
     'get_all_field_names': {
@@ -820,14 +821,14 @@ TEST_RESULTS = {
         ],
     },
     'labels': {
-        CassandraThing: 'model_meta.CassandraThing',
+        CassandraThing: 'common.CassandraThing',
         AbstractPerson: 'model_meta.AbstractPerson',
         BasePerson: 'model_meta.BasePerson',
         Person: 'model_meta.Person',
         Relating: 'model_meta.Relating',
     },
     'lower_labels': {
-        CassandraThing: 'model_meta.cassandrathing',
+        CassandraThing: 'common.cassandrathing',
         AbstractPerson: 'model_meta.abstractperson',
         BasePerson: 'model_meta.baseperson',
         Person: 'model_meta.person',
