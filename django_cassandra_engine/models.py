@@ -182,8 +182,6 @@ class DjangoCassandraOptions(options.Options):
 
                 new_method = six.create_bound_method(method, cql_column)
                 setattr(cql_column, method_name, new_method)
-        for name, col in self._defined_columns.items():
-            assert col.serialize is True, name
 
 
 class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
