@@ -42,7 +42,7 @@ if cassandra.__version__ not in CASSANDRA_DRIVER_COMPAT_VERSIONS:
 
 
 class DjangoCassandraOptions(options.Options):
-    default_error_messages = {
+    default_field_error_messages = {
         'invalid_choice': _('Value %(value)r is not a valid choice.'),
         'null': _('This field cannot be null.'),
         'blank': _('This field cannot be blank.'),
@@ -97,7 +97,7 @@ class DjangoCassandraOptions(options.Options):
         return self._defined_columns.values()
 
     def _set_column_django_attributes(self, cql_column, name):
-        cql_column.error_messages = self.default_error_messages
+        cql_column.error_messages = self.default_field_error_messages
         cql_column.empty_values = list(validators.EMPTY_VALUES)
         cql_column.db_index = cql_column.index
         cql_column.serialize = True
