@@ -54,6 +54,7 @@ class TestDjangoCassandraModel(test.SimpleTestCase):
         got_family_member = (CassandraFamilyMember.objects
                              .allow_filtering()
                              .get(pk=self.family_member.id))
+
         self.assertEqual(got_family_member.pk, self.family_member.id)
 
     def test_default_manager_is_set(self):

@@ -59,7 +59,7 @@ class DjangoCassandraOptions(options.Options):
 
         # Set further _meta attributes explicitly
         self.proxy_for_model = self.concrete_model = self.model_inst
-        self.pk = self._get_primary_key_column
+        self.pk = self.model_inst._get_explicit_pk_column()
         self.managed = False
 
         self.swappable = False
@@ -83,21 +83,6 @@ class DjangoCassandraOptions(options.Options):
 
     def _get_fields(self, *args, **kwargs):
         return self._defined_columns.values()
-
-    @property
-    def _get_primary_key_column(self):
-        try:
-            if len(self.model_inst._primary_keys) > 1:
-                try:
-                    pk_field = self.model_inst.Meta.get_pk_field
-                except AttributeError:
-                    raise RuntimeError(
-                        PK_META_MISSING_HELP.format(self.model_inst))
-                return self.model_inst._primary_keys[pk_field]
-            else:
-                return list(self.model_inst._primary_keys.values())[0]
-        except IndexError:
-            return None
 
     def _give_column_django_field_attributes(self):
         """
@@ -458,25 +443,8 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
             '_meta', DjangoCassandraOptions(meta, app_label, cls=new_class))
         new_class.add_to_class('_default_manager', new_class.objects)
         new_class.add_to_class('_base_manager', new_class.objects)
-        new_class.add_to_class('pk', cls._get_primary_key_value)
         new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
         return new_class
-
-    @property
-    def _get_primary_key_value(self):
-        try:
-            if len(self._primary_keys) > 1:
-                try:
-                    pk_field_name = self.Meta.get_pk_field.name
-                    return getattr(self, pk_field_name)
-                except AttributeError:
-                    raise RuntimeError(
-                        PK_META_MISSING_HELP.format(self))
-            else:
-                pk_field_name = self._primary_keys.values()[0].name
-                return getattr(self, pk_field_name)
-        except IndexError:
-            return None
 
     @classmethod
     def check(cls, **kwargs):
@@ -618,6 +586,11 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
 
         return ReadOnlyDjangoCassandraQuerySet(qset, model_class=self.model)
 
+    def get(self, *args, **kwargs):
+        obj = super(DjangoCassandraQuerySet, self).get(*args, **kwargs)
+        obj.pk = getattr(obj, obj._get_explicit_pk_column().name)
+        return obj
+
     def order_by(self, *colnames):
         if len(colnames) == 0:
             clone = copy.deepcopy(self)
@@ -710,5 +683,20 @@ class DjangoCassandraModel(
         But to work with 'pk'
         """
         if name == 'pk':
-            return cls._columns[cls._meta.get_pk_field]
+            return cls._meta.get_field(cls._meta.pk.name)
         return cls._columns[name]
+
+    @classmethod
+    def _get_explicit_pk_column(cls):
+        try:
+            if len(cls._primary_keys) > 1:
+                try:
+                    pk_field = cls.Meta.get_pk_field
+                except AttributeError:
+                    raise RuntimeError(
+                        PK_META_MISSING_HELP.format(cls))
+                return cls._primary_keys[pk_field]
+            else:
+                return list(cls._primary_keys.values())[0]
+        except IndexError:
+            return None

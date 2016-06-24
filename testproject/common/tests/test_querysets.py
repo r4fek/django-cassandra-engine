@@ -93,7 +93,7 @@ class TestDjangoCassandraQuerySet(test.SimpleTestCase):
 
     def test_order_by_unknown_column_raises_exception(self):
         with self.assertRaises(QueryException):
-            CassandraThingMultiplePK.objects.order_by('unknown', 'also_unkown')
+            CassandraThingMultiplePK.objects.order_by('unknown', 'also_known')
 
     def test_order_by_with_fallback_off_raises(self):
         queryset = CassandraThingMultiplePK.objects
