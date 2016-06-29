@@ -29,7 +29,7 @@ class TestModelForm(CassandraTestCase):
         ))
         instance = form.save()
 
-        self.assertEqual(instance.id, unicode(self.some_uuid))
+        self.assertEqual(instance.id, str(self.some_uuid))
 
     def test_form_edit(self):
         existing = self.family_member

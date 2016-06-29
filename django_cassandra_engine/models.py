@@ -33,13 +33,16 @@ from . import django_model_methods
 
 
 log = logging.getLogger(__name__)
-USE_FALLBACK_ORDER_BY = getattr(
-    settings, 'CASSANDRA_FALLBACK_ORDER_BY_PYTHON', False)
 if cassandra.__version__ not in CASSANDRA_DRIVER_COMPAT_VERSIONS:
     raise RuntimeError(
         'Django Cassandra Models require cassandra-driver versions {} '
         'Version "{}" found'.format(CASSANDRA_DRIVER_COMPAT_VERSIONS,
                                     cassandra.__version__))
+
+
+def eq(self, other):
+    # Needed for @total_ordering
+    return False
 
 
 class DjangoCassandraOptions(options.Options):
@@ -184,6 +187,13 @@ class DjangoCassandraOptions(options.Options):
 
                 new_method = six.create_bound_method(method, cql_column)
                 setattr(cql_column, method_name, new_method)
+            new_method = six.create_bound_method(eq, cql_column)
+            setattr(cql_column, '__lt__', new_method)
+            setattr(cql_column, '__le__', new_method)
+            setattr(cql_column, '__eq__', new_method)
+            setattr(cql_column, '__ne__', new_method)
+            setattr(cql_column, '__gt__', new_method)
+            setattr(cql_column, '__ge__', new_method)
 
 
 class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
@@ -562,7 +572,16 @@ class ReadOnlyDjangoCassandraQuerySet(list):
 class DjangoCassandraQuerySet(query.ModelQuerySet):
     name = 'objects'
     use_in_migrations = False
-    _USE_FALLBACK_ORDER_BY = USE_FALLBACK_ORDER_BY
+
+    def _select_fields(self):
+        if self._defer_fields or self._only_fields:
+            fields = self.model._columns.keys()
+            if self._defer_fields:
+                fields = [f for f in fields if f not in self._defer_fields]
+            elif self._only_fields:
+                fields = self._only_fields
+            return [self.model._columns[f].db_field_name for f in fields]
+        return super(query.ModelQuerySet, self)._select_fields()
 
     def python_order_by(self, qset, colnames):
         if not isinstance(qset, list):
@@ -622,7 +641,7 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
                 )
 
                 if order_by_exception:
-                    order_using_python = self._USE_FALLBACK_ORDER_BY
+                    order_using_python = settings.CASSANDRA_FALLBACK_ORDER_BY_PYTHON
                     if order_using_python:
                         log.debug('ordering in python column "%s"', col)
                         msg = ORDER_BY_WARN.format(col=col, exc=exc)

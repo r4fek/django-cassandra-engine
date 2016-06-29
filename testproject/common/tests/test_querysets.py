@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 
 from django import test
+from django.conf import settings
 from cassandra.cqlengine.query import QueryException
 
 from common.models import CassandraThingMultiplePK
@@ -97,9 +98,11 @@ class TestDjangoCassandraQuerySet(test.SimpleTestCase):
 
     def test_order_by_with_fallback_off_raises(self):
         queryset = CassandraThingMultiplePK.objects
-        queryset._USE_FALLBACK_ORDER_BY = False
+        orig_setting = settings.CASSANDRA_FALLBACK_ORDER_BY_PYTHON
+        settings.CASSANDRA_FALLBACK_ORDER_BY_PYTHON = False
         with self.assertRaises(QueryException):
             queryset.order_by('created_on')
+        settings.CASSANDRA_FALLBACK_ORDER_BY_PYTHON = orig_setting
 
     def test_order_by_on_second_primary_key_with_fallback_disabled(self):
         queryset = CassandraThingMultiplePK.objects
