@@ -201,6 +201,7 @@ class TestDjangoCassandraField(CassandraTestCase):
             self.assertEqual(field.choices, [])
             self.assertEqual(field.flatchoices, [])
             self.assertEqual(field.help_text, '')
+            self.assertEqual(field.concrete, True)
             self.assertEqual(field.editable, True)
             self.assertEqual(field.many_to_many, False)
             self.assertEqual(field.many_to_one, False)

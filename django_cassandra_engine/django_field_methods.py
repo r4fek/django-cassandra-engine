@@ -87,6 +87,8 @@ def get_internal_type(self):
 
 
 def save_form_data(self, instance, data):
+    if data == '':
+        data = None
     setattr(instance, self.name, data)
 
 

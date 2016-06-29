@@ -29,6 +29,7 @@ from .constants import (
     PK_META_MISSING_HELP
 )
 from . import django_field_methods
+from . import django_model_methods
 
 
 log = logging.getLogger(__name__)
@@ -111,6 +112,7 @@ class DjangoCassandraOptions(options.Options):
         cql_column.flatchoices = []
         cql_column.validators = []
         cql_column.editable = True
+        cql_column.concrete = True
         cql_column.many_to_many = False
         cql_column.many_to_one = False
         cql_column.one_to_many = False
@@ -397,6 +399,10 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
                 attrs=attrs,
                 name=name
             )
+        methods = inspect.getmembers(django_model_methods, inspect.isfunction)
+        for method_name, method in methods:
+            new_method = six.create_bound_method(method, klass)
+            setattr(klass, method_name, new_method)
         return klass
 
     def add_to_class(cls, name, value):
@@ -698,8 +704,7 @@ class DjangoCassandraModel(
                 try:
                     pk_field = cls.Meta.get_pk_field
                 except AttributeError:
-                    raise RuntimeError(
-                        PK_META_MISSING_HELP.format(cls))
+                    raise RuntimeError(PK_META_MISSING_HELP.format(cls))
                 return cls._primary_keys[pk_field]
             else:
                 return list(cls._primary_keys.values())[0]
