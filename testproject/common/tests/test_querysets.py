@@ -30,6 +30,14 @@ class TestDjangoCassandraQuerySet(test.SimpleTestCase):
     def get_queryset_ordered(self):
         return CassandraThingMultiplePK.objects.all().order_by('created_on')
 
+    def test_exists(self):
+        queryset_with_items = CassandraThingMultiplePK.objects.all()
+        self.assertTrue(queryset_with_items.exists())
+
+        unknown_id = uuid.uuid4()
+        queryset_empty = CassandraThingMultiplePK.objects.filter(id=unknown_id)
+        self.assertFalse(queryset_empty.exists())
+
     def test_non_implemented_fields_raise_exception_when_called(self):
         methods_expected_to_raise = []
 

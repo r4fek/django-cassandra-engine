@@ -616,6 +616,9 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
 
         return ReadOnlyDjangoCassandraQuerySet(qset, model_class=self.model)
 
+    def exists(self):
+        return self.count() > 0
+
     def get(self, *args, **kwargs):
         obj = super(DjangoCassandraQuerySet, self).get(*args, **kwargs)
         obj.pk = getattr(obj, obj._get_explicit_pk_column().name)
