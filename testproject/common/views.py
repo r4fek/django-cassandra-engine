@@ -25,7 +25,7 @@ class ThingMultiplePKListAPIView(ListAPIView):
     permission_classes = ()
 
 
-class CassandraThing2ViewSet(ModelViewSet):
+class ThingModelViewSet(ModelViewSet):
     serializer_class = ThingSerializer
     queryset = CassandraThing.objects.all()
     permission_classes = ()
