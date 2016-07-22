@@ -1,5 +1,9 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 0.10.1 (22.07.2016)
+
+* Update `cassandra-driver` to 3.5.0
+
 ## Version 0.10.0 (10.06.2016)
 
 * Update to emit post migrate signal (by @kamal-una)
