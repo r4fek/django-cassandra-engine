@@ -35,12 +35,16 @@ def emit_post_migrate_signal(verbosity, interactive, db):
 
 
 class Command(BaseCommand):
-    option_list = BaseCommand.option_list + (
-        make_option('--database', action='store', dest='database',
-                    default=None, help='Nominates a database to synchronize.'),
-    )
-
     help = 'Sync Cassandra database(s)'
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--database',
+            action='store',
+            dest='database',
+            default=None,
+            help='Nominates a database to synchronize.',
+        )
 
     @staticmethod
     def _import_management():
