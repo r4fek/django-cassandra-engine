@@ -1,7 +1,7 @@
 from optparse import make_option
 
 import django
-if django.__version__ >= '1.10':
+if django.VERSION[0:2] >= (1, 10):
     from django.core.management.base import BaseCommand, CommandError
 else:
     from django.core.management.base import NoArgsCommand as BaseCommand, CommandError
