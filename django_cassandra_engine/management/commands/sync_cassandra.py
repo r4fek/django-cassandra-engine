@@ -1,6 +1,11 @@
 from optparse import make_option
 
-from django.core.management.base import NoArgsCommand, CommandError
+import django
+if django.VERSION[0:2] >= (1, 10):
+    from django.core.management.base import BaseCommand, CommandError
+else:
+    from django.core.management.base import NoArgsCommand as BaseCommand, CommandError
+
 from django.db import connections
 from django.conf import settings
 
@@ -29,13 +34,17 @@ def emit_post_migrate_signal(verbosity, interactive, db):
             using=db)
 
 
-class Command(NoArgsCommand):
-    option_list = NoArgsCommand.option_list + (
-        make_option('--database', action='store', dest='database',
-                    default=None, help='Nominates a database to synchronize.'),
-    )
-
+class Command(BaseCommand):
     help = 'Sync Cassandra database(s)'
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--database',
+            action='store',
+            dest='database',
+            default=None,
+            help='Nominates a database to synchronize.',
+        )
 
     @staticmethod
     def _import_management():
