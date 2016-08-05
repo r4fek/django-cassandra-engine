@@ -1,6 +1,11 @@
-from optparse import make_option
+import django
+if django.VERSION[0:2] >= (1, 10):
+    from django.core.management.base import BaseCommand, CommandError
+else:
+    from django.core.management.base import (
+        NoArgsCommand as BaseCommand,
+        CommandError)
 
-from django.core.management.base import NoArgsCommand, CommandError
 from django.db import connections
 from django.conf import settings
 
@@ -20,7 +25,9 @@ def emit_post_migrate_signal(verbosity, interactive, db):
         if app_config.models_module is None:
             continue
         if verbosity >= 2:
-            print("Running post-migrate handlers for application %s" % app_config.label)
+            print("Running post-migrate handlers for application %s" %
+                  app_config.label)
+
         post_migrate.send(
             sender=app_config,
             app_config=app_config,
@@ -29,13 +36,17 @@ def emit_post_migrate_signal(verbosity, interactive, db):
             using=db)
 
 
-class Command(NoArgsCommand):
-    option_list = NoArgsCommand.option_list + (
-        make_option('--database', action='store', dest='database',
-                    default=None, help='Nominates a database to synchronize.'),
-    )
-
+class Command(BaseCommand):
     help = 'Sync Cassandra database(s)'
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--database',
+            action='store',
+            dest='database',
+            default=None,
+            help='Nominates a database to synchronize.',
+        )
 
     @staticmethod
     def _import_management():
@@ -92,8 +103,7 @@ class Command(NoArgsCommand):
                 self.stdout.write('Syncing %s.%s' % (app_name, model.__name__))
                 sync_table(model)
 
-    def handle_noargs(self, **options):
-
+    def handle(self, *args, **options):
         self._import_management()
 
         database = options.get('database')
@@ -111,6 +121,6 @@ class Command(NoArgsCommand):
             raise CommandError(
                 'Please add django_cassandra_engine backend to DATABASES!')
 
-        # Send the post_migrate signal, so individual apps can do whatever they need
-        # to do at this point.
+        # Send the post_migrate signal, so individual apps can do whatever
+        # they need to do at this point.
         emit_post_migrate_signal(1, False, cassandra_alias)
