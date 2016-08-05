@@ -1,6 +1,6 @@
 # Django Cassandra Engine - CHANGELOG
 
-## Version 1.11.0 (05.08.2016)
+## Version 0.11.0 (05.08.2016)
 
 * Fix #69: Replace NoArgsCommand with BaseCommand to accommodate 1.10 upgrade (by @BenBrostoff)
 * Update `cassandra-driver` to 3.6.0
