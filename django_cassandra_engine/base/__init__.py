@@ -59,6 +59,16 @@ class DatabaseWrapper(BaseDatabaseWrapper):
     Database = Database
     vendor = 'cassandra'
 
+    operators = {
+        'exact': '= %s',
+        'contains': 'CONTAINS %s',
+        'gt': '> %s',
+        'gte': '>= %s',
+        'lt': '< %s',
+        'lte': '<= %s'
+    }
+    
+
     def __init__(self, *args, **kwargs):
         super(DatabaseWrapper, self).__init__(*args, **kwargs)
 
