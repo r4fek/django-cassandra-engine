@@ -1,6 +1,5 @@
 from django.core.management import call_command
 from django.core.management.commands.migrate import Command as MigrateCommand
-
 from django_cassandra_engine.utils import get_engine_from_db_alias
 
 

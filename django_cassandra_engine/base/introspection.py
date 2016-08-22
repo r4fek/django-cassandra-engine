@@ -59,7 +59,6 @@ class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
         connection = self.connection.connection
         keyspace_name = connection.keyspace
         keyspace = connection.cluster.metadata.keyspaces[keyspace_name]
-
         return keyspace.tables
 
     def get_table_list(self, cursor):
