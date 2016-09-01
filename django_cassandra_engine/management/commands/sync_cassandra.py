@@ -41,6 +41,10 @@ class Command(BaseCommand):
         for app_name in settings.INSTALLED_APPS:
             try:
                 import_module('.management', app_name)
+            except SystemError:
+                # We get SystemError if INSTALLED_APPS contains the
+                # name of a class rather than a module
+                pass
             except ImportError as exc:
                 # This is slightly hackish. We want to ignore ImportErrors
                 # if the "management" module itself is missing -- but we don't
