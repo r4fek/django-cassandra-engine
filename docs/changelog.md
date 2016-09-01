@@ -1,5 +1,11 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 0.11.1 (01.09.2016)
+
+* Fix for #70 "AttributeError: operators (by @bezineb5)
+* Fix #72: Django 1.10 `makemigrations` issue
+* Fix #74: supress emit_post_migrate_signal in sync_cassandra (by @jamey)
+
 ## Version 0.11.0 (05.08.2016)
 
 * Fix #69: Replace NoArgsCommand with BaseCommand to accommodate 1.10 upgrade (by @BenBrostoff)
