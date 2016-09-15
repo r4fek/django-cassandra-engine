@@ -7,11 +7,11 @@ from django.db.models.fields import CharField, Field, related
 from django.db.models.options import EMPTY_RELATION_TREE, IMMUTABLE_WARNING
 from django.test import SimpleTestCase
 
-from ..models import (
+from .models import (
     AbstractPerson, BasePerson, Child, CommonAncestor, FirstParent, Person,
     ProxyPerson, Relating, Relation, SecondParent,
 )
-from ..results import TEST_RESULTS
+from .results import TEST_RESULTS
 
 
 class OptionsBaseTests(SimpleTestCase):

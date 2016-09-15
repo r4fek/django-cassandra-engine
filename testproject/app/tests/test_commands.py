@@ -8,7 +8,6 @@ from django_cassandra_engine.utils import (
     get_cassandra_connection,
     get_cassandra_db_alias
 )
-from django_cassandra_engine.management.commands import sync_cassandra
 
 COMMANDS_MOD = 'django_cassandra_engine.management.commands'
 
@@ -19,8 +18,8 @@ class SyncCassandraCommandTestCase(TestCase):
         self.connection = get_cassandra_connection()
         self.keyspace = self.connection.settings_dict['NAME']
 
-    @patch.object(sync_cassandra.management, "create_keyspace_simple")
-    @patch.object(sync_cassandra.management, "sync_table")
+    @patch(COMMANDS_MOD + ".sync_cassandra.create_keyspace_simple")
+    @patch(COMMANDS_MOD + ".sync_cassandra.sync_table")
     def test_sync_cassandra_creates_keyspace_and_tables(
             self, sync_table_mock, create_keyspace_mock):
 

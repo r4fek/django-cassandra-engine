@@ -29,7 +29,7 @@ def run_tests(foo, settings='settings', extra=(), test_builtin=False):
         apps = [
             name for name in apps if not name.startswith('django.contrib.')]
 
-    os.chdir(test_dir)
+    # os.chdir(test_dir)
     # pre-1.6 test runners don't understand full module names
     if django.VERSION < (1, 6):
         apps = [app.replace('django.contrib.', '') for app in apps]

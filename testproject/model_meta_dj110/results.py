@@ -1,14 +1,8 @@
-from common.models import CassandraThing
 from .models import (
     AbstractPerson, BasePerson, Person, ProxyPerson, Relating, Relation,
 )
-
 TEST_RESULTS = {
     'get_all_field_names': {
-        CassandraThing: [
-            'id',
-            'data_abstract',
-        ],
         Person: [
             'baseperson_ptr',
             'baseperson_ptr_id',
@@ -118,10 +112,6 @@ TEST_RESULTS = {
         ],
     },
     'fields': {
-        CassandraThing: [
-            'id',
-            'data_abstract',
-        ],
         Person: [
             'id',
             'data_abstract',
@@ -172,7 +162,6 @@ TEST_RESULTS = {
         ],
     },
     'local_fields': {
-        CassandraThing: [],
         Person: [
             'baseperson_ptr_id',
             'data_inherited',
@@ -212,7 +201,6 @@ TEST_RESULTS = {
         ],
     },
     'local_concrete_fields': {
-        CassandraThing: [],
         Person: [
             'baseperson_ptr_id',
             'data_inherited',
@@ -248,7 +236,6 @@ TEST_RESULTS = {
         ],
     },
     'many_to_many': {
-        CassandraThing: [],
         Person: [
             'm2m_abstract',
             'friends_abstract',
@@ -313,7 +300,6 @@ TEST_RESULTS = {
         ],
     },
     'get_all_related_objects_with_model_legacy': {
-        CassandraThing: (),
         Person: (
             ('relating_baseperson', BasePerson),
             ('relating_person', None),
@@ -332,7 +318,6 @@ TEST_RESULTS = {
         ),
     },
     'get_all_related_objects_with_model_hidden_local': {
-        CassandraThing: (),
         Person: (
             ('+', None),
             ('_relating_people_hidden_+', None),
@@ -419,7 +404,6 @@ TEST_RESULTS = {
         ),
     },
     'get_all_related_objects_with_model_hidden': {
-        CassandraThing: (),
         Person: (
             ('+', BasePerson),
             ('+', None),
@@ -546,7 +530,6 @@ TEST_RESULTS = {
         ),
     },
     'get_all_related_objects_with_model_local': {
-        CassandraThing: (),
         Person: (
             ('followers_concrete', None),
             ('personthroughproxysubclass', None),
@@ -623,7 +606,6 @@ TEST_RESULTS = {
         ),
     },
     'get_all_related_objects_with_model_local_legacy': {
-        CassandraThing: (),
         Person: (
             ('relating_person', None),
         ),
@@ -641,7 +623,6 @@ TEST_RESULTS = {
         ),
     },
     'get_all_related_objects_with_model_hidden_legacy': {
-        CassandraThing: (),
         BasePerson: (
             ('+', None),
             ('BasePerson_following_abstract+', None),
@@ -705,7 +686,6 @@ TEST_RESULTS = {
         ),
     },
     'get_all_related_objects_with_model_hidden_local_legacy': {
-        CassandraThing: (),
         BasePerson: (
             ('+', None),
             ('BasePerson_following_abstract+', None),
@@ -770,7 +750,6 @@ TEST_RESULTS = {
         ),
     },
     'get_all_related_objects_with_model_proxy_hidden_legacy': {
-        CassandraThing: (),
         BasePerson: (
             ('+', None),
             ('BasePerson_following_abstract+', None),
@@ -836,7 +815,6 @@ TEST_RESULTS = {
         ),
     },
     'get_all_related_many_to_many_with_model_legacy': {
-        CassandraThing: (),
         BasePerson: (
             ('friends_abstract_rel_+', None),
             ('followers_abstract', None),
@@ -885,10 +863,6 @@ TEST_RESULTS = {
         ],
     },
     'private_fields': {
-        CassandraThing: [
-            'id',
-            'data_abstract'
-        ],
         AbstractPerson: [
             'generic_relation_abstract',
             'content_object_abstract',
@@ -909,14 +883,12 @@ TEST_RESULTS = {
         ],
     },
     'labels': {
-        CassandraThing: 'common.CassandraThing',
         AbstractPerson: 'model_meta.AbstractPerson',
         BasePerson: 'model_meta.BasePerson',
         Person: 'model_meta.Person',
         Relating: 'model_meta.Relating',
     },
     'lower_labels': {
-        CassandraThing: 'common.cassandrathing',
         AbstractPerson: 'model_meta.abstractperson',
         BasePerson: 'model_meta.baseperson',
         Person: 'model_meta.person',
