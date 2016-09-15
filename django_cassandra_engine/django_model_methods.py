@@ -1,9 +1,20 @@
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 
 __ALL__ = (
-    'full_clean', '_get_unique_checks', '_perform_unique_checks',
-    '_perform_date_checks', 'validate_unique', 'clean', 'clean_fields'
+    '_base_manager', '_default_manager', 'full_clean', '_get_unique_checks',
+    '_perform_unique_checks', '_perform_date_checks', 'validate_unique',
+    'clean', 'clean_fields'
 )
+
+
+@property
+def _base_manager(cls):
+    return cls._meta.base_manager
+
+
+@property
+def _default_manager(cls):
+    return cls._meta.default_manager
 
 
 def full_clean(self, exclude=None, validate_unique=True):

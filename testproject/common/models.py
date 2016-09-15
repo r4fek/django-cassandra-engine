@@ -5,6 +5,7 @@ from django_cassandra_engine.models import DjangoCassandraModel
 
 
 class CassandraThingMultiplePK(DjangoCassandraModel):
+    __keyspace__ = 'db'
     id = cassandra_columns.UUID(primary_key=True, default=uuid.uuid4)
     another_id = cassandra_columns.UUID(primary_key=True, default=uuid.uuid4)
     data_abstract = cassandra_columns.Text(max_length=10)
@@ -15,6 +16,7 @@ class CassandraThingMultiplePK(DjangoCassandraModel):
 
 
 class CassandraThing(DjangoCassandraModel):
+    __keyspace__ = 'db'
     id = cassandra_columns.UUID(primary_key=True, default=uuid.uuid4)
     data_abstract = cassandra_columns.Text(max_length=10)
 
@@ -23,6 +25,7 @@ class CassandraThing(DjangoCassandraModel):
 
 
 class CassandraFamilyMember(DjangoCassandraModel):
+    __keyspace__ = 'db'
     id = cassandra_columns.UUID(primary_key=True, default=uuid.uuid4)
     first_name = cassandra_columns.Text(primary_key=True)
     last_name = cassandra_columns.Text(primary_key=True)

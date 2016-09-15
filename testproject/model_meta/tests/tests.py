@@ -7,11 +7,11 @@ from django.db.models.fields import CharField, Field, related
 from django.db.models.options import EMPTY_RELATION_TREE, IMMUTABLE_WARNING
 from django.test import SimpleTestCase
 
-from ..models import (
+from model_meta.models import (
     AbstractPerson, BasePerson, Child, CommonAncestor, FirstParent, Person,
-    ProxyPerson, Relating, Relation, SecondParent,
+    ProxyPerson, Relating, Relation, SecondParent, CassandraThing
 )
-from ..results import TEST_RESULTS
+from model_meta.results import TEST_RESULTS
 
 
 class OptionsBaseTests(SimpleTestCase):
@@ -213,7 +213,7 @@ class GetFieldByNameTests(OptionsBaseTests):
 
 
 class RelationTreeTests(SimpleTestCase):
-    all_models = (Relation, AbstractPerson, BasePerson, Person, ProxyPerson, Relating)
+    all_models = (Relation, AbstractPerson, BasePerson, Person, ProxyPerson, Relating, CassandraThing)
 
     def setUp(self):
         apps.clear_cache()
@@ -236,7 +236,7 @@ class RelationTreeTests(SimpleTestCase):
 
         # All the other models should already have their relation tree
         # in the internal __dict__ .
-        all_models_but_abstractperson = (m for m in self.all_models if m is not AbstractPerson)
+        all_models_but_abstractperson = (m for m in self.all_models if m is not AbstractPerson and m is not CassandraThing)
         for m in all_models_but_abstractperson:
             self.assertIn('_relation_tree', m._meta.__dict__)
 

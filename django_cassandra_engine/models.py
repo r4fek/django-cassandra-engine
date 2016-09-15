@@ -17,8 +17,8 @@ import cassandra
 from cassandra.cqlengine import query
 from cassandra.cqlengine import columns
 from cassandra.cqlengine.models import (
-    ModelMetaClass, ModelException, ColumnDescriptor, BaseModel,
-    ModelDefinitionException
+    ModelMetaClass, ModelException, ColumnDescriptor,
+    ModelDefinitionException, BaseModel
 )
 from cassandra.util import OrderedDict
 
@@ -76,6 +76,8 @@ class DjangoCassandraOptions(options.Options):
         self.proxy_for_model = self.concrete_model = self.model_inst
         self.managed = False
 
+        self.default_manager = self.model_inst.objects
+        self.base_manager = self.model_inst.objects
         self.swappable = False
 
     def can_migrate(self, *args, **kwargs):
@@ -174,10 +176,8 @@ class DjangoCassandraOptions(options.Options):
             django_field_methods.get_pk_value_on_save,
             django_field_methods.get_col,
         ]
-
         for name, cql_column in self._defined_columns.items():
             self._set_column_django_attributes(cql_column=cql_column, name=name)
-
             for method in methods_to_add:
                 try:
                     method_name = method.func_name
@@ -194,6 +194,7 @@ class DjangoCassandraOptions(options.Options):
             setattr(cql_column, '__ne__', new_method)
             setattr(cql_column, '__gt__', new_method)
             setattr(cql_column, '__ge__', new_method)
+
 
 
 class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
@@ -425,7 +426,10 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
         if not inspect.isclass(value) and hasattr(value, 'contribute_to_class'):
             value.contribute_to_class(cls, name)
         else:
-            setattr(cls, name, value)
+            try:
+                setattr(cls, name, value)
+            except AttributeError:
+                raise AttributeError('failed to set attribute {}'.format(name))
         options.DEFAULT_NAMES = django_meta_default_names
 
     @classmethod
@@ -462,8 +466,7 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
 
         new_class.add_to_class(
             '_meta', DjangoCassandraOptions(meta, app_label, cls=new_class))
-        new_class.add_to_class('_default_manager', new_class.objects)
-        new_class.add_to_class('_base_manager', new_class.objects)
+        new_class.add_to_class('objects', new_class.objects)
         new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
         return new_class
 
@@ -573,6 +576,10 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
     name = 'objects'
     use_in_migrations = False
 
+    def __init__(self, *args, **kwargs):
+        super(query.ModelQuerySet, self).__init__(*args, **kwargs)
+        self._allow_filtering = True
+
     def _select_fields(self):
         if self._defer_fields or self._only_fields:
             fields = self.model._columns.keys()
@@ -582,6 +589,10 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
                 fields = self._only_fields
             return [self.model._columns[f].db_field_name for f in fields]
         return super(query.ModelQuerySet, self)._select_fields()
+
+    def count(self):
+        self._count = None
+        return super(query.ModelQuerySet, self).count()
 
     def python_order_by(self, qset, colnames):
         if not isinstance(qset, list):

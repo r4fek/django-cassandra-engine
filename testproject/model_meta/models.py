@@ -1,12 +1,22 @@
+import uuid
+
 from django.contrib.contenttypes.fields import (
     GenericForeignKey, GenericRelation,
 )
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from cassandra.cqlengine import columns as cassandra_columns
+
+from django_cassandra_engine.models import DjangoCassandraModel
 
 
 class Relation(models.Model):
     pass
+
+
+class CassandraThing(DjangoCassandraModel):
+    id = cassandra_columns.UUID(primary_key=True, default=uuid.uuid4)
+    data_abstract = cassandra_columns.Text(max_length=10)
 
 
 class AbstractPerson(models.Model):

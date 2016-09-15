@@ -18,10 +18,8 @@ class SyncCassandraCommandTestCase(TestCase):
         self.connection = get_cassandra_connection()
         self.keyspace = self.connection.settings_dict['NAME']
 
-    @patch(COMMANDS_MOD + ".sync_cassandra.create_keyspace_simple")
-    @patch(COMMANDS_MOD + ".sync_cassandra.sync_table")
-    def test_sync_cassandra_creates_keyspace_and_tables(
-            self, sync_table_mock, create_keyspace_mock):
+    @patch(COMMANDS_MOD + '.sync_cassandra.management')
+    def test_sync_cassandra_creates_keyspace_and_tables(self, mock_management):
 
         alias = get_cassandra_db_alias()
         call_command('sync_cassandra', database=alias)
@@ -30,11 +28,13 @@ class SyncCassandraCommandTestCase(TestCase):
         all_models = list(chain.from_iterable(
             self.connection.introspection.cql_models.values()))
 
-        create_keyspace_mock.assert_called_once_with(self.keyspace,
-                                                     replication_factor)
+        mock_management.create_keyspace_simple.assert_called_once_with(
+            self.keyspace,
+            replication_factor
+        )
 
         for model in all_models:
-            sync_table_mock.assert_has_call(call(model))
+            mock_management.sync_table.assert_has_call(call(model))
 
     @skipIf(django.VERSION >= (1, 9), "Django >=1.9 does not support syncdb")
     def test_syncdb_of_another_database(self):

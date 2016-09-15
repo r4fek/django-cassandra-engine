@@ -45,9 +45,17 @@ class TestDjangoCassandraModel(CassandraTestCase):
 
         self.assertEqual(got_family_member.pk, self.family_member.id)
 
-    def test_manager_is_set(self):
-        self.assertTrue(hasattr(CassandraFamilyMember.objects, 'all'))
-        self.assertTrue(hasattr(CassandraFamilyMember.objects, 'filter'))
+    def test_default_manager_is_set(self):
+        self.assertTrue(isinstance(
+            CassandraFamilyMember._default_manager,
+            type(CassandraFamilyMember.objects)
+        ))
+        self.assertTrue(isinstance(
+            CassandraFamilyMember._base_manager,
+            type(CassandraFamilyMember.objects)
+        ))
+        self.assertTrue(hasattr(CassandraFamilyMember._default_manager, 'all'))
+        self.assertTrue(hasattr(CassandraFamilyMember._default_manager, 'filter'))
 
     def test_calling_queryset_methods_not_through_manager_raises(self):
         with self.assertRaises(AttributeError):
@@ -60,7 +68,7 @@ class TestDjangoCassandraModel(CassandraTestCase):
             CassandraFamilyMember.filter()
 
     def test_manager_has_a_name(self):
-        self.assertEqual(CassandraFamilyMember.objects.name, 'objects')
+        self.assertEqual(CassandraFamilyMember._default_manager.name, 'objects')
 
     def test_can_migrate(self):
         self.assertFalse(CassandraFamilyMember._meta.can_migrate(connection=None))
