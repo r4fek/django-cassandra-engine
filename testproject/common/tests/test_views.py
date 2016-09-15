@@ -10,14 +10,12 @@ from common.models import CassandraThingMultiplePK
 
 @freeze_time('14-06-15 15:44:25')
 def create_thing():
-    return CassandraThingMultiplePK.objects.create(
-        created_on=datetime.now()
-    )
+    return CassandraThingMultiplePK.objects.create(created_on=datetime.now())
 
 
 @freeze_time('14-06-15 15:44:25')
-class TestThingViewSet(CassandraTestCase):
-    def test_getwhen_no_records_exist(self):
+class TestViewSet(CassandraTestCase):
+    def test_get_when_no_records_exist(self):
         response = self.client.get(reverse('thing_viewset_api'))
         self.assertEqual(response.status_code, http_client.OK)
         self.assertEqual(response.json(), [])
@@ -38,7 +36,7 @@ class TestThingViewSet(CassandraTestCase):
 
 
 @freeze_time('14-06-15 15:44:25')
-class TestThingListCreateAPIView(CassandraTestCase):
+class TestListCreateAPIView(CassandraTestCase):
     def test_get_when_no_records_exist(self):
         response = self.client.get(reverse('thing_listcreate_api'))
         self.assertEqual(response.status_code, http_client.OK)
@@ -55,9 +53,9 @@ class TestThingListCreateAPIView(CassandraTestCase):
         assert CassandraThingMultiplePK.objects.all().count() == 1
 
 
-class TestThingListAPIView(CassandraTestCase):
+@freeze_time('14-06-15 15:44:25')
+class TestListAPIView(CassandraTestCase):
 
-    @freeze_time('14-06-15 15:44:25')
     def test_get(self):
         thing = create_thing()
         response = self.client.get(reverse('thing_listview_api'))

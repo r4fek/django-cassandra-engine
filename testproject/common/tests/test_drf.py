@@ -1,5 +1,5 @@
 import uuid
-import httplib
+import six.moves.http_client
 
 from rest_framework.test import APITestCase
 from django.core.urlresolvers import reverse
@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from common.models import CassandraThing
 
 
-class CreateReadThingTest(APITestCase):
+class TestModelViewSet(APITestCase):
 
     url = '/common/thing-modelviewset/'
 
@@ -23,7 +23,7 @@ class CreateReadThingTest(APITestCase):
 
     def test_create_thing2a(self):
         response = self.client.post(self.url, self.data2a, format='json')
-        self.assertEqual(response.status_code, httplib.CREATED)
+        self.assertEqual(response.status_code, six.moves.http_client.CREATED)
         self.assertEqual(CassandraThing.objects.count(), 1)
         self.assertEqual(
             CassandraThing.objects.get().id,
@@ -32,11 +32,11 @@ class CreateReadThingTest(APITestCase):
         get_url = '{}{}/'.format(self.url, self.data2a['id'])
         response = self.client.get(get_url, format='json')
         self.assertDictEqual(response.json(), self.data2a)
-        self.assertEqual(response.status_code, httplib.OK)
+        self.assertEqual(response.status_code, six.moves.http_client.OK)
 
     def test_create_thing2b(self):
         response = self.client.post(self.url, self.data2b, format='json')
-        self.assertEqual(response.status_code, httplib.CREATED)
+        self.assertEqual(response.status_code, six.moves.http_client.CREATED)
         self.assertEqual(CassandraThing.objects.count(), 2)
 
         self.assertEqual(
@@ -47,7 +47,7 @@ class CreateReadThingTest(APITestCase):
         get_url = '{}{}/'.format(self.url, self.data2b['id'])
         response = self.client.get(get_url, format='json')
         self.assertDictEqual(response.json(), self.data2b)
-        self.assertEqual(response.status_code, httplib.OK)
+        self.assertEqual(response.status_code, six.moves.http_client.OK)
 
 
 class CreateThingMultiplePKTest(APITestCase):
