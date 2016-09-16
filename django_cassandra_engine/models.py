@@ -402,11 +402,6 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
         for method_name, method in methods:
             new_method = six.create_bound_method(method, klass)
             setattr(klass, method_name, new_method)
-        properties = inspect.getmembers(
-            django_model_methods, lambda o: isinstance(o, property))
-        for name, prop in properties:
-            if not hasattr(klass, name):
-                setattr(klass, name, prop)
         return klass
 
     def add_to_class(cls, name, value):
@@ -722,6 +717,14 @@ class DjangoCassandraModel(
         if name == 'pk':
             return cls._meta.get_field(cls._meta.pk.name)
         return cls._columns[name]
+
+    @property
+    def _base_manager(cls):
+        return cls._meta.base_manager
+
+    @property
+    def _default_manager(cls):
+        return cls._meta.default_manager
 
     @classmethod
     def _get_explicit_pk_column(cls):
