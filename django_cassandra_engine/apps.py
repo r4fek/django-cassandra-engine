@@ -5,9 +5,9 @@ from django.apps import AppConfig
 import django.forms.models
 
 
-def new_construct_instance(form, instance, fields=None, exclude=None):
+def construct_instance(form, instance, fields=None, exclude=None):
     """
-    taken from django.forms.models.construct_instance
+    Taken from django.forms.models.construct_instance
     altered to support cqlengine models
     """
     from django.db import models
@@ -51,7 +51,7 @@ def new_construct_instance(form, instance, fields=None, exclude=None):
     return instance
 
 # patching so that Django ModelForms can work with cqlengine models
-django.forms.models.construct_instance = new_construct_instance
+django.forms.models.construct_instance = construct_instance
 
 
 class AppConfig(AppConfig):

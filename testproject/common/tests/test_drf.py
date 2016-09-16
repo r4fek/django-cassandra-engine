@@ -4,7 +4,7 @@ import six.moves.http_client
 from rest_framework.test import APITestCase
 from django.core.urlresolvers import reverse
 
-from common.models import CassandraThing
+from common.models import CassandraThing, CassandraThingMultiplePK
 
 
 class TestModelViewSet(APITestCase):
@@ -50,7 +50,7 @@ class TestModelViewSet(APITestCase):
         self.assertEqual(response.status_code, six.moves.http_client.OK)
 
 
-class CreateThingMultiplePKTest(APITestCase):
+class TestListCreateAPIViewWithMultiplePK(APITestCase):
     def setUp(self):
         self.data = {
             'id': 'a9be910b-3338-4340-b773-f7ec2bc1ce1a',
@@ -62,4 +62,17 @@ class CreateThingMultiplePKTest(APITestCase):
     def test_create_multiple_pk_thing(self):
         url = reverse('thing_listcreate_api')
         response = self.client.post(url, self.data)
-        self.assertEqual(response.status_code, 201)
+        expected_json = {
+            'another_id': 'a9be910b-3338-4340-b773-f7ec2bc1ce1b',
+            'created_on': '2016-11-12T23:12:00Z',
+            'data_abstract': 'TeXt',
+            'id': 'a9be910b-3338-4340-b773-f7ec2bc1ce1a'
+        }
+        self.assertEqual(response.status_code, six.moves.http_client.CREATED)
+        self.assertDictEqual(response.json(), expected_json)
+
+        model = CassandraThingMultiplePK.objects.get(id=self.data['id'])
+
+        self.assertEqual(str(model.id), self.data['id'])
+        self.assertEqual(str(model.another_id), self.data['another_id'])
+        self.assertEqual(model.data_abstract, self.data['data_abstract'])

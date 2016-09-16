@@ -1,16 +1,12 @@
 from django.apps import apps
-from django.contrib.contenttypes.fields import (
-    GenericForeignKey, GenericRelation,
-)
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.exceptions import FieldDoesNotExist
-from django.db.models.fields import CharField, Field, related
-from django.db.models.options import EMPTY_RELATION_TREE, IMMUTABLE_WARNING
+from django.db.models.fields import Field
+from django.db.models.options import IMMUTABLE_WARNING
 from django.test import SimpleTestCase
+from cassandra.cqlengine import columns as cassandra_columns
 
-from model_meta.models import (
-    AbstractPerson, BasePerson, Child, CommonAncestor, FirstParent, Person,
-    ProxyPerson, Relating, Relation, SecondParent, CassandraThing
-)
+from model_meta.models import CassandraThing
 from model_meta.results import TEST_RESULTS
 
 
@@ -43,7 +39,7 @@ class GetFieldsTests(OptionsBaseTests):
         for _ in range(2):
             # Running unit test twice to ensure both non-cached and cached result
             # are immutable.
-            fields = Person._meta.get_fields()
+            fields = CassandraThing._meta.get_fields()
             with self.assertRaisesMessage(AttributeError, msg):
                 fields += ["errors"]
 
@@ -168,32 +164,12 @@ class PrivateFieldsTests(OptionsBaseTests):
 class GetFieldByNameTests(OptionsBaseTests):
 
     def test_get_data_field(self):
-        field_info = self._details(Person, Person._meta.get_field('data_abstract'))
-        self.assertEqual(field_info[1:], (BasePerson, True, False))
-        self.assertIsInstance(field_info[0], CharField)
-
-    def test_get_m2m_field(self):
-        field_info = self._details(Person, Person._meta.get_field('m2m_base'))
-        self.assertEqual(field_info[1:], (BasePerson, True, True))
-        self.assertIsInstance(field_info[0], related.ManyToManyField)
-
-    def test_get_related_object(self):
-        field_info = self._details(Person, Person._meta.get_field('relating_baseperson'))
-        self.assertEqual(field_info[1:], (BasePerson, False, False))
-        self.assertIsInstance(field_info[0], related.ForeignObjectRel)
-
-    def test_get_related_m2m(self):
-        field_info = self._details(Person, Person._meta.get_field('relating_people'))
-        self.assertEqual(field_info[1:], (None, False, True))
-        self.assertIsInstance(field_info[0], related.ForeignObjectRel)
-
-    def test_get_generic_relation(self):
-        field_info = self._details(Person, Person._meta.get_field('generic_relation_base'))
-        self.assertEqual(field_info[1:], (None, True, False))
-        self.assertIsInstance(field_info[0], GenericRelation)
+        field_info = self._details(CassandraThing, CassandraThing._meta.get_field('data_abstract'))
+        self.assertEqual(field_info[1:], (None, False, False))
+        self.assertIsInstance(field_info[0], cassandra_columns.Text)
 
     def test_get_fields_only_searches_forward_on_apps_not_ready(self):
-        opts = Person._meta
+        opts = CassandraThing._meta
         # If apps registry is not ready, get_field() searches over only
         # forward fields.
         opts.apps.models_ready = False
@@ -201,7 +177,7 @@ class GetFieldByNameTests(OptionsBaseTests):
             # 'data_abstract' is a forward field, and therefore will be found
             self.assertTrue(opts.get_field('data_abstract'))
             msg = (
-                "Person has no field named 'relating_baseperson'. The app "
+                "CassandraThing has no field named 'relating_baseperson'. The app "
                 "cache isn't ready yet, so if this is an auto-created related "
                 "field, it won't be available yet."
             )
@@ -213,7 +189,7 @@ class GetFieldByNameTests(OptionsBaseTests):
 
 
 class RelationTreeTests(SimpleTestCase):
-    all_models = (Relation, AbstractPerson, BasePerson, Person, ProxyPerson, Relating, CassandraThing)
+    all_models = (CassandraThing,)
 
     def setUp(self):
         apps.clear_cache()
@@ -227,48 +203,11 @@ class RelationTreeTests(SimpleTestCase):
             self.assertNotIn('_relation_tree', m._meta.__dict__)
 
     def test_first_relation_tree_access_populates_all(self):
-        # On first access, relation tree should have populated cache.
-        self.assertTrue(self.all_models[0]._meta._relation_tree)
-
-        # AbstractPerson does not have any relations, so relation_tree
-        # should just return an EMPTY_RELATION_TREE.
-        self.assertEqual(AbstractPerson._meta._relation_tree, EMPTY_RELATION_TREE)
-
-        # All the other models should already have their relation tree
-        # in the internal __dict__ .
-        all_models_but_abstractperson = (m for m in self.all_models if m is not AbstractPerson and m is not CassandraThing)
-        for m in all_models_but_abstractperson:
-            self.assertIn('_relation_tree', m._meta.__dict__)
-
-    def test_relations_related_objects(self):
-        # Testing non hidden related objects
-        self.assertEqual(
-            sorted([field.related_query_name() for field in Relation._meta._relation_tree
-                   if not field.remote_field.field.remote_field.is_hidden()]),
-            sorted([
-                'fk_abstract_rel', 'fk_base_rel', 'fk_concrete_rel', 'fo_abstract_rel',
-                'fo_base_rel', 'fo_concrete_rel', 'm2m_abstract_rel',
-                'm2m_base_rel', 'm2m_concrete_rel'
-            ])
-        )
-        # Testing hidden related objects
-        self.assertEqual(
-            sorted([field.related_query_name() for field in BasePerson._meta._relation_tree]),
-            sorted([
-                '+', '_relating_basepeople_hidden_+', 'BasePerson_following_abstract+',
-                'BasePerson_following_abstract+', 'BasePerson_following_base+', 'BasePerson_following_base+',
-                'BasePerson_friends_abstract+', 'BasePerson_friends_abstract+', 'BasePerson_friends_base+',
-                'BasePerson_friends_base+', 'BasePerson_m2m_abstract+', 'BasePerson_m2m_base+', 'Relating_basepeople+',
-                'Relating_basepeople_hidden+', 'followers_abstract', 'followers_base', 'friends_abstract_rel_+',
-                'friends_base_rel_+', 'person', 'relating_basepeople', 'relating_baseperson',
-            ])
-        )
-        self.assertEqual([field.related_query_name() for field in AbstractPerson._meta._relation_tree], [])
+        # CassandraThing does not have any relations, so relation_tree
+        # should be empty
+        self.assertEqual(len(CassandraThing._meta._relation_tree), 0)
 
 
 class ParentListTests(SimpleTestCase):
     def test_get_parent_list(self):
-        self.assertEqual(CommonAncestor._meta.get_parent_list(), [])
-        self.assertEqual(FirstParent._meta.get_parent_list(), [CommonAncestor])
-        self.assertEqual(SecondParent._meta.get_parent_list(), [CommonAncestor])
-        self.assertEqual(Child._meta.get_parent_list(), [FirstParent, SecondParent, CommonAncestor])
+        self.assertEqual(CassandraThing._meta.get_parent_list(), [])

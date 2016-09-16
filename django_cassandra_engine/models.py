@@ -95,7 +95,8 @@ class DjangoCassandraOptions(options.Options):
         self._expire_cache(reverse=False)
 
     def _get_fields(self, *args, **kwargs):
-        return self._defined_columns.values()
+        fields = self._defined_columns.values()
+        return options.make_immutable_fields_list('get_fields()', fields)
 
     def _set_column_django_attributes(self, cql_column, name):
         cql_column.error_messages = self.default_field_error_messages
