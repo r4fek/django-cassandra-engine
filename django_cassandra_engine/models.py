@@ -40,11 +40,6 @@ if cassandra.__version__ not in CASSANDRA_DRIVER_COMPAT_VERSIONS:
                                     cassandra.__version__))
 
 
-def eq(self, other):
-    # Needed for @total_ordering
-    return False
-
-
 class DjangoCassandraOptions(options.Options):
     default_field_error_messages = {
         'invalid_choice': _('Value %(value)r is not a valid choice.'),
@@ -187,14 +182,6 @@ class DjangoCassandraOptions(options.Options):
 
                 new_method = six.create_bound_method(method, cql_column)
                 setattr(cql_column, method_name, new_method)
-            new_method = six.create_bound_method(eq, cql_column)
-            setattr(cql_column, '__lt__', new_method)
-            setattr(cql_column, '__le__', new_method)
-            setattr(cql_column, '__eq__', new_method)
-            setattr(cql_column, '__ne__', new_method)
-            setattr(cql_column, '__gt__', new_method)
-            setattr(cql_column, '__ge__', new_method)
-
 
 
 class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
