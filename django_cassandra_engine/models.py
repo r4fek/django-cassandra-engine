@@ -405,7 +405,8 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
         properties = inspect.getmembers(
             django_model_methods, lambda o: isinstance(o, property))
         for name, prop in properties:
-            setattr(klass, name, prop)
+            if not hasattr(klass, name):
+                setattr(klass, name, prop)
         return klass
 
     def add_to_class(cls, name, value):
