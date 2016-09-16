@@ -402,6 +402,10 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
         for method_name, method in methods:
             new_method = six.create_bound_method(method, klass)
             setattr(klass, method_name, new_method)
+        properties = inspect.getmembers(
+            django_model_methods, lambda o: isinstance(o, property))
+        for name, prop in properties:
+            setattr(klass, name, prop)
         return klass
 
     def add_to_class(cls, name, value):
