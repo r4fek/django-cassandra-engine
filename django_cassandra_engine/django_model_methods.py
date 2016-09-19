@@ -8,10 +8,7 @@ __ALL__ = (
 
 
 def full_clean(self, exclude=None, validate_unique=True):
-    """
-    Calls clean_fields, clean, and validate_unique, on the model,
-    and raises a ``ValidationError`` for any errors that occurred.
-    """
+    # Taken from django.db.models.base
     errors = {}
     if exclude is None:
         exclude = []
@@ -45,14 +42,7 @@ def full_clean(self, exclude=None, validate_unique=True):
 
 
 def _get_unique_checks(self, exclude=None):
-    """
-    Gather a list of checks to perform. Since validate_unique could be
-    called from a ModelForm, some fields may have been excluded; we can't
-    perform a unique check on a model that is missing fields involved
-    in that check.
-    Fields that did not validate should also be excluded, but they need
-    to be passed in via the exclude argument.
-    """
+    # Taken from django.db.models.base
     if exclude is None:
         exclude = []
     unique_checks = []
@@ -98,6 +88,7 @@ def _get_unique_checks(self, exclude=None):
 
 
 def _perform_unique_checks(self, unique_checks):
+    # Taken from django.db.models.base
     errors = {}
 
     for model_class, unique_check in unique_checks:
@@ -140,7 +131,9 @@ def _perform_unique_checks(self, unique_checks):
 
     return errors
 
+
 def _perform_date_checks(self, date_checks):
+    # Taken from django.db.models.base
     errors = {}
     for model_class, lookup_type, field, unique_for in date_checks:
         lookup_kwargs = {}
@@ -171,10 +164,7 @@ def _perform_date_checks(self, date_checks):
 
 
 def validate_unique(self, exclude=None):
-    """
-    Checks unique constraints on the model and raises ``ValidationError``
-    if any failed.
-    """
+    # Taken from django.db.models.base
     unique_checks, date_checks = self._get_unique_checks(exclude=exclude)
 
     errors = self._perform_unique_checks(unique_checks)
@@ -187,14 +177,12 @@ def validate_unique(self, exclude=None):
 
 
 def clean(self):
+    # Taken from django.db.models.base
     pass
 
 
 def clean_fields(self, exclude=None):
-    """
-    Cleans all fields and raises a ValidationError containing a dict
-    of all validation errors if any occur.
-    """
+    # Taken from django.db.models.base
     if exclude is None:
         exclude = []
 

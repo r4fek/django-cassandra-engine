@@ -14,96 +14,81 @@ NOT_IMPL_MSG = 'Method not available on Cassandra model fields'
 
 
 def value_from_object(self, obj):
-    """
-    Returns the value of this field in the given model instance.
-    """
+    # Taken from django.db.models.fields.__init__
     return getattr(obj, self.attname)
 
 
 def value_to_string(self, obj):
-    """
-    Returns a string value of this field from the passed obj.
-    This is used by the serialization framework.
-    """
+    # Taken from django.db.models.fields.__init__
     return smart_text(self.value_from_object(obj))
 
 
 def get_attname(self):
+    # Taken from django.db.models.fields.__init__
     return self.name
 
 
 def get_cache_name(self):
+    # Taken from django.db.models.fields.__init__
     return '_%s_cache' % self.name
 
 
 def get_attname_column(self):
+    # Taken from django.db.models.fields.__init__
     attname = self.get_attname()
     column = self.db_column or attname
     return attname, column
 
 
 def pre_save(self, model_instance, add):
-    """
-    Returns field's value just before saving.
-    """
+    # Taken from django.db.models.fields.__init__
     return getattr(model_instance, self.attname)
 
 
 def get_prep_value(self, value):
-    """
-    Perform preliminary non-db specific value checks and conversions.
-    """
+    # Taken from django.db.models.fields.__init__
     if isinstance(value, Promise):
         value = value._proxy____cast()
     return value
 
 
 def get_db_prep_value(self, value, connection, prepared=False):
-    """Returns field's value prepared for interacting with the database
-    backend.
-
-    Used by the default implementations of ``get_db_prep_save``and
-    `get_db_prep_lookup```
-    """
+    # Taken from django.db.models.fields.__init__
     if not prepared:
         value = self.get_prep_value(value)
     return value
 
 
 def get_db_prep_save(self, value, connection):
-    """
-    Returns field's value prepared for saving into a database.
-    """
+    # Taken from django.db.models.fields.__init__
     return self.get_db_prep_value(value, connection=connection,
                                   prepared=False)
 
 
 def get_db_converters(self, *args, **kwargs):
+    # Taken from django.db.models.fields.__init__
     return []
 
 
 def get_internal_type(self):
+    # Taken from django.db.models.fields.__init__
     return self.__class__.__name__
 
 
 def save_form_data(self, instance, data):
+    # Taken from django.db.models.fields.__init__
     if data == '':
         data = None
     setattr(instance, self.name, data)
 
 
 def get_filter_kwargs_for_object(self, obj):
-    """
-    Return a dict that when passed as kwargs to self.model.filter(), would
-    yield all instances having the same value for this field as obj has.
-    """
+    # Taken from django.db.models.fields.__init__
     return {self.name: getattr(obj, self.attname)}
 
 
 def formfield(self, form_class=None, choices_form_class=None, **kwargs):
-    """
-    Returns a django.forms.Field instance for this database Field.
-    """
+    # Taken from django.db.models.fields.__init__
     defaults = {'required': not self.blank,
                 'label': capfirst(self.verbose_name),
                 'help_text': self.help_text}
@@ -140,6 +125,8 @@ def formfield(self, form_class=None, choices_form_class=None, **kwargs):
 
 
 def check(self, **kwargs):
+    # Taken from django.db.models.fields.__init__
+    # Modified to support cqlengine
     errors = []
     errors.extend(self._check_field_name())
     errors.extend(self._check_db_index())
@@ -147,6 +134,7 @@ def check(self, **kwargs):
 
 
 def _check_db_index(self):
+    # Taken from django.db.models.fields.__init__
     if self.db_index not in (None, True, False):
         return [
             checks.Error(
@@ -161,8 +149,7 @@ def _check_db_index(self):
 
 
 def _check_field_name(self):
-    """ Check if field name is valid, i.e. 1) does not end with an
-    underscore, 2) does not contain "__" and 3) is not "pk". """
+    # Taken from django.db.models.fields.__init__
     if self.name.endswith('_'):
         return [
             checks.Error(
@@ -195,6 +182,7 @@ def _check_field_name(self):
 
 
 def run_validators(self, value):
+    # Taken from django.db.models.fields.__init__
     if value in self.empty_values:
         return
 
@@ -212,6 +200,8 @@ def run_validators(self, value):
 
 
 def clean(self, value, model_instance):
+    # Taken from django.db.models.fields.__init__
+    # Modified to support cqlengine
     value = self.to_python(value)
     # This is python-driver validate method not Django
     self.validate(value=value)
@@ -220,23 +210,20 @@ def clean(self, value, model_instance):
 
 
 def get_pk_value_on_save(self, instance):
-    """
-    Hook to generate new PK values on save. This method is called when
-    saving instances with no primary key value set. If this method returns
-    something else than None, then the returned value is used when saving
-    the new instance.
-    """
+    # Taken from django.db.models.fields.__init__
     if self.default:
         return self.get_default()
     return None
 
 
 def get_choices_default(self):
+    # Taken from django.db.models.fields.__init__
     return self.get_choices()
 
 
 @property
 def rel(self):
+    # Taken from django.db.models.fields.__init__
     warnings.warn(
         "Usage of field.rel has been deprecated. Use field.remote_field instead.",
         RemovedInDjango20Warning, 2)

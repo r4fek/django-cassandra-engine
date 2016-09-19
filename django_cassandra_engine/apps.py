@@ -8,7 +8,7 @@ import django.forms.models
 def construct_instance(form, instance, fields=None, exclude=None):
     """
     Taken from django.forms.models.construct_instance
-    altered to support cqlengine models
+    altered to support cqlengine models (see field_has_default logic)
     """
     from django.db import models
     opts = instance._meta
