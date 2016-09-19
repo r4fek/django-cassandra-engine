@@ -39,6 +39,9 @@ if cassandra.__version__ not in CASSANDRA_DRIVER_COMPAT_VERSIONS:
         'Version "{}" found'.format(CASSANDRA_DRIVER_COMPAT_VERSIONS,
                                     cassandra.__version__))
 
+_django_manager_attr_names = ('objects', 'default_manager', '_default_manager',
+                              'base_manager', '_base_manager')
+
 
 class DjangoCassandraOptions(options.Options):
     default_field_error_messages = {
@@ -188,6 +191,8 @@ class DjangoCassandraOptions(options.Options):
 class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
 
     def __new__(cls, name, bases, attrs):
+        for attr in _django_manager_attr_names:
+            setattr(cls, attr, None)
         parents = [b for b in bases if isinstance(b, DjangoCassandraModelMetaClass)]
 
         if not parents:
@@ -455,10 +460,7 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
 
         new_class.add_to_class(
             '_meta', DjangoCassandraOptions(meta, app_label, cls=new_class))
-        manager_attrs = (
-            'objects', 'default_manager', '_default_manager',
-            'base_manager', '_base_manager')
-        for manager_attr in manager_attrs:
+        for manager_attr in _django_manager_attr_names:
             new_class.add_to_class(manager_attr, new_class.objects)
 
         new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
