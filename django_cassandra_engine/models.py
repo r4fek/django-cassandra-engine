@@ -588,19 +588,18 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
         else:
             queryset = super(query.ModelQuerySet, self).all()
 
-        new_qset = []
+        new_queryset = []
         for model in queryset:
-            exclude_match = False
+            should_exclude_model = False
             for attr, val in six.iteritems(kwargs):
-                if exclude_match:
+                if should_exclude_model:
                     break
                 if getattr(model, attr) == val:
-                    exclude_match = True
-            if exclude_match:
-                continue
-            else:
-                new_qset.append(model)
-        return ReadOnlyDjangoCassandraQuerySet(new_qset, model_class=self.model)
+                    should_exclude_model = True
+            if not should_exclude_model:
+                new_queryset.append(model)
+        return ReadOnlyDjangoCassandraQuerySet(
+            new_queryset, model_class=self.model)
 
     def python_order_by(self, qset, colnames):
         if not isinstance(qset, list):
