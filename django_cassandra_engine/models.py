@@ -57,7 +57,7 @@ class DjangoCassandraOptions(options.Options):
             self._private_fields_name = 'virtual_fields'
 
         # Add Columns as Django Fields
-        for column in self._defined_columns.values():
+        for column in six.itervalues(self._defined_columns):
             self.add_field(column)
         self.setup_pk()
 
@@ -86,7 +86,7 @@ class DjangoCassandraOptions(options.Options):
         self._expire_cache(reverse=False)
 
     def _get_fields(self, *args, **kwargs):
-        fields = self._defined_columns.values()
+        fields = six.itervalues(self._defined_columns)
         return options.make_immutable_fields_list('get_fields()', fields)
 
     def _set_column_django_attributes(self, cql_column, name):
@@ -131,7 +131,7 @@ class DjangoCassandraOptions(options.Options):
         So that the Django Options class may interact with it as if it were
         a Django Field.
         """
-        methods_to_add = [
+        methods_to_add = (
             django_field_methods.value_from_object,
             django_field_methods.value_to_string,
             django_field_methods.get_attname,
@@ -162,8 +162,8 @@ class DjangoCassandraOptions(options.Options):
             django_field_methods.db_parameters,
             django_field_methods.get_pk_value_on_save,
             django_field_methods.get_col,
-        ]
-        for name, cql_column in self._defined_columns.items():
+        )
+        for name, cql_column in six.iteritems(self._defined_columns):
             self._set_column_django_attributes(cql_column=cql_column, name=name)
             for method in methods_to_add:
                 try:
@@ -719,8 +719,8 @@ class DjangoCassandraModel(
 
     @classmethod
     def _get_primary_key_columns(cls):
-        return tuple(
-            c for c in cls._columns.values() if c.is_primary_key is True)
+        return tuple(c for c in six.itervalues(cls._columns)
+                     if c.is_primary_key is True)
 
     @classmethod
     def _get_primary_key_column_names(cls):
@@ -747,6 +747,6 @@ class DjangoCassandraModel(
                     raise RuntimeError(PK_META_MISSING_HELP.format(cls))
                 return cls._primary_keys[pk_field]
             else:
-                return list(cls._primary_keys.values())[0]
+                return list(six.itervalues(cls._primary_keys))[0]
         except IndexError:
             return None
