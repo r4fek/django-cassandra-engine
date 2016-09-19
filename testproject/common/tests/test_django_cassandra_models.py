@@ -38,6 +38,37 @@ class TestDjangoCassandraModel(CassandraTestCase):
                              .get(pk=self.family_member.id))
         self.assertIsNotNone(got_family_member)
 
+    def test_exclude(self):
+        results = CassandraFamilyMember.objects.exclude(id=self.some_uuid)
+        for model in results:
+            self.assertNotEqual(model.id, self.some_uuid)
+
+    def test_exclude_after_filter(self):
+        results = (
+            CassandraFamilyMember
+            .objects.filter(id=self.some_uuid)
+            .exclude(last_name='Simpson')
+        )
+        self.assertEqual(len(results), 0)
+
+    def test_exclude_after_all(self):
+        keeper = CassandraFamilyMember.objects.create(
+            id=uuid.uuid4(),
+            first_name='Ned',
+            last_name='Flanders',
+            is_real=False,
+            favourite_number=666,
+            favourite_float_number=43.4,
+            created_on=datetime.now()
+        )
+        results = (
+            CassandraFamilyMember
+            .objects.all()
+            .exclude(last_name='Simpson')
+        )
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].id, keeper.id)
+
     def test_get_by_pk_returns_primary_key_instead_of_partition_key(self):
         got_family_member = (CassandraFamilyMember.objects
                              .allow_filtering()

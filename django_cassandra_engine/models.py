@@ -556,6 +556,9 @@ class ReadOnlyDjangoCassandraQuerySet(list):
     def defer(self, *args, **kwargs):
         self._raise_not_implemented(method_name='defer')
 
+    def exclude(self, *args, **kwargs):
+        self._raise_not_implemented(method_name='defer')
+
 
 class DjangoCassandraQuerySet(query.ModelQuerySet):
     name = 'objects'
@@ -578,6 +581,26 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
     def count(self):
         self._count = None
         return super(query.ModelQuerySet, self).count()
+
+    def exclude(self, *args, **kwargs):
+        if len(self._where) > 0:
+            queryset = super(query.ModelQuerySet, self).filter()
+        else:
+            queryset = super(query.ModelQuerySet, self).all()
+
+        new_qset = []
+        for model in queryset:
+            exclude_match = False
+            for attr, val in six.iteritems(kwargs):
+                if exclude_match:
+                    break
+                if getattr(model, attr) == val:
+                    exclude_match = True
+            if exclude_match:
+                continue
+            else:
+                new_qset.append(model)
+        return ReadOnlyDjangoCassandraQuerySet(new_qset, model_class=self.model)
 
     def python_order_by(self, qset, colnames):
         if not isinstance(qset, list):
