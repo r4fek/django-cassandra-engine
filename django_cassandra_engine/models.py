@@ -446,8 +446,10 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
             else:
                 app_label = app_config.label
 
+        # Add _meta/Options attribute to the model
         new_class.add_to_class(
             '_meta', DjangoCassandraOptions(meta, app_label, cls=new_class))
+        # Add manager to the model
         for manager_attr in _django_manager_attr_names:
             new_class.add_to_class(manager_attr, new_class.objects)
         new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
