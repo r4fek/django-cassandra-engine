@@ -44,7 +44,7 @@ class DjangoCassandraOptions(options.Options):
 
     def __init__(self, *args, **kwargs):
         self.model_inst = kwargs.pop('cls')
-        self._defined_columns = self.model_inst.__dict__['_defined_columns']
+        self._defined_columns = self.model_inst._defined_columns
 
         # Add Django attibutes to Columns
         self._give_columns_django_field_attributes()
@@ -512,6 +512,9 @@ class ReadOnlyDjangoCassandraQuerySet(list):
 
     def count(self):
         return len(self)
+
+    def exists(self):
+        return len(self) > 0
 
     def values_list(self, *fields, **kwargs):
         fields = convert_pk_field_names_to_real(model=self.model,
