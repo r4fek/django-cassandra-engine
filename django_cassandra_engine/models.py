@@ -61,18 +61,18 @@ class DjangoCassandraOptions(options.Options):
         # Call Django to create _meta object
         super(DjangoCassandraOptions, self).__init__(*args, **kwargs)
 
+        self._private_fields_name = 'private_fields'
+        if hasattr(self, 'virtual_fields'):
+            self._private_fields_name = 'virtual_fields'
+
         # Add Columns as Django Fields
         for column in self._defined_columns.values():
             self.add_field(column)
-
         self.setup_pk()
 
         # Set further _meta attributes explicitly
         self.proxy_for_model = self.concrete_model = self.model_inst
         self.managed = False
-
-        self.default_manager = self.model_inst.objects
-        self.base_manager = self.model_inst.objects
         self.swappable = False
 
     def can_migrate(self, *args, **kwargs):
@@ -89,8 +89,8 @@ class DjangoCassandraOptions(options.Options):
         self.pk = self.model_inst._get_explicit_pk_column()
 
     def add_field(self, field):
-        """Add each field as a virtual_field."""
-        self.virtual_fields.append(field)
+        """Add each field as a private field."""
+        getattr(self, self._private_fields_name).append(field)
         self._expire_cache(reverse=True)
         self._expire_cache(reverse=False)
 
@@ -189,6 +189,7 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
 
     def __new__(cls, name, bases, attrs):
         parents = [b for b in bases if isinstance(b, DjangoCassandraModelMetaClass)]
+
         if not parents:
             return super(ModelBase, cls).__new__(cls, name, bases, attrs)
 
@@ -454,7 +455,12 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
 
         new_class.add_to_class(
             '_meta', DjangoCassandraOptions(meta, app_label, cls=new_class))
-        new_class.add_to_class('objects', new_class.objects)
+        manager_attrs = (
+            'objects', 'default_manager', '_default_manager',
+            'base_manager', '_base_manager')
+        for manager_attr in manager_attrs:
+            new_class.add_to_class(manager_attr, new_class.objects)
+
         new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
         return new_class
 
@@ -717,14 +723,6 @@ class DjangoCassandraModel(
         if name == 'pk':
             return cls._meta.get_field(cls._meta.pk.name)
         return cls._columns[name]
-
-    @property
-    def _base_manager(cls):
-        return cls._meta.base_manager
-
-    @property
-    def _default_manager(cls):
-        return cls._meta.default_manager
 
     @classmethod
     def _get_explicit_pk_column(cls):

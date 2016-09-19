@@ -158,9 +158,9 @@ class TestDjangoCassandraModel(CassandraTestCase):
             len(all_things.values_list('pk')), len(expected)
         )
 
-    def test_virtual_fields_are_set(self):
-        virtual_fields = [f.name for f in CassandraFamilyMember._meta.virtual_fields]
-        expected_virtual_fields = [
+    def test_private_fields_are_set(self):
+        private_fields = [f.name for f in CassandraFamilyMember._meta.private_fields]
+        expected_private_fields = [
             'id',
             'first_name',
             'last_name',
@@ -169,7 +169,7 @@ class TestDjangoCassandraModel(CassandraTestCase):
             'favourite_float_number',
             'created_on'
         ]
-        self.assertEqual(virtual_fields, expected_virtual_fields)
+        self.assertEqual(private_fields, expected_private_fields)
 
     def test_model_doesnotexist_is_raised_when_record_not_found(self):
         with self.assertRaises(CassandraFamilyMember.DoesNotExist):
