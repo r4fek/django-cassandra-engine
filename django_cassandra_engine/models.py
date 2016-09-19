@@ -596,11 +596,10 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
         new_queryset = []
         for model in queryset:
             should_exclude_model = False
-            for attr, val in six.iteritems(kwargs):
-                if should_exclude_model:
-                    break
-                if getattr(model, attr) == val:
+            for field_name, field_value in six.iteritems(kwargs):
+                if getattr(model, field_name) == field_value:
                     should_exclude_model = True
+                    break
             if not should_exclude_model:
                 new_queryset.append(model)
         return ReadOnlyDjangoCassandraQuerySet(
@@ -675,8 +674,7 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
                     else:
                         raise query.QueryException(
                             '{exc}\n\n'
-                            '{help}'.format(exc=exc, help=ORDER_BY_ERROR_HELP)
-                        )
+                            '{help}'.format(exc=exc, help=ORDER_BY_ERROR_HELP))
                 else:
                     raise exc
 
