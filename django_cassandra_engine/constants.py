@@ -8,8 +8,6 @@ ORDER_BY_ERROR_HELP = (
     'To enable fallback order_by() python implementation,\n'
     'set "CASSANDRA_FALLBACK_ORDER_BY_PYTHON = True" in Django Settings.'
 )
-CASSANDRA_DRIVER_COMPAT_VERSIONS = ('3.6.0', '3.7.0')
-
 PK_META_MISSING_HELP = (
     '\nOn Django Cassandra Models with more than one primary_key field,\n'
     'The model {} must specify class Meta attribute \'get_pk_field\'.\n'

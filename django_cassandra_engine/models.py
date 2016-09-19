@@ -13,7 +13,6 @@ from django.core import validators
 from django.db.models.base import ModelBase
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import options
-import cassandra
 from cassandra.cqlengine import query
 from cassandra.cqlengine import columns
 from cassandra.cqlengine.models import (
@@ -22,23 +21,12 @@ from cassandra.cqlengine.models import (
 )
 from cassandra.util import OrderedDict
 
-from .constants import (
-    ORDER_BY_WARN,
-    ORDER_BY_ERROR_HELP,
-    CASSANDRA_DRIVER_COMPAT_VERSIONS,
-    PK_META_MISSING_HELP
-)
+from .constants import ORDER_BY_WARN, ORDER_BY_ERROR_HELP, PK_META_MISSING_HELP
 from . import django_field_methods
 from . import django_model_methods
 
 
 log = logging.getLogger(__name__)
-if cassandra.__version__ not in CASSANDRA_DRIVER_COMPAT_VERSIONS:
-    raise RuntimeError(
-        'Django Cassandra Models require cassandra-driver versions {} '
-        'Version "{}" found'.format(CASSANDRA_DRIVER_COMPAT_VERSIONS,
-                                    cassandra.__version__))
-
 _django_manager_attr_names = ('objects', 'default_manager', '_default_manager',
                               'base_manager', '_base_manager')
 
@@ -191,12 +179,12 @@ class DjangoCassandraOptions(options.Options):
 class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
 
     def __new__(cls, name, bases, attrs):
-        for attr in _django_manager_attr_names:
-            setattr(cls, attr, None)
         parents = [b for b in bases if isinstance(b, DjangoCassandraModelMetaClass)]
 
         if not parents:
             return super(ModelBase, cls).__new__(cls, name, bases, attrs)
+        for attr in _django_manager_attr_names:
+            setattr(cls, attr, None)
 
         # ################################################################
         # start code taken from python-driver 3.3.0 ModelMetaClass.__new__
@@ -462,7 +450,6 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
             '_meta', DjangoCassandraOptions(meta, app_label, cls=new_class))
         for manager_attr in _django_manager_attr_names:
             new_class.add_to_class(manager_attr, new_class.objects)
-
         new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
         return new_class
 
