@@ -452,6 +452,7 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
         # Add manager to the model
         for manager_attr in _django_manager_attr_names:
             new_class.add_to_class(manager_attr, new_class.objects)
+        # Register the model
         new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
         return new_class
 
