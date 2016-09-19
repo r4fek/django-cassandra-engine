@@ -54,6 +54,7 @@ class DjangoCassandraOptions(options.Options):
 
         self._private_fields_name = 'private_fields'
         if hasattr(self, 'virtual_fields'):
+            # Django < 1.10
             self._private_fields_name = 'virtual_fields'
 
         # Add Columns as Django Fields
