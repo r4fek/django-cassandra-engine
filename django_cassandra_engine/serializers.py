@@ -1,3 +1,5 @@
+import warnings
+
 from rest_framework import serializers
 from django.utils.text import capfirst
 from rest_framework.serializers import (CharField, ChoiceField, ModelField,
@@ -5,7 +7,7 @@ from rest_framework.serializers import (CharField, ChoiceField, ModelField,
 from rest_framework.utils.field_mapping import (NUMERIC_FIELD_TYPES,
                                                 ClassLookupDict,
                                                 DecimalValidator,
-                                                UniqueValidator, needs_label,
+                                                needs_label,
                                                 validators)
 from cassandra.cqlengine import columns
 
@@ -35,7 +37,7 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
         Creates a default instance of a basic non-relational field.
         """
         kwargs = {}
-        validator_kwarg = []
+        validator_kwarg = list(model_field.validators)
 
         # The following will only be used by ModelField classes.
         # Gets removed for everything else.
@@ -156,6 +158,7 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
                 if not isinstance(validator, validators.MinValueValidator)
             ]
 
+
         # URLField does not need to include the URLValidator argument,
         # as it is explicitly added in.
         if isinstance(model_field, models.URLField):
@@ -163,6 +166,7 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
                 validator for validator in validator_kwarg
                 if not isinstance(validator, validators.URLValidator)
             ]
+
 
         # EmailField does not need to include the validate_email argument,
         # as it is explicitly added in.
@@ -172,12 +176,14 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
                 if validator is not validators.validate_email
             ]
 
+
         # SlugField do not need to include the 'validate_slug' argument,
         if isinstance(model_field, models.SlugField):
             validator_kwarg = [
                 validator for validator in validator_kwarg
                 if validator is not validators.validate_slug
             ]
+
 
         # IPAddressField do not need to include the 'validate_ipv46_address' argument,
         if isinstance(model_field, models.GenericIPAddressField):
@@ -186,17 +192,12 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
                 if validator is not validators.validate_ipv46_address
             ]
 
+
         if getattr(model_field, 'unique', False):
-            unique_error_message = model_field.error_messages.get('unique', None)
-            if unique_error_message:
-                unique_error_message = unique_error_message % {
-                    'model_name': model_field.model._meta.object_name,
-                    'field_label': model_field.verbose_name
-                }
-            validator = UniqueValidator(
-                queryset=model_field.model._default_manager,
-                message=unique_error_message)
-            validator_kwarg.append(validator)
+            warnings.warn(
+                'UniqueValidator is current not support '
+                'for DjangoCassandraSerializer'
+            )
 
         if validator_kwarg:
             kwargs['validators'] = validator_kwarg
@@ -211,7 +212,6 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
 
         field_class = field_mapping[model_field]
         field_kwargs = self.get_field_kwargs(field_name, model_field)
-
         if 'choices' in field_kwargs:
             # Fields with choices get coerced into `ChoiceField`
             # instead of using their regular typed field.

@@ -230,13 +230,19 @@ class TestDjangoCassandraField(CassandraTestCase):
         model_fields = self.family_member._meta._get_fields()
 
         for field in model_fields:
+            allow_null = (
+                (not field.required and
+                 not field.is_primary_key and
+                 not field.partition_key) or field.has_default
+            )
+
             self.assertEqual(field.unique_for_date, None)
             self.assertEqual(field.unique_for_month, None)
             self.assertEqual(field.unique_for_year, None)
             self.assertEqual(field.db_column, None)
             self.assertEqual(field.db_index, field.index)
-            self.assertEqual(field.null, not field.required)
-            self.assertEqual(field.blank, not field.required)
+            self.assertEqual(field.null, allow_null)
+            self.assertEqual(field.blank, allow_null)
             self.assertEqual(field.choices, [])
             self.assertEqual(field.flatchoices, [])
             self.assertEqual(field.help_text, '')

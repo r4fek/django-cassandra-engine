@@ -1,10 +1,15 @@
 import uuid
-import six.moves.http_client
+from datetime import datetime
 
+import six.moves.http_client
 from rest_framework.test import APITestCase
 from django.core.urlresolvers import reverse
 
-from common.models import CassandraThing, CassandraThingMultiplePK
+from common.models import (
+    CassandraThing, CassandraThingMultiplePK, CassandraFamilyMember
+)
+from common.test_utils import CassandraTestCase
+from common.serializers import CassandraFamilyMemberSerializer
 
 
 class TestModelViewSet(APITestCase):
@@ -76,3 +81,31 @@ class TestListCreateAPIViewWithMultiplePK(APITestCase):
         self.assertEqual(str(model.id), self.data['id'])
         self.assertEqual(str(model.another_id), self.data['another_id'])
         self.assertEqual(model.data_abstract, self.data['data_abstract'])
+
+
+class TestSerializer(APITestCase, CassandraTestCase):
+
+    def test_serialize_creates(self):
+        now = datetime.now()
+        data = {
+            'id': str(uuid.uuid4()),
+            'first_name': 'Homer',
+            'last_name': 'Simpson',
+            'is_real': True,
+            'favourite_number': 10,
+            'favourite_float_number': float(10.10),
+            'created_on': now,
+        }
+        serializer = CassandraFamilyMemberSerializer(data=data)
+        serializer.is_valid()
+        self.assertEqual(serializer.errors, {})
+        self.assertEqual(serializer.is_valid(), True)
+        serializer.save()
+
+        self.assertEqual(CassandraFamilyMember.objects.all().count(), 1)
+        model = CassandraFamilyMember.objects.all()[0]
+        self.assertEqual(model.first_name, 'Homer')
+        self.assertEqual(model.last_name, 'Simpson')
+        self.assertEqual(model.is_real, True)
+        self.assertEqual(model.favourite_number, 10)
+        self.assertEqual(model.id, uuid.UUID(data['id']))

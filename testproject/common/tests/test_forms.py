@@ -43,7 +43,8 @@ class TestModelForm(CassandraTestCase):
                 first_name='Marge',
                 last_name=existing.last_name,
             ), instance=existing)
-
+        form.is_valid()
+        self.assertEqual(form.errors, {})
         self.assertTrue(form.is_valid())
 
         updated = form.save()

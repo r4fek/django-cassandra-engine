@@ -4,6 +4,7 @@ import copy
 import warnings
 from operator import attrgetter
 import collections
+from functools import partial
 from itertools import chain
 
 import six
@@ -91,6 +92,11 @@ class DjangoCassandraOptions(options.Options):
         return options.make_immutable_fields_list('get_fields()', fields)
 
     def _set_column_django_attributes(self, cql_column, name):
+        allow_null = (
+            (not cql_column.required and
+             not cql_column.is_primary_key and
+             not cql_column.partition_key) or cql_column.has_default and not cql_column.required
+        )
         cql_column.error_messages = self.default_field_error_messages
         cql_column.empty_values = list(validators.EMPTY_VALUES)
         cql_column.db_index = cql_column.index
@@ -99,8 +105,8 @@ class DjangoCassandraOptions(options.Options):
         cql_column.hidden = False
         cql_column.auto_created = False
         cql_column.help_text = ''
-        cql_column.blank = not cql_column.required
-        cql_column.null = not cql_column.required
+        cql_column.blank = allow_null
+        cql_column.null = allow_null
         cql_column.choices = []
         cql_column.flatchoices = []
         cql_column.validators = []
@@ -393,10 +399,6 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
                 attrs=attrs,
                 name=name
             )
-        methods = inspect.getmembers(django_model_methods, inspect.isfunction)
-        for method_name, method in methods:
-            new_method = six.create_bound_method(method, klass)
-            setattr(klass, method_name, new_method)
         return klass
 
     def add_to_class(cls, name, value):
@@ -635,6 +637,8 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
             new_queryset, model_class=self.model)
 
     def python_order_by(self, qset, colnames):
+        if not isinstance(qset, list):
+            raise TypeError('qset must be a list')
         colnames = convert_pk_field_names_to_real(model=self.model,
                                                   field_names=colnames)
 
@@ -733,6 +737,13 @@ class DjangoCassandraModel(
 
     __discriminator_value__ = None
     __compute_routing_key__ = True
+
+    def __init__(self, *args, **kwargs):
+        super(DjangoCassandraModel, self).__init__(*args, **kwargs)
+        methods = inspect.getmembers(django_model_methods, inspect.isfunction)
+        for method_name, method in methods:
+            new_method = partial(method, self)
+            setattr(self, method_name, new_method)
 
     @classmethod
     def get(cls, *args, **kwargs):
