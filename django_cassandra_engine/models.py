@@ -499,6 +499,7 @@ class ReadOnlyDjangoCassandraQuerySet(list):
                 'ReadOnlyDjangoCassandraQuerySet requires iterable data')
         super(ReadOnlyDjangoCassandraQuerySet, self).__init__(data)
         self.model = model_class
+        self.query = StubQuery(model=self.model)
 
     @property
     def objects(self):
@@ -568,6 +569,29 @@ class ReadOnlyDjangoCassandraQuerySet(list):
         self._raise_not_implemented(method_name='defer')
 
 
+class StubQuery(object):
+
+    def __init__(self, model):
+        self.model = model
+        self.order_by = 'pk'
+
+    @property
+    def select_related(self):
+        return False
+
+    def add_context(self, *args, **kwargs):
+        pass
+
+    def get_context(self, *args, **kwargs):
+        return {}
+
+    def get_meta(self):
+        return self.model._meta
+
+    def _prepare(self, field):
+        return self
+
+
 class DjangoCassandraQuerySet(query.ModelQuerySet):
     name = 'objects'
     use_in_migrations = False
@@ -575,6 +599,7 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
     def __init__(self, *args, **kwargs):
         super(query.ModelQuerySet, self).__init__(*args, **kwargs)
         self._allow_filtering = True
+        self.query = StubQuery(model=self.model)
 
     def _select_fields(self):
         if self._defer_fields or self._only_fields:
