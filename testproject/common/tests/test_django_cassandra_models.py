@@ -88,6 +88,10 @@ class TestDjangoCassandraModel(CassandraTestCase):
         self.assertTrue(hasattr(CassandraFamilyMember._default_manager, 'all'))
         self.assertTrue(hasattr(CassandraFamilyMember._default_manager, 'filter'))
 
+    def test_get_queryset(self):
+        results = CassandraFamilyMember.objects.get_queryset()
+        self.assertTrue(results[0].id, self.some_uuid)
+
     def test_calling_queryset_methods_not_through_manager_raises(self):
         with self.assertRaises(AttributeError):
             CassandraFamilyMember.all()

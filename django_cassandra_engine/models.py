@@ -510,6 +510,9 @@ class ReadOnlyDjangoCassandraQuerySet(list):
     def all(self):
         return self
 
+    def get_queryset(self):
+        return self
+
     def count(self):
         return len(self)
 
@@ -587,14 +590,15 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
         self._count = None
         return super(query.ModelQuerySet, self).count()
 
-    def exclude(self, *args, **kwargs):
+    def get_queryset(self):
         if len(self._where) > 0:
-            queryset = super(query.ModelQuerySet, self).filter()
+            return super(query.ModelQuerySet, self).filter()
         else:
-            queryset = super(query.ModelQuerySet, self).all()
+            return super(query.ModelQuerySet, self).all()
 
+    def exclude(self, *args, **kwargs):
         new_queryset = []
-        for model in queryset:
+        for model in self.get_queryset():
             should_exclude_model = False
             for field_name, field_value in six.iteritems(kwargs):
                 if getattr(model, field_name) == field_value:
@@ -606,9 +610,6 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
             new_queryset, model_class=self.model)
 
     def python_order_by(self, qset, colnames):
-        if not isinstance(qset, list):
-            raise TypeError('qset must be a list')
-
         colnames = convert_pk_field_names_to_real(model=self.model,
                                                   field_names=colnames)
 
