@@ -575,7 +575,7 @@ class StubQuery(object):
 
     def __init__(self, model):
         self.model = model
-        self.order_by = 'pk'
+        self.order_by = ['pk']
 
     @property
     def select_related(self):
