@@ -1,10 +1,20 @@
-from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
+from django.core.exceptions import (
+    ValidationError, NON_FIELD_ERRORS, FieldDoesNotExist
+)
 
 __ALL__ = (
-    'full_clean', '_get_unique_checks',
+    'serializable_value', 'full_clean', '_get_unique_checks',
     '_perform_unique_checks', '_perform_date_checks', 'validate_unique',
     'clean', 'clean_fields'
 )
+
+
+def serializable_value(self, field_name):
+    try:
+        field = self._meta.get_field(field_name)
+    except FieldDoesNotExist:
+        return getattr(self, field_name)
+    return getattr(self, field.attname)
 
 
 def full_clean(self, exclude=None, validate_unique=True):
