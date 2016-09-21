@@ -24,6 +24,11 @@ class TestDjangoCassandraModel(CassandraTestCase):
             created_on=datetime.now()
         )
 
+    def test_model_is_hashable(self):
+        models = set()
+        models.add(self.family_member)
+        self.assertEqual(1, len(models))
+
     def test_serializable_value(self):
         self.assertEqual(
             self.some_uuid,
