@@ -24,6 +24,16 @@ class TestDjangoCassandraModel(CassandraTestCase):
             created_on=datetime.now()
         )
 
+    def test_serializable_value(self):
+        self.assertEqual(
+            self.some_uuid,
+            self.family_member.serializable_value('id')
+        )
+        self.assertEqual(
+            self.family_member.first_name,
+            self.family_member.serializable_value('first_name')
+        )
+
     def test_create(self):
         family_member = self.family_member
         self.assertEqual(family_member.first_name, 'Homer')
