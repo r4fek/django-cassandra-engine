@@ -3,10 +3,16 @@ from django.core.exceptions import (
 )
 
 __ALL__ = (
-    'serializable_value', 'full_clean', '_get_unique_checks',
+    '_get_pk_val', 'serializable_value', 'full_clean', '_get_unique_checks',
     '_perform_unique_checks', '_perform_date_checks', 'validate_unique',
     'clean', 'clean_fields'
 )
+
+
+def _get_pk_val(self, meta=None):
+    if not meta:
+        meta = self._meta
+    return getattr(self, meta.pk.attname)
 
 
 def serializable_value(self, field_name):

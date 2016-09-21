@@ -751,6 +751,11 @@ class DjangoCassandraModel(
             new_method = partial(method, self)
             setattr(self, method_name, new_method)
 
+    def __hash__(self):
+        if self._get_pk_val() is None:
+            raise TypeError("Model instances without primary key value are unhashable")
+        return hash(self._get_pk_val())
+
     @classmethod
     def get(cls, *args, **kwargs):
         raise AttributeError('model has no attribute \'get\'')
