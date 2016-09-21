@@ -34,6 +34,10 @@ class TestDjangoCassandraModel(CassandraTestCase):
             self.family_member.serializable_value('first_name')
         )
 
+    def test_clone_queryset(self):
+        qset = CassandraFamilyMember.objects.filter(id=self.some_uuid)
+        self.assertNotEqual(id(qset._clone()), id(qset))
+
     def test_create(self):
         family_member = self.family_member
         self.assertEqual(family_member.first_name, 'Homer')
