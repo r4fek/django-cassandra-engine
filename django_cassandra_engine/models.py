@@ -510,6 +510,9 @@ class ReadOnlyDjangoCassandraQuerySet(list):
     def first(self):
         return next(iter(self), None)
 
+    def _clone(self):
+        return copy.deepcopy(self)
+
     def all(self):
         return self
 
@@ -723,6 +726,9 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
 
         super_values_list = super(DjangoCassandraQuerySet, self).values_list
         return super_values_list(*fields, **kwargs)
+
+    def _clone(self):
+        return copy.deepcopy(self)
 
 
 class DjangoCassandraModel(
