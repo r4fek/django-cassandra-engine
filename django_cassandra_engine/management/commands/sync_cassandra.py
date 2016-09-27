@@ -1,19 +1,11 @@
-import django
-if django.VERSION[0:2] >= (1, 10):
-    from django.core.management.base import BaseCommand, CommandError
-else:
-    from django.core.management.base import (
-        NoArgsCommand as BaseCommand,
-        CommandError)
-
+from django.core.management.base import BaseCommand, CommandError
 from django.db import connections
 from django.conf import settings
 
-from cassandra.cqlengine.management import (
-    create_keyspace_simple,
-    create_keyspace_network_topology,
-    sync_table
-)
+from cassandra.cqlengine import management
+from cassandra.cqlengine.models import Model
+
+from django_cassandra_engine.models import DjangoCassandraModel
 from django_cassandra_engine.utils import get_engine_from_db_alias
 
 
@@ -78,17 +70,20 @@ class Command(BaseCommand):
         self.stdout.write('Creating keyspace {}..'.format(keyspace))
 
         if strategy_class == 'SimpleStrategy':
-            create_keyspace_simple(keyspace, replication_factor)
+            management.create_keyspace_simple(keyspace, replication_factor)
         else:
-            create_keyspace_network_topology(keyspace, replication_opts)
+            management.create_keyspace_network_topology(keyspace, replication_opts)
 
         for app_name, app_models \
                 in connection.introspection.cql_models.items():
             for model in app_models:
                 self.stdout.write('Syncing %s.%s' % (app_name, model.__name__))
-                sync_table(model)
+                # patch this object used for type check in management.sync_table()
+                management.Model = (Model, DjangoCassandraModel)
+                management.sync_table(model)
 
-    def handle(self, *args, **options):
+    def handle(self, **options):
+
         self._import_management()
 
         database = options.get('database')

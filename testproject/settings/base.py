@@ -42,6 +42,7 @@ BASE_APPS = [
 
 INSTALLED_APPS = BASE_APPS
 
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -73,3 +74,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 SESSION_BACKEND = 'django_cassandra_engine.sessions.backends.db'
+CASSANDRA_FALLBACK_ORDER_BY_PYTHON = True
