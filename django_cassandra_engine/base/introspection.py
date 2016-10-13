@@ -6,7 +6,7 @@ if django.VERSION[0:2] >= (1, 8):
 else:
     from django.db.backends import BaseDatabaseIntrospection
 
-from django_cassandra_engine.utils import get_installed_apps, get_cql_models
+from django_cassandra_engine.utils import get_installed_apps, get_cql_models, get_app_label
 
 
 class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
@@ -26,7 +26,7 @@ class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
         apps = get_installed_apps()
         keyspace = self.connection.connection.keyspace
         for app in apps:
-            self._cql_models[app.__name__] = get_cql_models(app,
+            self._cql_models[get_app_label(app)] = get_cql_models(app,
                                                             keyspace=keyspace)
 
     @property

@@ -2,7 +2,7 @@ import inspect
 from cassandra import cqlengine
 import django
 from django.conf import settings
-
+from django.apps.config import MODELS_MODULE_NAME
 
 class CursorWrapper(object):
     """
@@ -137,3 +137,23 @@ def get_engine_from_db_alias(db_alias):
     """
 
     return settings.DATABASES.get(db_alias, {}).get('ENGINE', None)
+
+def get_app_label(model_module):
+    """
+
+    @param model_module:
+    @return:
+    """
+    package_components = model_module.__name__.split('.')
+    package_components.reverse()  # find the last occurrence of 'models'
+    try:
+        app_label_index = package_components.index(MODELS_MODULE_NAME) + 1
+    except ValueError:
+        app_label_index = 1
+    try:
+        return package_components[app_label_index]
+    except IndexError:
+        raise ImproperlyConfigured(
+            'Unable to detect the app label for model "%s." '
+            % (model_module.__name__)
+        )

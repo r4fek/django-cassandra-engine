@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from django.db import connections
+from django.db import connections, router
 from django.conf import settings
 
 from cassandra.cqlengine import management
@@ -77,10 +77,11 @@ class Command(BaseCommand):
         for app_name, app_models \
                 in connection.introspection.cql_models.items():
             for model in app_models:
-                self.stdout.write('Syncing %s.%s' % (app_name, model.__name__))
-                # patch this object used for type check in management.sync_table()
-                management.Model = (Model, DjangoCassandraModel)
-                management.sync_table(model)
+                if router.allow_migrate(alias, app_name, model_name=model):
+                    self.stdout.write('Syncing %s.%s' % (app_name, model.__name__))
+                    # patch this object used for type check in management.sync_table()
+                    management.Model = (Model, DjangoCassandraModel)
+                    management.sync_table(model)
 
     def handle(self, **options):
 
