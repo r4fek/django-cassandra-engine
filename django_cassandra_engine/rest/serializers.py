@@ -1,14 +1,16 @@
 import warnings
 
-from rest_framework import serializers
 from django.utils.text import capfirst
-from rest_framework.serializers import (CharField, ChoiceField, ModelField,
-                                        models, postgres_fields)
-from rest_framework.utils.field_mapping import (NUMERIC_FIELD_TYPES,
-                                                ClassLookupDict,
-                                                DecimalValidator,
-                                                needs_label,
-                                                validators)
+from rest_framework import serializers
+from rest_framework.serializers import (
+    CharField, ChoiceField, ModelField, models, postgres_fields)
+from rest_framework.utils.field_mapping import (
+    NUMERIC_FIELD_TYPES,
+    ClassLookupDict,
+    DecimalValidator,
+    needs_label,
+    validators
+)
 from cassandra.cqlengine import columns
 
 
@@ -29,7 +31,6 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
         columns.Boolean: serializers.BooleanField,
         columns.DateTime: serializers.DateTimeField,
         columns.List: serializers.ListField,
-        columns.Date: serializers.DateTimeField,
     }
 
     def get_field_kwargs(self, field_name, model_field):
@@ -60,7 +61,8 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
         if isinstance(model_field, models.TextField):
             kwargs['style'] = {'base_template': 'textarea.html'}
 
-        if isinstance(model_field, models.AutoField) or not model_field.editable:
+        if isinstance(model_field, models.AutoField) \
+                or not model_field.editable:
             # If this field is read-only, then return early.
             # Further keyword arguments are not valid.
             kwargs['read_only'] = True
@@ -69,7 +71,8 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
         if model_field.has_default or model_field.blank or model_field.null:
             kwargs['required'] = False
 
-        if model_field.null and not isinstance(model_field, models.NullBooleanField):
+        if model_field.null and not isinstance(model_field,
+                                               models.NullBooleanField):
             kwargs['allow_null'] = True
 
         if model_field.blank and (
@@ -100,7 +103,8 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
             kwargs['choices'] = model_field.choices
             return kwargs
 
-        # Our decimal validation is handled in the field code, not validator code.
+        # Our decimal validation is handled in the field code,
+        # not validator code.
         # (In Django 1.9+ this differs from previous style)
         if isinstance(model_field, models.DecimalField) and DecimalValidator:
             validator_kwarg = [
@@ -111,8 +115,9 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
         # Ensure that max_length is passed explicitly as a keyword arg,
         # rather than as a validator.
         max_length = getattr(model_field, 'max_length', None)
-        if max_length is not None and (isinstance(model_field, models.CharField) or
-                                       isinstance(model_field, models.TextField)):
+        if max_length is not None and (
+                    isinstance(model_field, models.CharField) or
+                    isinstance(model_field, models.TextField)):
             kwargs['max_length'] = max_length
             validator_kwarg = [
                 validator for validator in validator_kwarg
@@ -125,7 +130,8 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
             validator.limit_value for validator in validator_kwarg
             if isinstance(validator, validators.MinLengthValidator)
         ), None)
-        if min_length is not None and isinstance(model_field, models.CharField):
+        if min_length is not None and isinstance(model_field,
+                                                 models.CharField):
             kwargs['min_length'] = min_length
             validator_kwarg = [
                 validator for validator in validator_kwarg
@@ -138,7 +144,8 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
             validator.limit_value for validator in validator_kwarg
             if isinstance(validator, validators.MaxValueValidator)
         ), None)
-        if max_value is not None and isinstance(model_field, NUMERIC_FIELD_TYPES):
+        if max_value is not None and isinstance(model_field,
+                                                NUMERIC_FIELD_TYPES):
             kwargs['max_value'] = max_value
             validator_kwarg = [
                 validator for validator in validator_kwarg
@@ -151,13 +158,13 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
             validator.limit_value for validator in validator_kwarg
             if isinstance(validator, validators.MinValueValidator)
         ), None)
-        if min_value is not None and isinstance(model_field, NUMERIC_FIELD_TYPES):
+        if min_value is not None and isinstance(model_field,
+                                                NUMERIC_FIELD_TYPES):
             kwargs['min_value'] = min_value
             validator_kwarg = [
                 validator for validator in validator_kwarg
                 if not isinstance(validator, validators.MinValueValidator)
             ]
-
 
         # URLField does not need to include the URLValidator argument,
         # as it is explicitly added in.
@@ -167,7 +174,6 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
                 if not isinstance(validator, validators.URLValidator)
             ]
 
-
         # EmailField does not need to include the validate_email argument,
         # as it is explicitly added in.
         if isinstance(model_field, models.EmailField):
@@ -176,7 +182,6 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
                 if validator is not validators.validate_email
             ]
 
-
         # SlugField do not need to include the 'validate_slug' argument,
         if isinstance(model_field, models.SlugField):
             validator_kwarg = [
@@ -184,14 +189,13 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
                 if validator is not validators.validate_slug
             ]
 
-
-        # IPAddressField do not need to include the 'validate_ipv46_address' argument,
+        # IPAddressField do not need to include the 'validate_ipv46_address'
+        # argument,
         if isinstance(model_field, models.GenericIPAddressField):
             validator_kwarg = [
                 validator for validator in validator_kwarg
                 if validator is not validators.validate_ipv46_address
             ]
-
 
         if getattr(model_field, 'unique', False):
             warnings.warn(
@@ -218,14 +222,16 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
             field_class = self.serializer_choice_field
             # Some model fields may introduce kwargs that would not be valid
             # for the choice field. We need to strip these out.
-            # Eg. models.DecimalField(max_digits=3, decimal_places=1, choices=DECIMAL_CHOICES)
-            valid_kwargs = set((
+            # Eg. models.DecimalField(max_digits=3, decimal_places=1,
+            #                         choices=DECIMAL_CHOICES)
+
+            valid_kwargs = {
                 'read_only', 'write_only',
                 'required', 'default', 'initial', 'source',
                 'label', 'help_text', 'style',
                 'error_messages', 'validators', 'allow_null', 'allow_blank',
                 'choices'
-            ))
+            }
             for key in list(field_kwargs.keys()):
                 if key not in valid_kwargs:
                     field_kwargs.pop(key)
@@ -236,11 +242,13 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
             # matched to the model field.
             field_kwargs.pop('model_field', None)
 
-        if not issubclass(field_class, CharField) and not issubclass(field_class, ChoiceField):
+        if not issubclass(field_class, CharField) and not \
+                issubclass(field_class, ChoiceField):
             # `allow_blank` is only valid for textual fields.
             field_kwargs.pop('allow_blank', None)
 
-        if postgres_fields and isinstance(model_field, postgres_fields.ArrayField):
+        if postgres_fields and isinstance(model_field,
+                                          postgres_fields.ArrayField):
             # Populate the `child` argument on `ListField` instances generated
             # for the PostgrSQL specfic `ArrayField`.
             child_model_field = model_field.base_field

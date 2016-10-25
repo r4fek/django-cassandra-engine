@@ -66,7 +66,8 @@ def _get_unique_checks(self, exclude=None):
     unique_togethers = [(self.__class__, self._meta.unique_together)]
     for parent_class in self._meta.get_parent_list():
         if parent_class._meta.unique_together:
-            unique_togethers.append((parent_class, parent_class._meta.unique_together))
+            unique_togethers.append((parent_class,
+                                     parent_class._meta.unique_together))
 
     for model_class, unique_together in unique_togethers:
         for check in unique_together:
@@ -95,11 +96,14 @@ def _get_unique_checks(self, exclude=None):
             if f.unique:
                 unique_checks.append((model_class, (name,)))
             if f.unique_for_date and f.unique_for_date not in exclude:
-                date_checks.append((model_class, 'date', name, f.unique_for_date))
+                date_checks.append(
+                    (model_class, 'date', name, f.unique_for_date))
             if f.unique_for_year and f.unique_for_year not in exclude:
-                date_checks.append((model_class, 'year', name, f.unique_for_year))
+                date_checks.append(
+                    (model_class, 'year', name, f.unique_for_year))
             if f.unique_for_month and f.unique_for_month not in exclude:
-                date_checks.append((model_class, 'month', name, f.unique_for_month))
+                date_checks.append(
+                    (model_class, 'month', name, f.unique_for_month))
     return unique_checks, date_checks
 
 
@@ -143,7 +147,8 @@ def _perform_unique_checks(self, unique_checks):
                 key = unique_check[0]
             else:
                 key = NON_FIELD_ERRORS
-            errors.setdefault(key, []).append(self.unique_error_message(model_class, unique_check))
+            errors.setdefault(key, []).append(
+                self.unique_error_message(model_class, unique_check))
 
     return errors
 
@@ -163,7 +168,8 @@ def _perform_date_checks(self, date_checks):
             lookup_kwargs['%s__month' % unique_for] = date.month
             lookup_kwargs['%s__year' % unique_for] = date.year
         else:
-            lookup_kwargs['%s__%s' % (unique_for, lookup_type)] = getattr(date, lookup_type)
+            lookup_kwargs['%s__%s' % (unique_for, lookup_type)] = \
+                getattr(date, lookup_type)
         lookup_kwargs[field] = getattr(self, field)
 
         qs = model_class._default_manager.filter(**lookup_kwargs)

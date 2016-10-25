@@ -1,9 +1,9 @@
-from django_cassandra_engine.serializers import DjangoCassandraModelSerializer
-from rest_framework import serializers
-
 from common.models import (
     CassandraThingMultiplePK, CassandraThing, CassandraFamilyMember
 )
+from rest_framework import serializers
+
+from django_cassandra_engine.rest.serializers import DjangoCassandraModelSerializer
 
 
 class ThingMultiplePKSerializer(DjangoCassandraModelSerializer):

@@ -48,7 +48,7 @@ def pre_save(self, model_instance, add):
 def get_prep_value(self, value):
     # Taken from django.db.models.fields.__init__
     if isinstance(value, Promise):
-        value = value._proxy____cast()
+        value = value._proxy___cast()
     return value
 
 
