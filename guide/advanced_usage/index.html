@@ -47,13 +47,13 @@
       	font-style: normal;
       }
     </style>
-    <link rel="stylesheet" href="../../assets/stylesheets/application-b64b728552.css">
+    <link rel="stylesheet" href="../../assets/stylesheets/application-a422ff04cc.css">
     
     
       
       
       
-      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
       <style>
         body, input {
           font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
@@ -147,7 +147,12 @@
         </div>
       
       <div class="name">
-        <strong>Django Cassandra Engine 0.11.1</strong>
+        <strong>
+          Django Cassandra Engine
+          <span class="version">
+            1.0
+          </span>
+        </strong>
         
           <br>
           r4fek/django-cassandra-engine
@@ -161,7 +166,7 @@
         <ul class="repo">
           <li class="repo-download">
             
-            <a href="https://github.com/r4fek/django-cassandra-engine/archive/0.11.1.zip" target="_blank" title="Download" data-action="download">
+            <a href="https://github.com/r4fek/django-cassandra-engine/archive/1.0.zip" target="_blank" title="Download" data-action="download">
               <i class="icon icon-download"></i> Download
             </a>
           </li>
@@ -347,39 +352,38 @@
 <h2 id="cassandra-as-secondary-database">Cassandra as secondary database<a class="headerlink" href="#cassandra-as-secondary-database" title="Permanent link">#</a></h2>
 <p>Sometimes you want to use cassandra database along with your relational database.
 This is also possible! Just define your <code>DATABASES</code> like below:</p>
-<div class="code"><pre><span></span>    <span class="kn">from</span> <span class="nn">cassandra</span> <span class="kn">import</span> <span class="n">ConsistencyLevel</span>
+<pre class="code"><code class="language-python">    from cassandra import ConsistencyLevel
 
-    <span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s1">&#39;django.db.backends.sqlite3&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">,</span> <span class="s1">&#39;db.sqlite3&#39;</span><span class="p">),</span>
-        <span class="p">},</span>
-        <span class="s1">&#39;cassandra&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s1">&#39;django_cassandra_engine&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;db&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;USER&#39;</span><span class="p">:</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;PASSWORD&#39;</span><span class="p">:</span> <span class="s1">&#39;pass&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;TEST_NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;test_db&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;HOST&#39;</span><span class="p">:</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;OPTIONS&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;replication&#39;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s1">&#39;strategy_class&#39;</span><span class="p">:</span> <span class="s1">&#39;SimpleStrategy&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;replication_factor&#39;</span><span class="p">:</span> <span class="mi">1</span>
-                <span class="p">},</span>
-                <span class="s1">&#39;connection&#39;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s1">&#39;consistency&#39;</span><span class="p">:</span> <span class="n">ConsistencyLevel</span><span class="o">.</span><span class="n">LOCAL_ONE</span><span class="p">,</span>
-                    <span class="s1">&#39;retry_connect&#39;</span><span class="p">:</span> <span class="bp">True</span>
-                    <span class="c1"># + All connection options for cassandra.cluster.Cluster()</span>
-                <span class="p">},</span>
-                <span class="s1">&#39;session&#39;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s1">&#39;default_timeout&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-                    <span class="s1">&#39;default_fetch_size&#39;</span><span class="p">:</span> <span class="mi">10000</span>
-                    <span class="c1"># + All options for cassandra.cluster.Session()</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-</pre></div>
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        },
+        'cassandra': {
+            'ENGINE': 'django_cassandra_engine',
+            'NAME': 'db',
+            'USER': 'user',
+            'PASSWORD': 'pass',
+            'TEST_NAME': 'test_db',
+            'HOST': '127.0.0.1',
+            'OPTIONS': {
+                'replication': {
+                    'strategy_class': 'SimpleStrategy',
+                    'replication_factor': 1
+                },
+                'connection': {
+                    'consistency': ConsistencyLevel.LOCAL_ONE,
+                    'retry_connect': True
+                    # + All connection options for cassandra.cluster.Cluster()
+                },
+                'session': {
+                    'default_timeout': 10,
+                    'default_fetch_size': 10000
+                    # + All options for cassandra.cluster.Session()
+                }
+            }
+        }
+    }</code></pre>
 
 
 <p>Then run <code>./manage.py syncdb</code> for your regular database and
@@ -395,14 +399,13 @@ for Cassandra DB.</p>
     internal authorization
 </a>
 just provide <code>USER</code> and <code>PASSWORD</code> in cassandra's database alias.</p>
-<div class="code"><pre><span></span>    <span class="o">...</span>
-    <span class="s1">&#39;cassandra&#39;</span> <span class="p">{</span>
-        <span class="s1">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s1">&#39;django_cassandra_engine&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;db&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;USER&#39;</span><span class="p">:</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;PASSWORD&#39;</span><span class="p">:</span> <span class="s1">&#39;pass&#39;</span>
-    <span class="p">}</span>
-</pre></div>
+<pre class="code"><code class="language-python">    ...
+    'cassandra' {
+        'ENGINE': 'django_cassandra_engine',
+        'NAME': 'db',
+        'USER': 'user',
+        'PASSWORD': 'pass'
+    }</code></pre>
 
 
 <p>You can also pass custom
@@ -410,15 +413,14 @@ just provide <code>USER</code> and <code>PASSWORD</code> in cassandra's database
     auth_provider
 </a>
 to <code>connection</code> dict:</p>
-<div class="code"><pre><span></span>    <span class="o">...</span>
-    <span class="s1">&#39;connection&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;consistency&#39;</span><span class="p">:</span> <span class="n">ConsistencyLevel</span><span class="o">.</span><span class="n">LOCAL_ONE</span><span class="p">,</span>
-        <span class="s1">&#39;retry_connect&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-        <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">9042</span><span class="p">,</span>
-        <span class="s1">&#39;auth_provider&#39;</span><span class="p">:</span> <span class="n">PlainTextAuthProvider</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;password&#39;</span><span class="p">)</span>
-        <span class="c1"># + All connection options for cassandra.cluster.Cluster()</span>
-    <span class="p">}</span>
-</pre></div>
+<pre class="code"><code class="language-python">    ...
+    'connection': {
+        'consistency': ConsistencyLevel.LOCAL_ONE,
+        'retry_connect': True,
+        'port': 9042,
+        'auth_provider': PlainTextAuthProvider(username='user', password='password')
+        # + All connection options for cassandra.cluster.Cluster()
+    }</code></pre>
 
 
 <h2 id="performing-raw-database-queries">Performing raw database queries<a class="headerlink" href="#performing-raw-database-queries" title="Permanent link">#</a></h2>
@@ -426,11 +428,10 @@ to <code>connection</code> dict:</p>
 or directly execute <code>UPDATE</code>, <code>INSERT</code>, or <code>DELETE</code> queries.</p>
 <p>In these cases, you can always access the database directly,
 routing around the model layer entirely:</p>
-<div class="code"><pre><span></span>    <span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">connection</span>
-    <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT COUNT(*) FROM users&quot;</span><span class="p">)</span>
-    <span class="k">print</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;count&#39;</span><span class="p">]</span>
-</pre></div>
+<pre class="code"><code class="language-python">    from django.db import connection
+    cursor = connection.cursor()
+    result = cursor.execute(&quot;SELECT COUNT(*) FROM users&quot;)
+    print result[0]['count']</code></pre>
 
 
 <hr />
@@ -493,7 +494,8 @@ routing around the model layer entirely:</p>
 
             </footer>
           
-        </div></article>
+        </div>
+      </article>
       <div class="results" role="status" aria-live="polite">
         <div class="scrollable">
           <div class="wrapper">
@@ -507,7 +509,7 @@ routing around the model layer entirely:</p>
       var base_url = '../..';
       var repo_id  = 'r4fek/django-cassandra-engine';
     </script>
-    <script src="../../assets/javascripts/application-a10a824a49.js"></script>
+    <script src="../../assets/javascripts/application-997097ee0c.js"></script>
     
     
       <script>
@@ -517,7 +519,7 @@ routing around the model layer entirely:</p>
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;
           m.parentNode.insertBefore(a,m)
         })(window, document,
-          'script', '//www.google-analytics.com/analytics.js', 'ga');
+          'script', 'https://www.google-analytics.com/analytics.js', 'ga');
         /* General initialization */
         ga('create', 'UA-38726443-3', 'auto');
         ga('set', 'anonymizeIp', true);
@@ -525,11 +527,19 @@ routing around the model layer entirely:</p>
         /* Track outbound links */
         var buttons = document.querySelectorAll('a');
         Array.prototype.map.call(buttons, function(item) {
-          if (item.host != window.location.host) {
+          if (item.host != document.location.host) {
             item.addEventListener('click', function() {
               var action = item.getAttribute('data-action') || 'follow';
               ga('send', 'event', 'outbound', action, item.href);
             });
+          }
+        });
+        /* Register handler to log search on blur */
+        var query = document.querySelector('.query');
+        query.addEventListener('blur', function() {
+          if (this.value) {
+            var path = document.location.pathname;
+            ga('send', 'pageview', path + '?q=' + this.value);
           }
         });
       </script>

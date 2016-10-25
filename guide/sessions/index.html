@@ -47,13 +47,13 @@
       	font-style: normal;
       }
     </style>
-    <link rel="stylesheet" href="../../assets/stylesheets/application-b64b728552.css">
+    <link rel="stylesheet" href="../../assets/stylesheets/application-a422ff04cc.css">
     
     
       
       
       
-      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
       <style>
         body, input {
           font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
@@ -147,7 +147,12 @@
         </div>
       
       <div class="name">
-        <strong>Django Cassandra Engine 0.11.1</strong>
+        <strong>
+          Django Cassandra Engine
+          <span class="version">
+            1.0
+          </span>
+        </strong>
         
           <br>
           r4fek/django-cassandra-engine
@@ -161,7 +166,7 @@
         <ul class="repo">
           <li class="repo-download">
             
-            <a href="https://github.com/r4fek/django-cassandra-engine/archive/0.11.1.zip" target="_blank" title="Download" data-action="download">
+            <a href="https://github.com/r4fek/django-cassandra-engine/archive/1.0.zip" target="_blank" title="Download" data-action="download">
               <i class="icon icon-download"></i> Download
             </a>
           </li>
@@ -328,14 +333,12 @@
 <li><code>django_cassandra_engine.sessions.backends.cached_db</code></li>
 </ul>
 <p>All you need to do is to enable one of them in your <code>settings.py</code> file:</p>
-<div class="code"><pre><span></span>    <span class="n">INSTALLED_APPS</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;django_cassandra_engine.sessions&#39;</span><span class="p">]</span>
-    <span class="n">SESSION_BACKEND</span> <span class="o">=</span> <span class="s1">&#39;django_cassandra_engine.sessions.backends.db&#39;</span>
-</pre></div>
+<pre class="code"><code class="language-python">    INSTALLED_APPS += ['django_cassandra_engine.sessions']
+    SESSION_BACKEND = 'django_cassandra_engine.sessions.backends.db'</code></pre>
 
 
 <p>Then you need to sync session model with Cassandra:</p>
-<div class="code"><pre><span></span>    $ python manage.py sync_cassandra
-</pre></div>
+<pre class="code"><code class="language-sh">    $ python manage.py sync_cassandra</code></pre>
 
 
 <p>That's it.</p>
@@ -397,7 +400,8 @@
 
             </footer>
           
-        </div></article>
+        </div>
+      </article>
       <div class="results" role="status" aria-live="polite">
         <div class="scrollable">
           <div class="wrapper">
@@ -411,7 +415,7 @@
       var base_url = '../..';
       var repo_id  = 'r4fek/django-cassandra-engine';
     </script>
-    <script src="../../assets/javascripts/application-a10a824a49.js"></script>
+    <script src="../../assets/javascripts/application-997097ee0c.js"></script>
     
     
       <script>
@@ -421,7 +425,7 @@
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;
           m.parentNode.insertBefore(a,m)
         })(window, document,
-          'script', '//www.google-analytics.com/analytics.js', 'ga');
+          'script', 'https://www.google-analytics.com/analytics.js', 'ga');
         /* General initialization */
         ga('create', 'UA-38726443-3', 'auto');
         ga('set', 'anonymizeIp', true);
@@ -429,11 +433,19 @@
         /* Track outbound links */
         var buttons = document.querySelectorAll('a');
         Array.prototype.map.call(buttons, function(item) {
-          if (item.host != window.location.host) {
+          if (item.host != document.location.host) {
             item.addEventListener('click', function() {
               var action = item.getAttribute('data-action') || 'follow';
               ga('send', 'event', 'outbound', action, item.href);
             });
+          }
+        });
+        /* Register handler to log search on blur */
+        var query = document.querySelector('.query');
+        query.addEventListener('blur', function() {
+          if (this.value) {
+            var path = document.location.pathname;
+            ga('send', 'pageview', path + '?q=' + this.value);
           }
         });
       </script>

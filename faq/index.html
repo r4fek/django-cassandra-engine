@@ -47,13 +47,13 @@
       	font-style: normal;
       }
     </style>
-    <link rel="stylesheet" href="../assets/stylesheets/application-b64b728552.css">
+    <link rel="stylesheet" href="../assets/stylesheets/application-a422ff04cc.css">
     
     
       
       
       
-      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
       <style>
         body, input {
           font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
@@ -143,7 +143,12 @@
         </div>
       
       <div class="name">
-        <strong>Django Cassandra Engine 0.11.1</strong>
+        <strong>
+          Django Cassandra Engine
+          <span class="version">
+            1.0
+          </span>
+        </strong>
         
           <br>
           r4fek/django-cassandra-engine
@@ -157,7 +162,7 @@
         <ul class="repo">
           <li class="repo-download">
             
-            <a href="https://github.com/r4fek/django-cassandra-engine/archive/0.11.1.zip" target="_blank" title="Download" data-action="download">
+            <a href="https://github.com/r4fek/django-cassandra-engine/archive/1.0.zip" target="_blank" title="Download" data-action="download">
               <i class="icon icon-download"></i> Download
             </a>
           </li>
@@ -348,24 +353,22 @@
 <h2 id="q-is-it-possible-to-use-it-with-celery"><strong>Q:  Is it possible to use it with Celery?</strong><a class="headerlink" href="#q-is-it-possible-to-use-it-with-celery" title="Permanent link">#</a></h2>
 <p>A: Short answer: YES.</p>
 <p>If you use <code>django_cassandra_engine</code> as your default backend:</p>
-<div class="code"><pre><span></span>    <span class="c1"># project/tasks.py</span>
-    <span class="kn">from</span> <span class="nn">celery.signals</span> <span class="kn">import</span> <span class="n">worker_init</span>
-    <span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">connection</span>
+<pre class="code"><code class="language-python">    # project/tasks.py
+    from celery.signals import worker_init
+    from django.db import connection
 
-    <span class="nd">@worker_process_init.connect</span>
-    <span class="k">def</span> <span class="nf">connect_db</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">connection</span><span class="o">.</span><span class="n">reconnect</span><span class="p">()</span>
-</pre></div>
+    @worker_process_init.connect
+    def connect_db(**kwargs):
+        connection.reconnect()</code></pre>
 
 
 <p>Or if 'cassandra' is your secondary DB alias:</p>
-<div class="code"><pre><span></span>    <span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">connections</span>
-    <span class="n">connection</span> <span class="o">=</span> <span class="n">connections</span><span class="p">[</span><span class="s1">&#39;cassandra&#39;</span><span class="p">]</span>
+<pre class="code"><code class="language-python">    from django.db import connections
+    connection = connections['cassandra']
 
-    <span class="nd">@worker_process_init.connect</span>
-    <span class="k">def</span> <span class="nf">connect_db</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">connection</span><span class="o">.</span><span class="n">reconnect</span><span class="p">()</span>
-</pre></div>
+    @worker_process_init.connect
+    def connect_db(**kwargs):
+        connection.reconnect()</code></pre>
 
 
 <h2 id="q-is-uwsgi-supported"><strong>Q: is uWSGI supported?</strong><a class="headerlink" href="#q-is-uwsgi-supported" title="Permanent link">#</a></h2>
@@ -430,7 +433,8 @@ It also requires that <code>lazy-apps = True</code> is set in <code>uwsgi.ini</c
 
             </footer>
           
-        </div></article>
+        </div>
+      </article>
       <div class="results" role="status" aria-live="polite">
         <div class="scrollable">
           <div class="wrapper">
@@ -444,7 +448,7 @@ It also requires that <code>lazy-apps = True</code> is set in <code>uwsgi.ini</c
       var base_url = '..';
       var repo_id  = 'r4fek/django-cassandra-engine';
     </script>
-    <script src="../assets/javascripts/application-a10a824a49.js"></script>
+    <script src="../assets/javascripts/application-997097ee0c.js"></script>
     
     
       <script>
@@ -454,7 +458,7 @@ It also requires that <code>lazy-apps = True</code> is set in <code>uwsgi.ini</c
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;
           m.parentNode.insertBefore(a,m)
         })(window, document,
-          'script', '//www.google-analytics.com/analytics.js', 'ga');
+          'script', 'https://www.google-analytics.com/analytics.js', 'ga');
         /* General initialization */
         ga('create', 'UA-38726443-3', 'auto');
         ga('set', 'anonymizeIp', true);
@@ -462,11 +466,19 @@ It also requires that <code>lazy-apps = True</code> is set in <code>uwsgi.ini</c
         /* Track outbound links */
         var buttons = document.querySelectorAll('a');
         Array.prototype.map.call(buttons, function(item) {
-          if (item.host != window.location.host) {
+          if (item.host != document.location.host) {
             item.addEventListener('click', function() {
               var action = item.getAttribute('data-action') || 'follow';
               ga('send', 'event', 'outbound', action, item.href);
             });
+          }
+        });
+        /* Register handler to log search on blur */
+        var query = document.querySelector('.query');
+        query.addEventListener('blur', function() {
+          if (this.value) {
+            var path = document.location.pathname;
+            ga('send', 'pageview', path + '?q=' + this.value);
           }
         });
       </script>

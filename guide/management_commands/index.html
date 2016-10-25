@@ -47,13 +47,13 @@
       	font-style: normal;
       }
     </style>
-    <link rel="stylesheet" href="../../assets/stylesheets/application-b64b728552.css">
+    <link rel="stylesheet" href="../../assets/stylesheets/application-a422ff04cc.css">
     
     
       
       
       
-      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
       <style>
         body, input {
           font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
@@ -147,7 +147,12 @@
         </div>
       
       <div class="name">
-        <strong>Django Cassandra Engine 0.11.1</strong>
+        <strong>
+          Django Cassandra Engine
+          <span class="version">
+            1.0
+          </span>
+        </strong>
         
           <br>
           r4fek/django-cassandra-engine
@@ -161,7 +166,7 @@
         <ul class="repo">
           <li class="repo-download">
             
-            <a href="https://github.com/r4fek/django-cassandra-engine/archive/0.11.1.zip" target="_blank" title="Download" data-action="download">
+            <a href="https://github.com/r4fek/django-cassandra-engine/archive/1.0.zip" target="_blank" title="Download" data-action="download">
               <i class="icon icon-download"></i> Download
             </a>
           </li>
@@ -359,73 +364,68 @@
 <p>These Django management commands will make your life a lot easier.</p>
 <h2 id="sync_cassandra"><code>sync_cassandra</code><a class="headerlink" href="#sync_cassandra" title="Permanent link">#</a></h2>
 <p>Synchronizes your models with Cassandra.</p>
-<div class="code"><pre><span></span>    $ python manage.py sync_cassandra
+<pre class="code"><code class="language-sh">    $ python manage.py sync_cassandra
 
     Syncing app.models.ExampleModel
     Syncing app.models.ExampleModel2
-    Syncing app.models.TestProjectModel
-</pre></div>
+    Syncing app.models.TestProjectModel</code></pre>
 
 
 <h2 id="migrate"><code>migrate</code><a class="headerlink" href="#migrate" title="Permanent link">#</a></h2>
 <p>Synchronizes your models with Cassandra.</p>
-<div class="code"><pre><span></span>    $ python manage.py migrate --database default
+<pre class="code"><code class="language-sh">    $ python manage.py migrate --database default
 
     Syncing app.models.ExampleModel
     Syncing app.models.ExampleModel2
-    Syncing app.models.TestProjectModel
-</pre></div>
+    Syncing app.models.TestProjectModel</code></pre>
 
 
 <h2 id="flush"><code>flush</code><a class="headerlink" href="#flush" title="Permanent link">#</a></h2>
 <p>Flushes your database.</p>
-<div class="code"><pre><span></span>    $ python manage.py flush
-</pre></div>
+<pre class="code"><code class="language-sh">    $ python manage.py flush</code></pre>
 
 
 <h2 id="dbshell"><code>dbshell</code><a class="headerlink" href="#dbshell" title="Permanent link">#</a></h2>
 <p>Quick access to dbshell via <code>cqlsh</code>.</p>
 <p>If you need to perform raw <code>CQL</code> query on your keyspace just run:</p>
-<div class="code"><pre><span></span>    $ python manage.py dbshell
+<pre class="code"><code class="language-sh">    $ python manage.py dbshell
 
     Connected to Test Cluster at 127.0.0.1:9042.
-    <span class="o">[</span>cqlsh 5.0.1 <span class="p">|</span> Cassandra 2.1.4 <span class="p">|</span> CQL spec 3.2.0 <span class="p">|</span> Native protocol v3<span class="o">]</span>
-    Use HELP <span class="k">for</span> help.
-    cqlsh:your_keyspace&gt;
-</pre></div>
+    [cqlsh 5.0.1 | Cassandra 2.1.4 | CQL spec 3.2.0 | Native protocol v3]
+    Use HELP for help.
+    cqlsh:your_keyspace&gt;</code></pre>
 
 
 <h2 id="inspectdb"><code>inspectdb</code><a class="headerlink" href="#inspectdb" title="Permanent link">#</a></h2>
 <p>Introspects Cassandra database. It shows only model names and db tables.</p>
-<div class="code"><pre><span></span>    <span class="err">$</span> <span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">inspectdb</span>
+<pre class="code"><code class="language-python">    $ python manage.py inspectdb
 
-    <span class="k">class</span> <span class="nc">Session</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    class Session(models.Model):
 
-        <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-            <span class="n">managed</span> <span class="o">=</span> <span class="bp">False</span>
-            <span class="n">db_table</span> <span class="o">=</span> <span class="s1">&#39;session&#39;</span>
-
-
-    <span class="k">class</span> <span class="nc">ExampleModel2</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
-
-        <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-            <span class="n">managed</span> <span class="o">=</span> <span class="bp">False</span>
-            <span class="n">db_table</span> <span class="o">=</span> <span class="s1">&#39;example_model2&#39;</span>
+        class Meta:
+            managed = False
+            db_table = 'session'
 
 
-    <span class="k">class</span> <span class="nc">ExampleModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    class ExampleModel2(models.Model):
 
-        <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-            <span class="n">managed</span> <span class="o">=</span> <span class="bp">False</span>
-            <span class="n">db_table</span> <span class="o">=</span> <span class="s1">&#39;example_model&#39;</span>
+        class Meta:
+            managed = False
+            db_table = 'example_model2'
 
 
-    <span class="k">class</span> <span class="nc">TestProjectModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    class ExampleModel(models.Model):
 
-        <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-            <span class="n">managed</span> <span class="o">=</span> <span class="bp">False</span>
-            <span class="n">db_table</span> <span class="o">=</span> <span class="s1">&#39;test_project_model&#39;</span>
-</pre></div>
+        class Meta:
+            managed = False
+            db_table = 'example_model'
+
+
+    class TestProjectModel(models.Model):
+
+        class Meta:
+            managed = False
+            db_table = 'test_project_model'</code></pre>
 
 
 <hr />
@@ -488,7 +488,8 @@
 
             </footer>
           
-        </div></article>
+        </div>
+      </article>
       <div class="results" role="status" aria-live="polite">
         <div class="scrollable">
           <div class="wrapper">
@@ -502,7 +503,7 @@
       var base_url = '../..';
       var repo_id  = 'r4fek/django-cassandra-engine';
     </script>
-    <script src="../../assets/javascripts/application-a10a824a49.js"></script>
+    <script src="../../assets/javascripts/application-997097ee0c.js"></script>
     
     
       <script>
@@ -512,7 +513,7 @@
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;
           m.parentNode.insertBefore(a,m)
         })(window, document,
-          'script', '//www.google-analytics.com/analytics.js', 'ga');
+          'script', 'https://www.google-analytics.com/analytics.js', 'ga');
         /* General initialization */
         ga('create', 'UA-38726443-3', 'auto');
         ga('set', 'anonymizeIp', true);
@@ -520,11 +521,19 @@
         /* Track outbound links */
         var buttons = document.querySelectorAll('a');
         Array.prototype.map.call(buttons, function(item) {
-          if (item.host != window.location.host) {
+          if (item.host != document.location.host) {
             item.addEventListener('click', function() {
               var action = item.getAttribute('data-action') || 'follow';
               ga('send', 'event', 'outbound', action, item.href);
             });
+          }
+        });
+        /* Register handler to log search on blur */
+        var query = document.querySelector('.query');
+        query.addEventListener('blur', function() {
+          if (this.value) {
+            var path = document.location.pathname;
+            ga('send', 'pageview', path + '?q=' + this.value);
           }
         });
       </script>

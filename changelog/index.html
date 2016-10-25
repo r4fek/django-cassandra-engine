@@ -47,13 +47,13 @@
       	font-style: normal;
       }
     </style>
-    <link rel="stylesheet" href="../assets/stylesheets/application-b64b728552.css">
+    <link rel="stylesheet" href="../assets/stylesheets/application-a422ff04cc.css">
     
     
       
       
       
-      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
       <style>
         body, input {
           font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
@@ -143,7 +143,12 @@
         </div>
       
       <div class="name">
-        <strong>Django Cassandra Engine 0.11.1</strong>
+        <strong>
+          Django Cassandra Engine
+          <span class="version">
+            1.0
+          </span>
+        </strong>
         
           <br>
           r4fek/django-cassandra-engine
@@ -157,7 +162,7 @@
         <ul class="repo">
           <li class="repo-download">
             
-            <a href="https://github.com/r4fek/django-cassandra-engine/archive/0.11.1.zip" target="_blank" title="Download" data-action="download">
+            <a href="https://github.com/r4fek/django-cassandra-engine/archive/1.0.zip" target="_blank" title="Download" data-action="download">
               <i class="icon icon-download"></i> Download
             </a>
           </li>
@@ -274,6 +279,12 @@
       
       
         <ul>
+          
+            <li class="anchor">
+              <a title="Version 1.0 (25.10.2016)" href="#version-10-25102016">
+                Version 1.0 (25.10.2016)
+              </a>
+            </li>
           
             <li class="anchor">
               <a title="Version 0.11.1 (01.09.2016)" href="#version-0111-01092016">
@@ -604,6 +615,10 @@
         <div class="wrapper">
           
           <h1 id="django-cassandra-engine-changelog">Django Cassandra Engine - CHANGELOG<a class="headerlink" href="#django-cassandra-engine-changelog" title="Permanent link">#</a></h1>
+<h2 id="version-10-25102016">Version 1.0 (25.10.2016)<a class="headerlink" href="#version-10-25102016" title="Permanent link">#</a></h2>
+<ul>
+<li>Fix #66: <code>_meta</code> API support (by awesome @richardasaurus)</li>
+</ul>
 <h2 id="version-0111-01092016">Version 0.11.1 (01.09.2016)<a class="headerlink" href="#version-0111-01092016" title="Permanent link">#</a></h2>
 <ul>
 <li>Fix for #70 "AttributeError: operators (by @bezineb5)</li>
@@ -899,7 +914,8 @@
 
             </footer>
           
-        </div></article>
+        </div>
+      </article>
       <div class="results" role="status" aria-live="polite">
         <div class="scrollable">
           <div class="wrapper">
@@ -913,7 +929,7 @@
       var base_url = '..';
       var repo_id  = 'r4fek/django-cassandra-engine';
     </script>
-    <script src="../assets/javascripts/application-a10a824a49.js"></script>
+    <script src="../assets/javascripts/application-997097ee0c.js"></script>
     
     
       <script>
@@ -923,7 +939,7 @@
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;
           m.parentNode.insertBefore(a,m)
         })(window, document,
-          'script', '//www.google-analytics.com/analytics.js', 'ga');
+          'script', 'https://www.google-analytics.com/analytics.js', 'ga');
         /* General initialization */
         ga('create', 'UA-38726443-3', 'auto');
         ga('set', 'anonymizeIp', true);
@@ -931,11 +947,19 @@
         /* Track outbound links */
         var buttons = document.querySelectorAll('a');
         Array.prototype.map.call(buttons, function(item) {
-          if (item.host != window.location.host) {
+          if (item.host != document.location.host) {
             item.addEventListener('click', function() {
               var action = item.getAttribute('data-action') || 'follow';
               ga('send', 'event', 'outbound', action, item.href);
             });
+          }
+        });
+        /* Register handler to log search on blur */
+        var query = document.querySelector('.query');
+        query.addEventListener('blur', function() {
+          if (this.value) {
+            var path = document.location.pathname;
+            ga('send', 'pageview', path + '?q=' + this.value);
           }
         });
       </script>
