@@ -17,13 +17,13 @@ All tools you need to start your journey with Apache Cassandra and Django Framew
 * accepts all `Cqlengine` and `cassandra.cluster.Cluster` connection options
 * automatic connection/disconnection handling
 * works well along with relational databases (as secondary DB)
-* storing sessions in Cassandra (NEW!)
+* storing sessions in Cassandra
+* working django forms
+* usable admin panel with Cassandra models
 
 ## Plans (TODO) ##
 
 * User model stored in Cassandra (auth module)
-* Admin panel for Cassandra models
-* Forms
 
 ## Installation ##
 
@@ -60,9 +60,9 @@ Recommended installation:
         
         import uuid
         from cassandra.cqlengine import columns
-        from cassandra.cqlengine.models import Model
+        from django_cassandra_engine.models import DjangoCassandraModel
         
-        class ExampleModel(Model):
+        class ExampleModel(DjangoCassandraModel):
             example_id    = columns.UUID(primary_key=True, default=uuid.uuid4)
             example_type  = columns.Integer(index=True)
             created_at    = columns.DateTime()

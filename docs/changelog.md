@@ -1,5 +1,9 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 1.0 (25.10.2016)
+
+* Fix #66: `_meta` API support (by awesome @richardasaurus)
+
 ## Version 0.11.1 (01.09.2016)
 
 * Fix for #70 "AttributeError: operators (by @bezineb5)

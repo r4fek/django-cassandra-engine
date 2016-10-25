@@ -4,4 +4,5 @@ djangorestframework
 freezegun==0.3.6
 mock==1.0.1
 nose
+pypandoc
 tox
