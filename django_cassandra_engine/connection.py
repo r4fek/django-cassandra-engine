@@ -1,7 +1,7 @@
 from threading import Lock
 
 from cassandra.cluster import Session
-from cassandra.cqlengine import connection
+from cassandra.cqlengine import connection, CQLEngineException
 from cassandra.auth import PlainTextAuthProvider
 
 
@@ -59,7 +59,10 @@ class CassandraConnection(object):
 
     def setup(self):
         with self.lock:
-            self.session = connection.get_session()
+            try:
+                self.session = connection.get_session()
+            except CQLEngineException:
+                pass
             if not (self.session is None or self.session.is_shutdown):
                 # already connected
                 return
