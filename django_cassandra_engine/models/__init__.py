@@ -437,8 +437,8 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
         for col in column_dict.values():
             columns.resolve_udts(col, udts)
 
-        for user_type in set(udts):
-            user_type.register_for_keyspace(klass._get_keyspace())
+        # for user_type in set(udts):
+        #     user_type.register_for_keyspace(klass._get_keyspace())
 
         # ################################################################
         # end code taken from python-driver 3.3.0 ModelMetaClass.__new__

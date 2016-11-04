@@ -59,7 +59,11 @@ django.forms.models.construct_instance = construct_instance
 class AppConfig(DjangoAppConfig):
     name = 'django_cassandra_engine'
 
-    def ready(self):
+    def connect(self):
         from django_cassandra_engine.utils import get_cassandra_connections
         for _, conn in get_cassandra_connections():
             conn.connect()
+
+    def import_models(self, all_models):
+        self.connect()
+        return super(AppConfig, self).import_models(all_models)

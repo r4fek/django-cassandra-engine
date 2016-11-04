@@ -1,5 +1,7 @@
 from cassandra.cqlengine import columns
 from cassandra.cqlengine import models
+from cassandra.cqlengine.columns import UserDefinedType
+from cassandra.cqlengine.usertype import UserType
 
 
 class ExampleModel(models.Model):
@@ -14,3 +16,13 @@ class ExampleModel2(models.Model):
 
 class TestProjectModel(models.Model):
     id = columns.UUID(primary_key=True)
+
+
+class SimpleUDT(UserType):
+    name = columns.Text()
+    value = columns.Integer()
+
+
+class ExampleModelWithUDT(models.Model):
+    id = columns.UUID(primary_key=True)
+    sth = UserDefinedType(SimpleUDT)
