@@ -1,6 +1,8 @@
 import uuid
 from datetime import datetime
+from unittest import skipIf
 
+import django
 import six.moves.http_client
 from rest_framework.test import APITestCase
 from django.core.urlresolvers import reverse
@@ -26,6 +28,7 @@ class TestModelViewSet(APITestCase):
             'data_abstract': 'TeXt'
         }
 
+    @skipIf(django.VERSION[1] < 10, "For Django>1.10 only")
     def test_create_thing2a(self):
         response = self.client.post(self.url, self.data2a, format='json')
         self.assertEqual(response.status_code, six.moves.http_client.CREATED)
@@ -39,6 +42,7 @@ class TestModelViewSet(APITestCase):
         self.assertDictEqual(response.json(), self.data2a)
         self.assertEqual(response.status_code, six.moves.http_client.OK)
 
+    @skipIf(django.VERSION[1] < 10, "For Django>1.10 only")
     def test_create_thing2b(self):
         response = self.client.post(self.url, self.data2b, format='json')
         self.assertEqual(response.status_code, six.moves.http_client.CREATED)

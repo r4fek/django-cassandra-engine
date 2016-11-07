@@ -1,7 +1,9 @@
 import copy
 import uuid
 from datetime import datetime
+from unittest import skipIf
 
+import django
 from django.forms import fields
 from django.core import validators
 from cassandra.cqlengine import ValidationError as CQLValidationError
@@ -212,8 +214,10 @@ class TestDjangoCassandraModel(CassandraTestCase):
             len(all_things.values_list('pk')), len(expected)
         )
 
+    @skipIf(django.VERSION[1] < 10, "For Django>1.10 only")
     def test_private_fields_are_set(self):
-        private_fields = [f.name for f in CassandraFamilyMember._meta.private_fields]
+        private_fields = [
+            f.name for f in CassandraFamilyMember._meta.private_fields]
         expected_private_fields = [
             'id',
             'first_name',
@@ -228,7 +232,8 @@ class TestDjangoCassandraModel(CassandraTestCase):
     def test_model_doesnotexist_is_raised_when_record_not_found(self):
         with self.assertRaises(CassandraFamilyMember.DoesNotExist):
             not_found_uuid = uuid.uuid4()
-            CassandraFamilyMember.objects.allow_filtering().get(id=not_found_uuid)
+            CassandraFamilyMember.objects.allow_filtering().get(
+                id=not_found_uuid)
 
 
 class TestDjangoCassandraField(CassandraTestCase):

@@ -1,10 +1,13 @@
 import uuid
+from unittest import skipIf
+import django
 
 from common.test_utils import CassandraTestCase
 from common.forms import CassandraFamilyMemberForm
 from common.models import CassandraFamilyMember
 
 
+@skipIf(django.VERSION[1] < 10, "For Django>1.10 only")
 class TestModelForm(CassandraTestCase):
 
     def setUp(self):

@@ -1,3 +1,6 @@
+from unittest import skipIf
+
+import django
 from django.apps import apps
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.exceptions import FieldDoesNotExist
@@ -144,7 +147,8 @@ class RelatedObjectsTests(OptionsBaseTests):
         for model, expected in TEST_RESULTS[result_key].items():
             objects = [
                 (field, self._model(model, field))
-                for field in model._meta.get_fields(include_hidden=True, include_parents=False)
+                for field in model._meta.get_fields(include_hidden=True,
+                                                    include_parents=False)
                 if field.auto_created and not field.concrete
             ]
             self.assertEqual(
@@ -153,18 +157,21 @@ class RelatedObjectsTests(OptionsBaseTests):
             )
 
 
+@skipIf(django.VERSION[1] < 10, "For Django>1.10 only")
 class PrivateFieldsTests(OptionsBaseTests):
 
     def test_private_fields(self):
         for model, expected_names in TEST_RESULTS['private_fields'].items():
             objects = model._meta.private_fields
-            self.assertEqual(sorted([f.name for f in objects]), sorted(expected_names))
+            self.assertEqual(sorted([f.name for f in objects]),
+                             sorted(expected_names))
 
 
 class GetFieldByNameTests(OptionsBaseTests):
 
     def test_get_data_field(self):
-        field_info = self._details(CassandraThing, CassandraThing._meta.get_field('data_abstract'))
+        field_info = self._details(
+            CassandraThing, CassandraThing._meta.get_field('data_abstract'))
         self.assertEqual(field_info[1:], (None, False, False))
         self.assertIsInstance(field_info[0], cassandra_columns.Text)
 
