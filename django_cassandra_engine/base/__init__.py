@@ -12,7 +12,7 @@ except ImportError:
 
 from django_cassandra_engine.connection import (
     CassandraConnection,
-    FakeConnection
+    FakeConnection,
 )
 from django_cassandra_engine.base.client import CassandraDatabaseClient
 from django_cassandra_engine.base.creation import CassandraDatabaseCreation
@@ -20,8 +20,9 @@ from django_cassandra_engine.base.schema import CassandraDatabaseSchemaEditor
 from django_cassandra_engine.base.features import CassandraDatabaseFeatures
 from django_cassandra_engine.base.operations import CassandraDatabaseOperations
 from django_cassandra_engine.base.validation import CassandraDatabaseValidation
-from django_cassandra_engine.base.introspection import \
-    CassandraDatabaseIntrospection
+from django_cassandra_engine.base.introspection import (
+    CassandraDatabaseIntrospection,
+)
 from django_cassandra_engine.utils import CursorWrapper
 
 
@@ -67,22 +68,31 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         'lt': '< %s',
         'lte': '<= %s'
     }
-    
+
+    client = None
+    # Classes instantiated in __init__().
+    client_class = CassandraDatabaseClient
+    creation_class = CassandraDatabaseCreation
+    features_class = CassandraDatabaseFeatures
+    introspection_class = CassandraDatabaseIntrospection
+    ops_class = CassandraDatabaseOperations
+    validation_class = CassandraDatabaseValidation
 
     def __init__(self, *args, **kwargs):
         super(DatabaseWrapper, self).__init__(*args, **kwargs)
 
-        # Set up the associated backend objects
-        self.features = CassandraDatabaseFeatures(self)
-        self.ops = CassandraDatabaseOperations(self)
-        self.client = CassandraDatabaseClient(self)
-        self.creation = CassandraDatabaseCreation(self)
-        self.validation = CassandraDatabaseValidation(self)
-        self.introspection = CassandraDatabaseIntrospection(self)
-
         self.commit_on_exit = False
         self.connected = False
         self.autocommit = True
+
+        if self.client is None:
+            # Set up the associated backend objects
+            self.features = CassandraDatabaseFeatures(self)
+            self.ops = CassandraDatabaseOperations(self)
+            self.client = CassandraDatabaseClient(self)
+            self.creation = CassandraDatabaseCreation(self)
+            self.validation = CassandraDatabaseValidation(self)
+            self.introspection = CassandraDatabaseIntrospection(self)
 
         del self.connection
 

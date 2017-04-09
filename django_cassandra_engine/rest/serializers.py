@@ -199,8 +199,8 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
 
         if getattr(model_field, 'unique', False):
             warnings.warn(
-                'UniqueValidator is current not support '
-                'for DjangoCassandraSerializer'
+                'UniqueValidator is currently not supported '
+                'in DjangoCassandraSerializer'
             )
 
         if validator_kwarg:
