@@ -1,5 +1,9 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 1.1.0 (09.04.2017)
+
+* Fix #89: Support Django 1.11 + update `cassandra-driver` to 3.8.1
+
 ## Version 1.0.2 (04.11.2016)
 
 * Connect to Cassandra before importing models
