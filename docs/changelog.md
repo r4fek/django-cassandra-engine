@@ -1,5 +1,10 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 1.1.1 (26.04.2017)
+
+* Fix #90: Breaks BooleanField with provided default value: can't save False 
+  via admin UI project-wide if using django-cassandra-engine in same project
+
 ## Version 1.1.0 (09.04.2017)
 
 * Fix #89: Support Django 1.11 + update `cassandra-driver` to 3.8.1
