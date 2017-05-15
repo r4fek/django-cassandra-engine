@@ -1,4 +1,5 @@
 from __future__ import absolute_import, unicode_literals
+import os
 
 from django.apps import AppConfig as DjangoAppConfig
 import cassandra.cqlengine.columns
@@ -42,6 +43,9 @@ def has_default(self):
 
 # monkey patch Column.has_default to be able to use function call too
 cassandra.cqlengine.columns.Column.has_default = property(has_default)
+
+if os.getenv('CQLENG_ALLOW_SCHEMA_MANAGEMENT') is None:
+    os.environ['CQLENG_ALLOW_SCHEMA_MANAGEMENT'] = '1'
 
 
 class AppConfig(DjangoAppConfig):
