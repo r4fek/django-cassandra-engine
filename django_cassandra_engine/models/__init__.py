@@ -672,8 +672,9 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
         return super(query.ModelQuerySet, self)._select_fields()
 
     def count(self):
-        self._count = None
-        return super(query.ModelQuerySet, self).count()
+        if self._count is None:
+            self._count = super(query.ModelQuerySet, self).count()
+        return self._count
 
     def get_queryset(self):
         if len(self._where) > 0:

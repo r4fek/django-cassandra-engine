@@ -46,7 +46,7 @@ class TestModelViewSet(APITestCase):
     def test_create_thing2b(self):
         response = self.client.post(self.url, self.data2b, format='json')
         self.assertEqual(response.status_code, six.moves.http_client.CREATED)
-        self.assertEqual(CassandraThing.objects.count(), 2)
+        self.assertEqual(CassandraThing.objects.count(), 1)
 
         self.assertEqual(
             CassandraThing.objects.get(id=self.data2b['id']).id,
