@@ -1,5 +1,11 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 1.2.0 (01.08.2017)
+
+* Update cassandra-driver to 3.11.0
+* Fix #93: Each query seems to execute a count()
+* Fix #91: Set CQLENG_ALLOW_SCHEMA_MANAGEMENT variable if was not present
+
 ## Version 1.1.1 (26.04.2017)
 
 * Fix #90: Breaks BooleanField with provided default value: can't save False 
