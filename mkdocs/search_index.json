@@ -122,12 +122,12 @@
         }, 
         {
             "location": "/guide/sessions/", 
-            "text": "Django Cassandra Engine - Sessions\n#\n\n\nTwo session backends backed up with Cassandra are available\n\n\n\n\ndjango_cassandra_engine.sessions.backends.db\n\n\ndjango_cassandra_engine.sessions.backends.cached_db\n\n\n\n\nAll you need to do is to enable one of them in your \nsettings.py\n file:\n\n\n    INSTALLED_APPS += ['django_cassandra_engine.sessions']\n    SESSION_BACKEND = 'django_cassandra_engine.sessions.backends.db'\n\n\n\n\nThen you need to sync session model with Cassandra:\n\n\n    $ python manage.py sync_cassandra\n\n\n\n\nThat's it.", 
+            "text": "Django Cassandra Engine - Sessions\n#\n\n\nTwo session backends backed up with Cassandra are available\n\n\n\n\ndjango_cassandra_engine.sessions.backends.db\n\n\ndjango_cassandra_engine.sessions.backends.cached_db\n\n\n\n\nAll you need to do is to enable one of them in your \nsettings.py\n file:\n\n\n    INSTALLED_APPS += ['django_cassandra_engine.sessions']\n    SESSION_ENGINE = 'django_cassandra_engine.sessions.backends.db'\n\n\n\n\nThen you need to sync session model with Cassandra:\n\n\n    $ python manage.py sync_cassandra\n\n\n\n\nThat's it.", 
             "title": "Sessions"
         }, 
         {
             "location": "/guide/sessions/#django-cassandra-engine-sessions", 
-            "text": "Two session backends backed up with Cassandra are available   django_cassandra_engine.sessions.backends.db  django_cassandra_engine.sessions.backends.cached_db   All you need to do is to enable one of them in your  settings.py  file:      INSTALLED_APPS += ['django_cassandra_engine.sessions']\n    SESSION_BACKEND = 'django_cassandra_engine.sessions.backends.db'  Then you need to sync session model with Cassandra:      $ python manage.py sync_cassandra  That's it.", 
+            "text": "Two session backends backed up with Cassandra are available   django_cassandra_engine.sessions.backends.db  django_cassandra_engine.sessions.backends.cached_db   All you need to do is to enable one of them in your  settings.py  file:      INSTALLED_APPS += ['django_cassandra_engine.sessions']\n    SESSION_ENGINE = 'django_cassandra_engine.sessions.backends.db'  Then you need to sync session model with Cassandra:      $ python manage.py sync_cassandra  That's it.", 
             "title": "Django Cassandra Engine - Sessions"
         }, 
         {

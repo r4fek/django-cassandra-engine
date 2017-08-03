@@ -334,7 +334,7 @@
 </ul>
 <p>All you need to do is to enable one of them in your <code>settings.py</code> file:</p>
 <pre class="code"><code class="language-python">    INSTALLED_APPS += ['django_cassandra_engine.sessions']
-    SESSION_BACKEND = 'django_cassandra_engine.sessions.backends.db'</code></pre>
+    SESSION_ENGINE = 'django_cassandra_engine.sessions.backends.db'</code></pre>
 
 
 <p>Then you need to sync session model with Cassandra:</p>
