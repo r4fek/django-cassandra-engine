@@ -8,8 +8,8 @@ All tools you need to start your journey with Apache Cassandra and Django Framew
 
 ## Features ##
 
-* integration with latest `python-driver` from DataStax
-* working `flush`, `migrate`, `sync_cassandra`, `inspectdb` and 
+* integration with latest `python-driver` and optionally `dse-driver` from DataStax
+* working `flush`, `migrate`, `sync_cassandra`, `inspectdb` and
   `dbshell` commands
 * support for creating/destroying test database
 * accepts all `Cqlengine` and `cassandra.cluster.Cluster` connection options
@@ -28,7 +28,7 @@ All tools you need to start your journey with Apache Cassandra and Django Framew
 Recommended installation:
 
     pip install django-cassandra-engine
-  
+
 ## Basic Usage ##
 
 1. Add `django_cassandra_engine` to `INSTALLED_APPS` in your `settings.py` file:
@@ -55,11 +55,11 @@ Recommended installation:
 3. Define some model:
 
         # myapp/models.py
-        
+
         import uuid
         from cassandra.cqlengine import columns
         from django_cassandra_engine.models import DjangoCassandraModel
-        
+
         class ExampleModel(DjangoCassandraModel):
             example_id    = columns.UUID(primary_key=True, default=uuid.uuid4)
             example_type  = columns.Integer(index=True)
