@@ -1,12 +1,10 @@
+from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.db import connections
-from django.conf import settings
-
-from cassandra.cqlengine import management
-from cassandra.cqlengine.models import Model
-
 from django_cassandra_engine.models import DjangoCassandraModel
 from django_cassandra_engine.utils import get_engine_from_db_alias
+
+from ...compat import Model, management
 
 
 class Command(BaseCommand):

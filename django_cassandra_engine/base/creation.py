@@ -1,9 +1,7 @@
-from cassandra.cqlengine.management import (
-    create_keyspace_simple,
-    drop_keyspace
-)
-
 import django
+
+from ..compat import create_keyspace_simple, drop_keyspace
+
 if django.VERSION[0:2] >= (1, 8):
     from django.db.backends.base.creation import BaseDatabaseCreation
 else:

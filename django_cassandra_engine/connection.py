@@ -1,8 +1,7 @@
 from threading import Lock
 
-from cassandra.cluster import Session
-from cassandra.cqlengine import connection, CQLEngineException
-from cassandra.auth import PlainTextAuthProvider
+from .compat import (CQLEngineException, PlainTextAuthProvider, Session,
+                     connection)
 
 
 class Cursor(object):

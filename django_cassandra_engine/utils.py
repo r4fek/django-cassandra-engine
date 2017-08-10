@@ -1,7 +1,9 @@
 import inspect
-from cassandra import cqlengine
+
 import django
 from django.conf import settings
+
+from .compat import cqlengine
 
 
 class CursorWrapper(object):

@@ -1,5 +1,4 @@
-from cassandra.cqlengine.models import Model
-from cassandra.cqlengine import columns
+from ..compat import Model, columns
 
 
 class AbstractBaseSession(Model):
