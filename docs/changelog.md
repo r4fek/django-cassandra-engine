@@ -1,5 +1,9 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 1.2.1 (11.08.2017)
+
+* Add dse-driver support #98 (by @mbeacom)
+
 ## Version 1.2.0 (01.08.2017)
 
 * Update cassandra-driver to 3.11.0
