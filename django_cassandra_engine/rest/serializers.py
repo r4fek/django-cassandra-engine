@@ -2,16 +2,14 @@ import warnings
 
 from django.utils.text import capfirst
 from rest_framework import serializers
-from rest_framework.serializers import (
-    CharField, ChoiceField, ModelField, models, postgres_fields)
-from rest_framework.utils.field_mapping import (
-    NUMERIC_FIELD_TYPES,
-    ClassLookupDict,
-    DecimalValidator,
-    needs_label,
-    validators
-)
-from cassandra.cqlengine import columns
+from rest_framework.serializers import (CharField, ChoiceField, ModelField,
+                                        models, postgres_fields)
+from rest_framework.utils.field_mapping import (NUMERIC_FIELD_TYPES,
+                                                ClassLookupDict,
+                                                DecimalValidator, needs_label,
+                                                validators)
+
+from ..compat import columns
 
 
 class DjangoCassandraModelSerializer(serializers.ModelSerializer):

@@ -14,14 +14,10 @@ from django.core import validators
 from django.db.models.base import ModelBase
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import options
-from cassandra.cqlengine import query
-from cassandra.cqlengine import columns
-from cassandra.cqlengine.models import (
-    ModelMetaClass, ModelException, ColumnDescriptor,
-    ModelDefinitionException, BaseModel
-)
-from cassandra.util import OrderedDict
 
+from ..compat import (BaseModel, ColumnDescriptor, ModelDefinitionException,
+                      ModelException, ModelMetaClass, OrderedDict, columns,
+                      query)
 from .constants import ORDER_BY_WARN, ORDER_BY_ERROR_HELP, PK_META_MISSING_HELP
 from . import django_field_methods
 from . import django_model_methods
