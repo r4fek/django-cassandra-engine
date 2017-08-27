@@ -20,7 +20,7 @@ class CassandraDatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                 MigrationSchemaMissing as Exc)
         except ImportError:
             from django.core.exceptions import ImproperlyConfigured as Exc
-        raise Exception('No schema for cassandra database')
+        raise Exc('No schema for cassandra database')
 
     def delete_model(self, model):
         pass
