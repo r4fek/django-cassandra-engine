@@ -1,5 +1,9 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 1.2.2 (29.08.2017)
+
+* Fix CassandraDatabaseSchemaEditor.create_model (#100)
+
 ## Version 1.2.1 (11.08.2017)
 
 * Add dse-driver support #98 (by @mbeacom)
