@@ -58,6 +58,10 @@ class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
 
         connection = self.connection.connection
         keyspace_name = connection.keyspace
+        if not connection.cluster.schema_metadata_enabled and \
+                keyspace_name not in connection.cluster.metadata.keyspaces:
+            connection.cluster.refresh_schema_metadata()
+
         keyspace = connection.cluster.metadata.keyspaces[keyspace_name]
         return keyspace.tables
 

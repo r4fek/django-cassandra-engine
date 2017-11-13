@@ -149,6 +149,10 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         # keyspace doesn't exist.
         from cassandra.cqlengine import connection
         keyspace = self.settings_dict['NAME']
+        if not connection.cluster.schema_metadata_enabled and \
+                keyspace not in connection.cluster.metadata.keyspaces:
+            connection.cluster.refresh_schema_metadata()
+
         connection.cluster.metadata.keyspaces[keyspace]
         return CursorWrapper(self.connection.cursor(), self)
 

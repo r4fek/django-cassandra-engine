@@ -40,6 +40,13 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
                 self.connection.alias, test_db_repr))
 
         options = self.connection.settings_dict.get('OPTIONS', {})
+
+        # temporarily enable schema metadata for sync_cassandra
+        connection_options_copy = options.get('connection', {}).copy()
+        if not connection_options_copy.get('schema_metadata_enabled', True):
+            options['connection']['schema_metadata_enabled'] = True
+            self.connection.reconnect()
+
         replication_opts = options.get('replication', {})
         replication_factor = replication_opts.pop('replication_factor', 1)
 
@@ -61,6 +68,13 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
             database=self.connection.alias,
             load_initial_data=False
         )
+
+        # restore the original connection options
+        if not connection_options_copy.get('schema_metadata_enabled', True):
+            print('Disabling metadata on %s' % self.connection.settings_dict['NAME'])
+            options['connection']['schema_metadata_enabled'] = \
+                connection_options_copy['schema_metadata_enabled']
+            self.connection.reconnect()
 
         return test_database_name
 

@@ -47,6 +47,8 @@ def main():
         'settings.secondary_cassandra')
     multi_cassandra = import_module(
         'settings.multi_cassandra')
+    metadata_disabled = import_module(
+        'settings.metadata_disabled')
 
     if django.VERSION[0:2] >= (1, 7):
         django.setup()
@@ -55,6 +57,7 @@ def main():
     run_tests(default_only_cass)
     run_tests(secondary_cassandra)
     run_tests(multi_cassandra)
+    run_tests(metadata_disabled)
     sys.exit(0)
 
 
