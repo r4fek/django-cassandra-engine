@@ -1,5 +1,11 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Verstion 1.3.0 (16.11.2017)
+
+* Allow "schema_metadata_enabled" set to False in the connection options #105
+  (by awesome @bowensong)
+* Update cassandra-driver to 3.12.0
+
 ## Version 1.2.2 (29.08.2017)
 
 * Fix CassandraDatabaseSchemaEditor.create_model (#100)
