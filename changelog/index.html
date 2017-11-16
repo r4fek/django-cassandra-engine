@@ -1,16 +1,16 @@
+
+
+
+
 <!DOCTYPE html>
-<!--[if lt IE 7 ]><html class="no-js ie6"><![endif]-->
-<!--[if IE 7 ]><html class="no-js ie7"><![endif]-->
-<!--[if IE 8 ]><html class="no-js ie8"><![endif]-->
-<!--[if IE 9 ]><html class="no-js ie9"><![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+<html lang="en" class="no-js">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
       
-        <title>Changelog - Django Cassandra Engine</title>
-      
+        <meta name="description" content="Apache Cassandra Database Wrapper for Django">
       
       
         <link rel="canonical" href="https://r4fek.github.io/django-cassandra-engine/changelog/">
@@ -18,645 +18,1197 @@
       
         <meta name="author" content="Rafał Furmański">
       
-    
-    <meta property="og:url" content="https://r4fek.github.io/django-cassandra-engine/changelog/">
-    <meta property="og:title" content="Django Cassandra Engine">
-    <meta property="og:image" content="https://r4fek.github.io/django-cassandra-engine/changelog//../images/dj_cassandra.png">
-    <meta name="apple-mobile-web-app-title" content="Django Cassandra Engine">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
-      <link rel="apple-touch-icon" href="../images/dj_cassandra.png">
-    
-    
-    <link rel="shortcut icon" type="image/x-icon" href="../assets/images/favicon-e565ddfa3b.ico">
-    <link rel="icon" type="image/x-icon" href="../assets/images/favicon-e565ddfa3b.ico">
-    <style>
-      @font-face {
-      	font-family: 'Icon';
-      	src: url('../assets/fonts/icon.eot?52m981');
-      	src: url('../assets/fonts/icon.eot?#iefix52m981')
-               format('embedded-opentype'),
-      		   url('../assets/fonts/icon.woff?52m981')
-               format('woff'),
-      		   url('../assets/fonts/icon.ttf?52m981')
-               format('truetype'),
-      		   url('../assets/fonts/icon.svg?52m981#icon')
-               format('svg');
-      	font-weight: normal;
-      	font-style: normal;
-      }
-    </style>
-    <link rel="stylesheet" href="../assets/stylesheets/application-a422ff04cc.css">
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-0.17.2, mkdocs-material-2.0.4">
     
     
       
+        <title>Changelog - Django Cassandra Engine</title>
       
-      
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
-      <style>
-        body, input {
-          font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
-        }
-        pre, code {
-          font-family: 'Ubuntu Mono', 'Courier New', 'Courier', monospace;
-        }
-      </style>
     
     
-    <script src="../assets/javascripts/modernizr-4ab42b99fd.js"></script>
+      <link rel="stylesheet" href="../assets/stylesheets/application-709eec9410.css">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr-e826f8942a.js"></script>
+    
+    
+      
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
     
   </head>
   
+    <body>
   
-  
-  <body class=" ">
-    
-      
-      
-    
-    <div class="backdrop">
-      <div class="backdrop-paper"></div>
-    </div>
-    <input class="toggle" type="checkbox" id="toggle-drawer">
-    <input class="toggle" type="checkbox" id="toggle-search">
-    <label class="toggle-button overlay" for="toggle-drawer"></label>
-    <header class="header">
-      <nav aria-label="Header">
-  <div class="bar default">
-    <div class="button button-menu" role="button" aria-label="Menu">
-      <label class="toggle-button icon icon-menu" for="toggle-drawer">
-        <span></span>
-      </label>
-    </div>
-    <div class="stretch">
-      <div class="title">
+    <svg class="md-svg">
+      <defs>
         
-          <span class="path">
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://r4fek.github.io/django-cassandra-engine" title="Django Cassandra Engine" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
             
-          </span>
+              
+            
+            Changelog
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
         
-        Changelog
-      </div>
-    </div>
-    
-      
-      <div class="button button-twitter" role="button" aria-label="Twitter">
-        <a href="https://twitter.com/r4fek" title="@r4fek on Twitter" target="_blank" class="toggle-button icon icon-twitter"></a>
-      </div>
-    
-    
-      
-      <div class="button button-github" role="button" aria-label="GitHub">
-        <a href="https://github.com/r4fek" title="@r4fek on GitHub" target="_blank" class="toggle-button icon icon-github"></a>
-      </div>
-    
-    <div class="button button-search" role="button" aria-label="Search">
-      <label class="toggle-button icon icon-search" title="Search" for="toggle-search"></label>
-    </div>
-  </div>
-  <div class="bar search">
-    <div class="button button-close" role="button" aria-label="Close">
-      <label class="toggle-button icon icon-back" for="toggle-search"></label>
-    </div>
-    <div class="stretch">
-      <div class="field">
-        <input class="query" type="text" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck>
-      </div>
-    </div>
-    <div class="button button-reset" role="button" aria-label="Search">
-      <button class="toggle-button icon icon-close" id="reset-search"></button>
-    </div>
-  </div>
-</nav>
-    </header>
-    <main class="main">
-      
-      <div class="drawer">
-        <nav aria-label="Navigation">
-  
-  <a href="https://github.com/r4fek/django-cassandra-engine" class="project">
-    <div class="banner">
-      
-        <div class="logo">
-          <img src="../images/dj_cassandra.png">
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">&#xE5CD;</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
         </div>
-      
-      <div class="name">
-        <strong>
-          Django Cassandra Engine
-          <span class="version">
-            1.2.2
-          </span>
-        </strong>
-        
-          <br>
-          r4fek/django-cassandra-engine
+      </div>
+    </div>
+  </div>
+</div>
+          
         
       </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/r4fek/django-cassandra-engine/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
     </div>
   </a>
-  <div class="scrollable">
-    <div class="wrapper">
+
+          </div>
+        </div>
       
-        <ul class="repo">
-          <li class="repo-download">
-            
-            <a href="https://github.com/r4fek/django-cassandra-engine/archive/1.2.2.zip" target="_blank" title="Download" data-action="download">
-              <i class="icon icon-download"></i> Download
-            </a>
-          </li>
-          <li class="repo-stars">
-            <a href="https://github.com/r4fek/django-cassandra-engine/stargazers" target="_blank" title="Stargazers" data-action="star">
-              <i class="icon icon-star"></i> Stars
-              <span class="count">&ndash;</span>
-            </a>
-          </li>
-        </ul>
-        <hr>
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
       
-      <div class="toc">
-        <ul>
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
           
             
-  <li>
-    <a class="" title="Home" href="..">
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    <span class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </span>
+    Django Cassandra Engine
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/r4fek/django-cassandra-engine/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
       Home
     </a>
-    
   </li>
 
-          
-            
-  <li>
-    <span class="section">Django Cassandra Engine</span>
-    <ul>
+    
       
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Django Cassandra Engine
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Django Cassandra Engine
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
         
-  <li>
-    <a class="" title="Installation" href="../guide/installation/">
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../guide/installation/" title="Installation" class="md-nav__link">
       Installation
     </a>
-    
   </li>
 
-      
         
-  <li>
-    <a class="" title="Getting Started" href="../guide/getting_started/">
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../guide/getting_started/" title="Getting Started" class="md-nav__link">
       Getting Started
     </a>
-    
   </li>
 
-      
         
-  <li>
-    <a class="" title="Advanced Usage" href="../guide/advanced_usage/">
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../guide/advanced_usage/" title="Advanced Usage" class="md-nav__link">
       Advanced Usage
     </a>
-    
   </li>
 
-      
         
-  <li>
-    <a class="" title="Management Commands" href="../guide/management_commands/">
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../guide/management_commands/" title="Management Commands" class="md-nav__link">
       Management Commands
     </a>
-    
   </li>
 
-      
         
-  <li>
-    <a class="" title="Sessions" href="../guide/sessions/">
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../guide/sessions/" title="Sessions" class="md-nav__link">
       Sessions
     </a>
-    
   </li>
 
-      
         
-  <li>
-    <a class="" title="Writing Tests" href="../guide/tests/">
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../guide/tests/" title="Writing Tests" class="md-nav__link">
       Writing Tests
     </a>
-    
   </li>
 
-      
         
-  <li>
-    <a class="" title="Contributing" href="../guide/contributing/">
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../guide/contributing/" title="Contributing" class="md-nav__link">
       Contributing
     </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
     
-  </li>
-
       
-    </ul>
-  </li>
+      
+      
 
-          
-            
-  <li>
-    <a class="" title="FAQ" href="../faq/">
+
+  <li class="md-nav__item">
+    <a href="../faq/" title="FAQ" class="md-nav__link">
       FAQ
     </a>
-    
   </li>
 
-          
-            
-  <li>
-    <a class="current" title="Changelog" href="./">
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        Changelog
+      </label>
+    
+    <a href="./" title="Changelog" class="md-nav__link md-nav__link--active">
       Changelog
     </a>
     
       
-        
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#verstion-130-16112017" title="Verstion 1.3.0 (16.11.2017)" class="md-nav__link">
+    Verstion 1.3.0 (16.11.2017)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-122-29082017" title="Version 1.2.2 (29.08.2017)" class="md-nav__link">
+    Version 1.2.2 (29.08.2017)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-121-11082017" title="Version 1.2.1 (11.08.2017)" class="md-nav__link">
+    Version 1.2.1 (11.08.2017)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-120-01082017" title="Version 1.2.0 (01.08.2017)" class="md-nav__link">
+    Version 1.2.0 (01.08.2017)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-111-26042017" title="Version 1.1.1 (26.04.2017)" class="md-nav__link">
+    Version 1.1.1 (26.04.2017)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-110-09042017" title="Version 1.1.0 (09.04.2017)" class="md-nav__link">
+    Version 1.1.0 (09.04.2017)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-102-04112016" title="Version 1.0.2 (04.11.2016)" class="md-nav__link">
+    Version 1.0.2 (04.11.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-101-31102016" title="Version 1.0.1 (31.10.2016)" class="md-nav__link">
+    Version 1.0.1 (31.10.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-10-25102016" title="Version 1.0 (25.10.2016)" class="md-nav__link">
+    Version 1.0 (25.10.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-0111-01092016" title="Version 0.11.1 (01.09.2016)" class="md-nav__link">
+    Version 0.11.1 (01.09.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-0110-05082016" title="Version 0.11.0 (05.08.2016)" class="md-nav__link">
+    Version 0.11.0 (05.08.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-0101-22072016" title="Version 0.10.1 (22.07.2016)" class="md-nav__link">
+    Version 0.10.1 (22.07.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-0100-10062016" title="Version 0.10.0 (10.06.2016)" class="md-nav__link">
+    Version 0.10.0 (10.06.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-090-11052016" title="Version 0.9.0 (11.05.2016)" class="md-nav__link">
+    Version 0.9.0 (11.05.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-081-20042016" title="Version 0.8.1 (20.04.2016)" class="md-nav__link">
+    Version 0.8.1 (20.04.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-080-18042016" title="Version 0.8.0 (18.04.2016)" class="md-nav__link">
+    Version 0.8.0 (18.04.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-074-23032016" title="Version 0.7.4 (23.03.2016)" class="md-nav__link">
+    Version 0.7.4 (23.03.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-073-21032016" title="Version 0.7.3 (21.03.2016)" class="md-nav__link">
+    Version 0.7.3 (21.03.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-072-15032016" title="Version 0.7.2 (15.03.2016)" class="md-nav__link">
+    Version 0.7.2 (15.03.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-071-15032016" title="Version 0.7.1 (15.03.2016)" class="md-nav__link">
+    Version 0.7.1 (15.03.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-070-11032016" title="Version 0.7.0 (11.03.2016)" class="md-nav__link">
+    Version 0.7.0 (11.03.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-066-04032016" title="Version 0.6.6 (04.03.2016)" class="md-nav__link">
+    Version 0.6.6 (04.03.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-065-22022016" title="Version 0.6.5 (22.02.2016)" class="md-nav__link">
+    Version 0.6.5 (22.02.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-064-05022016" title="Version 0.6.4 (05.02.2016)" class="md-nav__link">
+    Version 0.6.4 (05.02.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-063-08012016" title="Version 0.6.3 (08.01.2016)" class="md-nav__link">
+    Version 0.6.3 (08.01.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-062-08122015" title="Version 0.6.2 (08.12.2015)" class="md-nav__link">
+    Version 0.6.2 (08.12.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-061-07122015" title="Version 0.6.1 (07.12.2015)" class="md-nav__link">
+    Version 0.6.1 (07.12.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-060-25112015" title="Version 0.6.0 (25.11.2015)" class="md-nav__link">
+    Version 0.6.0 (25.11.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-052-04102015" title="Version 0.5.2 (04.10.2015)" class="md-nav__link">
+    Version 0.5.2 (04.10.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-051-14092015" title="Version 0.5.1 (14.09.2015)" class="md-nav__link">
+    Version 0.5.1 (14.09.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-050-26082015" title="Version 0.5.0 (26.08.2015)" class="md-nav__link">
+    Version 0.5.0 (26.08.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-040-21072015" title="Version 0.4.0 (21.07.2015)" class="md-nav__link">
+    Version 0.4.0 (21.07.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-034-01072015" title="Version 0.3.4 (01.07.2015)" class="md-nav__link">
+    Version 0.3.4 (01.07.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-033-25052015" title="Version 0.3.3 (25.05.2015)" class="md-nav__link">
+    Version 0.3.3 (25.05.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-032-04052015" title="Version 0.3.2 (04.05.2015)" class="md-nav__link">
+    Version 0.3.2 (04.05.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-031-10042015" title="Version 0.3.1 (10.04.2015)" class="md-nav__link">
+    Version 0.3.1 (10.04.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-030-03042015" title="Version 0.3.0 (03.04.2015)" class="md-nav__link">
+    Version 0.3.0 (03.04.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-023-25032015" title="Version 0.2.3 (25.03.2015)" class="md-nav__link">
+    Version 0.2.3 (25.03.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-022-19012015" title="Version 0.2.2 (19.01.2015)" class="md-nav__link">
+    Version 0.2.2 (19.01.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-021-16012015" title="Version 0.2.1 (16.01.2015)" class="md-nav__link">
+    Version 0.2.1 (16.01.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-018-13122014" title="Version 0.1.8 (13.12.2014)" class="md-nav__link">
+    Version 0.1.8 (13.12.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-017-24112014" title="Version 0.1.7 (24.11.2014)" class="md-nav__link">
+    Version 0.1.7 (24.11.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-016-24112014" title="Version 0.1.6 (24.11.2014)" class="md-nav__link">
+    Version 0.1.6 (24.11.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-015-17112014" title="Version 0.1.5 (17.11.2014)" class="md-nav__link">
+    Version 0.1.5 (17.11.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-014-01112014" title="Version 0.1.4 (01.11.2014)" class="md-nav__link">
+    Version 0.1.4 (01.11.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-013-20102014" title="Version 0.1.3 (20.10.2014)" class="md-nav__link">
+    Version 0.1.3 (20.10.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-012-20102014" title="Version 0.1.2 (20.10.2014)" class="md-nav__link">
+    Version 0.1.2 (20.10.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-011-17102014" title="Version 0.1.1 (17.10.2014)" class="md-nav__link">
+    Version 0.1.1 (17.10.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-010-08102014" title="Version 0.1.0 (08.10.2014)" class="md-nav__link">
+    Version 0.1.0 (08.10.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-007-02102014" title="Version 0.0.7 (02.10.2014)" class="md-nav__link">
+    Version 0.0.7 (02.10.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-006-03092014" title="Version 0.0.6 (03.09.2014)" class="md-nav__link">
+    Version 0.0.6 (03.09.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-005-29082014" title="Version 0.0.5 (29.08.2014)" class="md-nav__link">
+    Version 0.0.5 (29.08.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-004-22082014" title="Version 0.0.4 (22.08.2014)" class="md-nav__link">
+    Version 0.0.4 (22.08.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-003-21082014" title="Version 0.0.3 (21.08.2014)" class="md-nav__link">
+    Version 0.0.3 (21.08.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-002-04082014" title="Version 0.0.2 (04.08.2014)" class="md-nav__link">
+    Version 0.0.2 (04.08.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-001-31072014" title="Version 0.0.1 (31.07.2014)" class="md-nav__link">
+    Version 0.0.1 (31.07.2014)
+  </a>
+  
+</li>
       
       
-        <ul>
-          
-            <li class="anchor">
-              <a title="Version 1.2.2 (29.08.2017)" href="#version-122-29082017">
-                Version 1.2.2 (29.08.2017)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 1.2.1 (11.08.2017)" href="#version-121-11082017">
-                Version 1.2.1 (11.08.2017)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 1.2.0 (01.08.2017)" href="#version-120-01082017">
-                Version 1.2.0 (01.08.2017)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 1.1.1 (26.04.2017)" href="#version-111-26042017">
-                Version 1.1.1 (26.04.2017)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 1.1.0 (09.04.2017)" href="#version-110-09042017">
-                Version 1.1.0 (09.04.2017)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 1.0.2 (04.11.2016)" href="#version-102-04112016">
-                Version 1.0.2 (04.11.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 1.0.1 (31.10.2016)" href="#version-101-31102016">
-                Version 1.0.1 (31.10.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 1.0 (25.10.2016)" href="#version-10-25102016">
-                Version 1.0 (25.10.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.11.1 (01.09.2016)" href="#version-0111-01092016">
-                Version 0.11.1 (01.09.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.11.0 (05.08.2016)" href="#version-0110-05082016">
-                Version 0.11.0 (05.08.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.10.1 (22.07.2016)" href="#version-0101-22072016">
-                Version 0.10.1 (22.07.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.10.0 (10.06.2016)" href="#version-0100-10062016">
-                Version 0.10.0 (10.06.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.9.0 (11.05.2016)" href="#version-090-11052016">
-                Version 0.9.0 (11.05.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.8.1 (20.04.2016)" href="#version-081-20042016">
-                Version 0.8.1 (20.04.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.8.0 (18.04.2016)" href="#version-080-18042016">
-                Version 0.8.0 (18.04.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.7.4 (23.03.2016)" href="#version-074-23032016">
-                Version 0.7.4 (23.03.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.7.3 (21.03.2016)" href="#version-073-21032016">
-                Version 0.7.3 (21.03.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.7.2 (15.03.2016)" href="#version-072-15032016">
-                Version 0.7.2 (15.03.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.7.1 (15.03.2016)" href="#version-071-15032016">
-                Version 0.7.1 (15.03.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.7.0 (11.03.2016)" href="#version-070-11032016">
-                Version 0.7.0 (11.03.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.6.6 (04.03.2016)" href="#version-066-04032016">
-                Version 0.6.6 (04.03.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.6.5 (22.02.2016)" href="#version-065-22022016">
-                Version 0.6.5 (22.02.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.6.4 (05.02.2016)" href="#version-064-05022016">
-                Version 0.6.4 (05.02.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.6.3 (08.01.2016)" href="#version-063-08012016">
-                Version 0.6.3 (08.01.2016)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.6.2 (08.12.2015)" href="#version-062-08122015">
-                Version 0.6.2 (08.12.2015)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.6.1 (07.12.2015)" href="#version-061-07122015">
-                Version 0.6.1 (07.12.2015)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.6.0 (25.11.2015)" href="#version-060-25112015">
-                Version 0.6.0 (25.11.2015)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.5.2 (04.10.2015)" href="#version-052-04102015">
-                Version 0.5.2 (04.10.2015)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.5.1 (14.09.2015)" href="#version-051-14092015">
-                Version 0.5.1 (14.09.2015)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.5.0 (26.08.2015)" href="#version-050-26082015">
-                Version 0.5.0 (26.08.2015)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.4.0 (21.07.2015)" href="#version-040-21072015">
-                Version 0.4.0 (21.07.2015)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.3.4 (01.07.2015)" href="#version-034-01072015">
-                Version 0.3.4 (01.07.2015)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.3.3 (25.05.2015)" href="#version-033-25052015">
-                Version 0.3.3 (25.05.2015)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.3.2 (04.05.2015)" href="#version-032-04052015">
-                Version 0.3.2 (04.05.2015)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.3.1 (10.04.2015)" href="#version-031-10042015">
-                Version 0.3.1 (10.04.2015)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.3.0 (03.04.2015)" href="#version-030-03042015">
-                Version 0.3.0 (03.04.2015)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.2.3 (25.03.2015)" href="#version-023-25032015">
-                Version 0.2.3 (25.03.2015)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.2.2 (19.01.2015)" href="#version-022-19012015">
-                Version 0.2.2 (19.01.2015)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.2.1 (16.01.2015)" href="#version-021-16012015">
-                Version 0.2.1 (16.01.2015)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.1.8 (13.12.2014)" href="#version-018-13122014">
-                Version 0.1.8 (13.12.2014)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.1.7 (24.11.2014)" href="#version-017-24112014">
-                Version 0.1.7 (24.11.2014)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.1.6 (24.11.2014)" href="#version-016-24112014">
-                Version 0.1.6 (24.11.2014)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.1.5 (17.11.2014)" href="#version-015-17112014">
-                Version 0.1.5 (17.11.2014)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.1.4 (01.11.2014)" href="#version-014-01112014">
-                Version 0.1.4 (01.11.2014)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.1.3 (20.10.2014)" href="#version-013-20102014">
-                Version 0.1.3 (20.10.2014)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.1.2 (20.10.2014)" href="#version-012-20102014">
-                Version 0.1.2 (20.10.2014)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.1.1 (17.10.2014)" href="#version-011-17102014">
-                Version 0.1.1 (17.10.2014)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.1.0 (08.10.2014)" href="#version-010-08102014">
-                Version 0.1.0 (08.10.2014)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.0.7 (02.10.2014)" href="#version-007-02102014">
-                Version 0.0.7 (02.10.2014)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.0.6 (03.09.2014)" href="#version-006-03092014">
-                Version 0.0.6 (03.09.2014)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.0.5 (29.08.2014)" href="#version-005-29082014">
-                Version 0.0.5 (29.08.2014)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.0.4 (22.08.2014)" href="#version-004-22082014">
-                Version 0.0.4 (22.08.2014)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.0.3 (21.08.2014)" href="#version-003-21082014">
-                Version 0.0.3 (21.08.2014)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.0.2 (04.08.2014)" href="#version-002-04082014">
-                Version 0.0.2 (04.08.2014)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Version 0.0.1 (31.07.2014)" href="#version-001-31072014">
-                Version 0.0.1 (31.07.2014)
-              </a>
-            </li>
-          
-        </ul>
       
+    </ul>
+  
+</nav>
     
   </li>
 
-          
-            
-  <li>
-    <a class="" title="License" href="../license/">
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../license/" title="License" class="md-nav__link">
       License
     </a>
-    
   </li>
 
-          
-        </ul>
-        
-          <hr>
-          <span class="section">The author</span>
-          <ul>
-            
-              
-              <li>
-                <a href="https://twitter.com/r4fek" target="_blank" title="@r4fek on Twitter">
-                  @r4fek on Twitter
-                </a>
-              </li>
-            
-            
-              
-              <li>
-                <a href="https://github.com/r4fek" target="_blank" title="@r4fek on GitHub">
-                  @r4fek on GitHub
-                </a>
-              </li>
-            
-          </ul>
-        
-      </div>
-    </div>
-  </div>
+    
+  </ul>
 </nav>
-      </div>
-      <article class="article">
-        <div class="wrapper">
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#verstion-130-16112017" title="Verstion 1.3.0 (16.11.2017)" class="md-nav__link">
+    Verstion 1.3.0 (16.11.2017)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-122-29082017" title="Version 1.2.2 (29.08.2017)" class="md-nav__link">
+    Version 1.2.2 (29.08.2017)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-121-11082017" title="Version 1.2.1 (11.08.2017)" class="md-nav__link">
+    Version 1.2.1 (11.08.2017)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-120-01082017" title="Version 1.2.0 (01.08.2017)" class="md-nav__link">
+    Version 1.2.0 (01.08.2017)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-111-26042017" title="Version 1.1.1 (26.04.2017)" class="md-nav__link">
+    Version 1.1.1 (26.04.2017)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-110-09042017" title="Version 1.1.0 (09.04.2017)" class="md-nav__link">
+    Version 1.1.0 (09.04.2017)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-102-04112016" title="Version 1.0.2 (04.11.2016)" class="md-nav__link">
+    Version 1.0.2 (04.11.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-101-31102016" title="Version 1.0.1 (31.10.2016)" class="md-nav__link">
+    Version 1.0.1 (31.10.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-10-25102016" title="Version 1.0 (25.10.2016)" class="md-nav__link">
+    Version 1.0 (25.10.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-0111-01092016" title="Version 0.11.1 (01.09.2016)" class="md-nav__link">
+    Version 0.11.1 (01.09.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-0110-05082016" title="Version 0.11.0 (05.08.2016)" class="md-nav__link">
+    Version 0.11.0 (05.08.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-0101-22072016" title="Version 0.10.1 (22.07.2016)" class="md-nav__link">
+    Version 0.10.1 (22.07.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-0100-10062016" title="Version 0.10.0 (10.06.2016)" class="md-nav__link">
+    Version 0.10.0 (10.06.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-090-11052016" title="Version 0.9.0 (11.05.2016)" class="md-nav__link">
+    Version 0.9.0 (11.05.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-081-20042016" title="Version 0.8.1 (20.04.2016)" class="md-nav__link">
+    Version 0.8.1 (20.04.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-080-18042016" title="Version 0.8.0 (18.04.2016)" class="md-nav__link">
+    Version 0.8.0 (18.04.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-074-23032016" title="Version 0.7.4 (23.03.2016)" class="md-nav__link">
+    Version 0.7.4 (23.03.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-073-21032016" title="Version 0.7.3 (21.03.2016)" class="md-nav__link">
+    Version 0.7.3 (21.03.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-072-15032016" title="Version 0.7.2 (15.03.2016)" class="md-nav__link">
+    Version 0.7.2 (15.03.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-071-15032016" title="Version 0.7.1 (15.03.2016)" class="md-nav__link">
+    Version 0.7.1 (15.03.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-070-11032016" title="Version 0.7.0 (11.03.2016)" class="md-nav__link">
+    Version 0.7.0 (11.03.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-066-04032016" title="Version 0.6.6 (04.03.2016)" class="md-nav__link">
+    Version 0.6.6 (04.03.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-065-22022016" title="Version 0.6.5 (22.02.2016)" class="md-nav__link">
+    Version 0.6.5 (22.02.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-064-05022016" title="Version 0.6.4 (05.02.2016)" class="md-nav__link">
+    Version 0.6.4 (05.02.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-063-08012016" title="Version 0.6.3 (08.01.2016)" class="md-nav__link">
+    Version 0.6.3 (08.01.2016)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-062-08122015" title="Version 0.6.2 (08.12.2015)" class="md-nav__link">
+    Version 0.6.2 (08.12.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-061-07122015" title="Version 0.6.1 (07.12.2015)" class="md-nav__link">
+    Version 0.6.1 (07.12.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-060-25112015" title="Version 0.6.0 (25.11.2015)" class="md-nav__link">
+    Version 0.6.0 (25.11.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-052-04102015" title="Version 0.5.2 (04.10.2015)" class="md-nav__link">
+    Version 0.5.2 (04.10.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-051-14092015" title="Version 0.5.1 (14.09.2015)" class="md-nav__link">
+    Version 0.5.1 (14.09.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-050-26082015" title="Version 0.5.0 (26.08.2015)" class="md-nav__link">
+    Version 0.5.0 (26.08.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-040-21072015" title="Version 0.4.0 (21.07.2015)" class="md-nav__link">
+    Version 0.4.0 (21.07.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-034-01072015" title="Version 0.3.4 (01.07.2015)" class="md-nav__link">
+    Version 0.3.4 (01.07.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-033-25052015" title="Version 0.3.3 (25.05.2015)" class="md-nav__link">
+    Version 0.3.3 (25.05.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-032-04052015" title="Version 0.3.2 (04.05.2015)" class="md-nav__link">
+    Version 0.3.2 (04.05.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-031-10042015" title="Version 0.3.1 (10.04.2015)" class="md-nav__link">
+    Version 0.3.1 (10.04.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-030-03042015" title="Version 0.3.0 (03.04.2015)" class="md-nav__link">
+    Version 0.3.0 (03.04.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-023-25032015" title="Version 0.2.3 (25.03.2015)" class="md-nav__link">
+    Version 0.2.3 (25.03.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-022-19012015" title="Version 0.2.2 (19.01.2015)" class="md-nav__link">
+    Version 0.2.2 (19.01.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-021-16012015" title="Version 0.2.1 (16.01.2015)" class="md-nav__link">
+    Version 0.2.1 (16.01.2015)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-018-13122014" title="Version 0.1.8 (13.12.2014)" class="md-nav__link">
+    Version 0.1.8 (13.12.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-017-24112014" title="Version 0.1.7 (24.11.2014)" class="md-nav__link">
+    Version 0.1.7 (24.11.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-016-24112014" title="Version 0.1.6 (24.11.2014)" class="md-nav__link">
+    Version 0.1.6 (24.11.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-015-17112014" title="Version 0.1.5 (17.11.2014)" class="md-nav__link">
+    Version 0.1.5 (17.11.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-014-01112014" title="Version 0.1.4 (01.11.2014)" class="md-nav__link">
+    Version 0.1.4 (01.11.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-013-20102014" title="Version 0.1.3 (20.10.2014)" class="md-nav__link">
+    Version 0.1.3 (20.10.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-012-20102014" title="Version 0.1.2 (20.10.2014)" class="md-nav__link">
+    Version 0.1.2 (20.10.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-011-17102014" title="Version 0.1.1 (17.10.2014)" class="md-nav__link">
+    Version 0.1.1 (17.10.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-010-08102014" title="Version 0.1.0 (08.10.2014)" class="md-nav__link">
+    Version 0.1.0 (08.10.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-007-02102014" title="Version 0.0.7 (02.10.2014)" class="md-nav__link">
+    Version 0.0.7 (02.10.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-006-03092014" title="Version 0.0.6 (03.09.2014)" class="md-nav__link">
+    Version 0.0.6 (03.09.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-005-29082014" title="Version 0.0.5 (29.08.2014)" class="md-nav__link">
+    Version 0.0.5 (29.08.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-004-22082014" title="Version 0.0.4 (22.08.2014)" class="md-nav__link">
+    Version 0.0.4 (22.08.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-003-21082014" title="Version 0.0.3 (21.08.2014)" class="md-nav__link">
+    Version 0.0.3 (21.08.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-002-04082014" title="Version 0.0.2 (04.08.2014)" class="md-nav__link">
+    Version 0.0.2 (04.08.2014)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-001-31072014" title="Version 0.0.1 (31.07.2014)" class="md-nav__link">
+    Version 0.0.1 (31.07.2014)
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
-          <h1 id="django-cassandra-engine-changelog">Django Cassandra Engine - CHANGELOG<a class="headerlink" href="#django-cassandra-engine-changelog" title="Permanent link">#</a></h1>
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/r4fek/django-cassandra-engine/edit/master/docs/changelog.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="django-cassandra-engine-changelog">Django Cassandra Engine - CHANGELOG<a class="headerlink" href="#django-cassandra-engine-changelog" title="Permanent link">#</a></h1>
+<h2 id="verstion-130-16112017">Verstion 1.3.0 (16.11.2017)<a class="headerlink" href="#verstion-130-16112017" title="Permanent link">#</a></h2>
+<ul>
+<li>Allow "schema_metadata_enabled" set to False in the connection options #105
+  (by awesome @bowensong)</li>
+<li>Update cassandra-driver to 3.12.0</li>
+</ul>
 <h2 id="version-122-29082017">Version 1.2.2 (29.08.2017)<a class="headerlink" href="#version-122-29082017" title="Permanent link">#</a></h2>
 <ul>
 <li>Fix CassandraDatabaseSchemaEditor.create_model (#100)</li>
@@ -929,113 +1481,88 @@
 <li>Feature: support for django test framework</li>
 <li>Feature: Support for Cqlengine Object Mapper</li>
 </ul>
-          <aside class="copyright" role="note">
-            
-              Copyright 2014-2016, <a href="https://rafal-furmanski.com" title="Rafał Furmański homepage" target="_blank">Rafał Furmański</a> &ndash;
-            
-            Documentation built with
-            <a href="http://www.mkdocs.org" target="_blank">MkDocs</a>
-            using the
-            <a href="http://squidfunk.github.io/mkdocs-material/" target="_blank">
-              Material
-            </a>
-            theme.
-          </aside>
-          
-            <footer class="footer">
+                
+                  
+                
               
-  <nav class="pagination" aria-label="Footer">
-    <div class="previous">
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
       
-        <a href="../faq/" title="FAQ">
-          <span class="direction">
-            Previous
-          </span>
-          <div class="page">
-            <div class="button button-previous" role="button" aria-label="Previous">
-              <i class="icon icon-back"></i>
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../faq/" title="FAQ" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
-            <div class="stretch">
-              <div class="title">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
                 FAQ
-              </div>
+              </span>
             </div>
-          </div>
-        </a>
-      
-    </div>
-    <div class="next">
-      
-        <a href="../license/" title="License">
-          <span class="direction">
-            Next
-          </span>
-          <div class="page">
-            <div class="stretch">
-              <div class="title">
+          </a>
+        
+        
+          <a href="../license/" title="License" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
                 License
-              </div>
+              </span>
             </div>
-            <div class="button button-next" role="button" aria-label="Next">
-              <i class="icon icon-forward"></i>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
             </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright 2014-2016, <a href="https://rafal-furmanski.com" title="Rafał Furmański homepage" target="_blank">Rafał Furmański</a>
           </div>
-        </a>
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
+      </div>
+      
+        
       
     </div>
-  </nav>
-
-            </footer>
-          
-        </div>
-      </article>
-      <div class="results" role="status" aria-live="polite">
-        <div class="scrollable">
-          <div class="wrapper">
-            <div class="meta"></div>
-            <div class="list"></div>
-          </div>
-        </div>
-      </div>
-    </main>
-    <script>
-      var base_url = '..';
-      var repo_id  = 'r4fek/django-cassandra-engine';
-    </script>
-    <script src="../assets/javascripts/application-997097ee0c.js"></script>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application-8e4952e681.js"></script>
+      
+      <script>app.initialize({version:"0.17.2",url:{base:".."}})</script>
+      
     
     
-      <script>
-        (function(i,s,o,g,r,a,m){
-          i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||
-          []).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;
-          m.parentNode.insertBefore(a,m)
-        })(window, document,
-          'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-        /* General initialization */
-        ga('create', 'UA-38726443-3', 'auto');
-        ga('set', 'anonymizeIp', true);
-        ga('send', 'pageview');
-        /* Track outbound links */
-        var buttons = document.querySelectorAll('a');
-        Array.prototype.map.call(buttons, function(item) {
-          if (item.host != document.location.host) {
-            item.addEventListener('click', function() {
-              var action = item.getAttribute('data-action') || 'follow';
-              ga('send', 'event', 'outbound', action, item.href);
-            });
-          }
-        });
-        /* Register handler to log search on blur */
-        var query = document.querySelector('.query');
-        query.addEventListener('blur', function() {
-          if (this.value) {
-            var path = document.location.pathname;
-            ga('send', 'pageview', path + '?q=' + this.value);
-          }
-        });
-      </script>
+      
+      <script>!function(e,t,a,n,o,c,i){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,c=t.createElement(a),i=t.getElementsByTagName(a)[0],c.async=1,c.src=n,i.parentNode.insertBefore(c,i)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-38726443-3","auto"),ga("set","anonymizeIp",!0),ga("send","pageview");var links=document.getElementsByTagName("a");Array.prototype.map.call(links,function(e){e.host!=document.location.host&&e.addEventListener("click",function(){var t=e.getAttribute("data-md-action")||"follow";ga("send","event","outbound",t,e.href)})});var query=document.forms.search.query;query.addEventListener("blur",function(){if(this.value){var e=document.location.pathname;ga("send","pageview",e+"?q="+this.value)}})</script>
+      
     
   </body>
 </html>
