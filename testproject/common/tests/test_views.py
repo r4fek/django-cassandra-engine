@@ -27,7 +27,7 @@ class TestViewSet(CassandraTestCase):
         self.assertEqual(response.status_code, http_client.OK)
 
         expected_response = [{
-            'created_on': '2015-06-14T15:44:25',
+            'created_on': '2015-06-14T15:44:25Z',
             'data_abstract': None,
             'another_id': str(thing.another_id),
             'id': str(thing.id)}
@@ -46,7 +46,7 @@ class TestListCreateAPIView(CassandraTestCase):
         response = self.client.post(
             reverse('thing_listcreate_api'),
             {
-                'created_on': '2015-06-14T15:44:25'
+                'created_on': '2015-06-14T15:44:25Z'
             }
         )
         self.assertEqual(response.status_code, http_client.CREATED)
@@ -62,7 +62,7 @@ class TestListAPIView(CassandraTestCase):
         self.assertEqual(response.status_code, http_client.OK)
 
         expected_response = [{
-            'created_on': '2015-06-14T15:44:25',
+            'created_on': '2015-06-14T15:44:25Z',
             'data_abstract': None,
             'another_id': str(thing.another_id),
             'id': str(thing.id)}
