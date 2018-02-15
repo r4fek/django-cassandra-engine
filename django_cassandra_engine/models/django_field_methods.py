@@ -7,7 +7,7 @@ from django.utils.functional import Promise
 from django.utils.text import capfirst
 from django.core import checks, exceptions
 from django.utils.encoding import smart_text
-from django.utils.deprecation import RemovedInDjango20Warning
+from django.utils.deprecation import RemovedInNextVersionWarning as RemovedInDjango20Warning
 
 
 NOT_IMPL_MSG = 'Method not available on Cassandra model fields'
