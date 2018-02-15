@@ -19,6 +19,4 @@ class TestCase(DjangoTestCase):
                          database=alias, skip_checks=True,
                          reset_sequences=False,
                          allow_cascade=False,
-                         load_initial_data=False,
-                         inhibit_post_migrate=True,
-                         inhibit_post_syncdb=True)
+                         inhibit_post_migrate=True)

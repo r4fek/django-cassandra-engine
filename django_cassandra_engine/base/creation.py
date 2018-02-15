@@ -64,9 +64,7 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
         call_command(
             'sync_cassandra',
             verbosity=max(verbosity - 1, 0),
-            interactive=False,
-            database=self.connection.alias,
-            load_initial_data=False
+            database=self.connection.alias
         )
 
         # restore the original connection options

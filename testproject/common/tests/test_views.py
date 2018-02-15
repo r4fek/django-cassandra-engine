@@ -1,7 +1,10 @@
 from datetime import datetime
 
 from six.moves import http_client
-from django.core.urlresolvers import reverse
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 from freezegun import freeze_time
 
 from common.test_utils import CassandraTestCase

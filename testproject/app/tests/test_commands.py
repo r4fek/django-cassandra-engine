@@ -60,8 +60,7 @@ class FlushCommandTestCase(TestCase):
     def test_flush(self):
 
         db_alias = get_cassandra_db_alias()
-        call_command('flush', database=db_alias, noinput=True,
-                     interactive=False)
+        call_command('flush', database=db_alias, interactive=False)
 
 
 class RunserverCommandTestCase(TestCase):

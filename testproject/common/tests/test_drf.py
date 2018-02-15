@@ -5,7 +5,10 @@ from unittest import skipIf
 import django
 import six.moves.http_client
 from rest_framework.test import APITestCase
-from django.core.urlresolvers import reverse
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 
 from common.models import (
     CassandraThing, CassandraThingMultiplePK, CassandraFamilyMember
