@@ -12,7 +12,6 @@ env:
     - TOX_ENV=py36-django110
     - TOX_ENV=py27-django111
     - TOX_ENV=py36-django111
-    - TOX_ENV=py27-django20
     - TOX_ENV=py36-django20
     - TOX_ENV=py36-djangomaster
   global:
