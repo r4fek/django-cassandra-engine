@@ -8,18 +8,18 @@ services: cassandra
 
 env:
   matrix:
-    - TOX_ENV=py27-django19
-    - TOX_ENV=py35-django19
     - TOX_ENV=py27-django110
-    - TOX_ENV=py35-django110
+    - TOX_ENV=py36-django110
     - TOX_ENV=py27-django111
-    - TOX_ENV=py35-django111
-    - TOX_ENV=py35-djangomaster
+    - TOX_ENV=py36-django111
+    - TOX_ENV=py27-django20
+    - TOX_ENV=py36-django20
+    - TOX_ENV=py36-djangomaster
   global:
     - CASS_DRIVER_NO_CYTHON=1
 
 python:
-  - "3.5"
+  - "3.6"
 
 addons:
   apt:
