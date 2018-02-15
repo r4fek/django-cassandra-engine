@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/", 
-            "text": "Django Cassandra Engine - the Cassandra backend for Django\n#\n\n\nAll tools you need to start your journey with Apache Cassandra and Django Framework!\n\n\nAlready using \n\n    DataStax Python Driver for Apache Cassandra\n\n?\nThat's great! Now you can easily integrate your existing or new Django project with it.\n\n\nOverview\n#\n\n\ndjango-cassandra-engine\n is the first Cassandra backend for \nDjango Framework\n.\nIt integrates with Django well and allows you to use \n\n    Cqlengine\n\n\ndirectly in your project. All your cassandra models are automatically synced\nin the way you're used to. You can focus on writing a good code.\n\n\nFeatures\n#\n\n\n\n\nintegration with latest \npython-driver\n from DataStax\n\n\nworking \nflush\n, \nsyncdb\n, \nmigrate\n, \nsync_cassandra\n, \ninspectdb\n and \n  \ndbshell\n commands\n\n\nsupport for creating/destroying test database\n\n\naccepts all \ncqlengine\n and \ncassandra.cluster.Cluster\n connection options\n\n\nautomatic connection/disconnection handling\n\n\nworks well along with relational databases\n\n\nstoring \nsessions\n in Cassandra\n\n\n\n\nPlans (TODO)\n#\n\n\n\n\nUser model stored in Cassandra (auth module)\n\n\n\n\nRequirements\n#\n\n\n\n\nPython\n=2.7\n\n\nCassandra\n=2.0 (of course)\n\n\ncassandra-driver\n=2.5\n\n\nDjango\n=1.6\n\n\n\n\n\n\nCan't wait? \nInstall me\n!", 
+            "text": "Django Cassandra Engine - the Cassandra backend for Django\n#\n\n\nAll tools you need to start your journey with Apache Cassandra and Django Framework!\n\n\nAlready using \n\n    DataStax Python Driver for Apache Cassandra\n\n?\nThat's great! Now you can easily integrate your existing or new Django project with it.\n\n\nOverview\n#\n\n\ndjango-cassandra-engine\n is the first Cassandra backend for \nDjango Framework\n.\nIt integrates with Django well and allows you to use \n\n    Cqlengine\n\n\ndirectly in your project. All your cassandra models are automatically synced\nin the way you're used to. You can focus on writing a good code.\n\n\nFeatures\n#\n\n\n\n\nintegration with latest \npython-driver\n from DataStax\n\n\nworking \nflush\n, \nsyncdb\n, \nmigrate\n, \nsync_cassandra\n, \ninspectdb\n and \n  \ndbshell\n commands\n\n\nsupport for creating/destroying test database\n\n\naccepts all \ncqlengine\n and \ncassandra.cluster.Cluster\n connection options\n\n\nautomatic connection/disconnection handling\n\n\nworks well along with relational databases\n\n\nstoring \nsessions\n in Cassandra\n\n\n\n\nPlans (TODO)\n#\n\n\n\n\nUser model stored in Cassandra (auth module)\n\n\n\n\nRequirements\n#\n\n\n\n\nPython\n=2.7\n\n\nCassandra\n=2.0\n\n\ncassandra-driver\n=3.13\n\n\nDjango\n=1.10\n\n\n\n\n\n\nCan't wait? \nInstall me\n!", 
             "title": "Home"
         }, 
         {
@@ -27,7 +27,7 @@
         }, 
         {
             "location": "/#requirements", 
-            "text": "Python =2.7  Cassandra =2.0 (of course)  cassandra-driver =2.5  Django =1.6    Can't wait?  Install me !", 
+            "text": "Python =2.7  Cassandra =2.0  cassandra-driver =3.13  Django =1.10    Can't wait?  Install me !", 
             "title": "Requirements"
         }, 
         {
