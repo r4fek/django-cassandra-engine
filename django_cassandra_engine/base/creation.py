@@ -50,8 +50,10 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
         replication_opts = options.get('replication', {})
         replication_factor = replication_opts.pop('replication_factor', 1)
 
-        create_keyspace_simple(self.connection.settings_dict['NAME'],
-                               replication_factor)
+        create_keyspace_simple(
+            self.connection.settings_dict['NAME'],
+            replication_factor,
+            connections=[self.connection.alias])
 
         settings.DATABASES[self.connection.alias]["NAME"] = test_database_name
         self.connection.settings_dict["NAME"] = test_database_name
@@ -78,7 +80,7 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
 
     def _destroy_test_db(self, test_database_name, verbosity=1, **kwargs):
 
-        drop_keyspace(test_database_name)
+        drop_keyspace(test_database_name, connections=[self.connection.alias])
 
     def set_models_keyspace(self, keyspace):
         """Set keyspace for all connection models"""

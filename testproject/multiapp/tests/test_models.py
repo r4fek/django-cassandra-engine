@@ -5,6 +5,8 @@ from multiapp.models import (
     TestModel, TestModel2, TestModel3
 )
 
+from django.db import connections
+
 
 class ModelsTestCase(TestCase):
 
@@ -40,8 +42,8 @@ class ModelsTestCase(TestCase):
         obj_id = 123456
         TestModel.objects.create(id=obj_id, created_at=now)
 
-        from cassandra.cqlengine.connection import get_session
-        session = get_session()
+        connection = connections['cassandra']
+        session = connection.connection.session
         session.set_keyspace('test_db')
         self.assertEqual(
             session.execute('SELECT id FROM test_model')[0]['id'], obj_id)
@@ -51,8 +53,8 @@ class ModelsTestCase(TestCase):
         obj_id = 123456
         TestModel2.objects.create(id=obj_id)
 
-        from cassandra.cqlengine.connection import get_session
-        session = get_session()
+        connection = connections['cassandra']
+        session = connection.connection.session
         session.set_keyspace('test_db2')
         self.assertEqual(
             session.execute('SELECT id FROM test_model2')[0]['id'], obj_id)
