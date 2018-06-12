@@ -16,7 +16,7 @@ DATABASES = {
         'USER': 'user',
         'PASSWORD': 'pass',
         'TEST_NAME': 'test_db',
-        'HOST': 'cassandra',
+        'HOST': CASSANDRA_HOST,
         'OPTIONS': {
             'replication': {
                 'strategy_class': 'SimpleStrategy',

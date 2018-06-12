@@ -16,7 +16,7 @@ DATABASES = {
         'USER': 'user',
         'PASSWORD': 'pass',
         'TEST_NAME': 'test_db',
-        'HOST': 'cassandra',
+        'HOST': CASSANDRA_HOST,
         'OPTIONS': {
             'replication': {
                 'strategy_class': 'SimpleStrategy',
@@ -37,7 +37,7 @@ DATABASES = {
         'ENGINE': 'django_cassandra_engine',
         'NAME': 'db2',
         'TEST_NAME': 'test_db2',
-        'HOST': 'cassandra',
+        'HOST': CASSANDRA_HOST,
         'OPTIONS': {
             'replication': {
                 'strategy_class': 'SimpleStrategy',

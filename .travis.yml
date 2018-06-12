@@ -1,7 +1,6 @@
 language: python
-sudo: required
-services:
-  - docker
+sudo: false
+services: cassandra
 
 env:
   matrix:
@@ -13,6 +12,7 @@ env:
     - TOX_ENV=py36-djangomaster
   global:
     - CASS_DRIVER_NO_CYTHON=1
+    - CASS_HOST=127.0.0.1
 
 python:
   - "3.6"
@@ -30,4 +30,4 @@ install:
   - pip install tox
 
 script:
-  - ./test.sh
+  - tox -e $TOX_ENV
