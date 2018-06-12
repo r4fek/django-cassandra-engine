@@ -1,6 +1,7 @@
 language: python
-sudo: false
-services: cassandra
+sudo: required
+services:
+  - cassandra
 
 env:
   matrix:
