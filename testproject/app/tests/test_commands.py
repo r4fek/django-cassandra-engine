@@ -30,7 +30,8 @@ class SyncCassandraCommandTestCase(TestCase):
 
         mock_management.create_keyspace_simple.assert_called_once_with(
             self.keyspace,
-            replication_factor
+            replication_factor,
+            connections=[alias]
         )
 
         for model in all_models:
