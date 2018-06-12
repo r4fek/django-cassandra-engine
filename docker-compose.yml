@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  cassandra:
+    hostname: cassandra
+    image: cassandra:2.1
+    volumes:
+      - /var/lib/cassandra:/var/lib/cassandra
+    expose:
+      - 7000
+      - 7001
+      - 7199
+      - 9042
+      - 9160
+  web:
+    build: .
+    command: /bin/bash -c "cd testproject && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - cassandra
+    links:
+      - cassandra
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBITECODE=1
