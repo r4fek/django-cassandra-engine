@@ -96,4 +96,4 @@ LOGGING = {
     },
 }
 
-CASSANDRA_HOST = os.getenv('CASS_HOST') or 'cassandra'
+CASSANDRA_HOST = os.getenv('CASS_HOST')
