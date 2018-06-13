@@ -107,6 +107,18 @@ def get_cassandra_connections():
             yield alias, connections[alias]
 
 
+def get_default_cassandra_connection():
+    """
+    Return first default cassandra connection
+    :return:
+    """
+    for alias, conn in get_cassandra_connections():
+        if conn.connection.default:
+            return alias, conn
+
+    return list(get_cassandra_connections())[0]
+
+
 def get_cassandra_connection(alias=None, name=None):
     """
     :return: cassandra connection matching alias or name or just first found.

@@ -1,6 +1,7 @@
 import django
 from cassandra.cqlengine.connection import set_default_connection
 
+from django_cassandra_engine.utils import get_default_cassandra_connection
 from ..compat import create_keyspace_simple, drop_keyspace
 
 if django.VERSION[0:2] >= (1, 8):
@@ -21,6 +22,7 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
         from django.conf import settings
 
         self.connection.connect()
+        default_alias = get_default_cassandra_connection()[0]
 
         # If using django-nose, its runner has already set the db name
         # to test_*, so restore it here so that all the models for the
@@ -46,7 +48,7 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
         if not connection_options_copy.get('schema_metadata_enabled', True):
             options['connection']['schema_metadata_enabled'] = True
             self.connection.reconnect()
-            set_default_connection(self.connection.alias)
+            set_default_connection(default_alias)
 
         replication_opts = options.get('replication', {})
         replication_factor = replication_opts.pop('replication_factor', 1)
@@ -60,7 +62,7 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
         self.connection.settings_dict["NAME"] = test_database_name
 
         self.connection.reconnect()
-        set_default_connection(self.connection.alias)
+        set_default_connection(default_alias)
 
         # Report syncdb messages at one level lower than that requested.
         # This ensures we don't get flooded with messages during testing
@@ -77,7 +79,7 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
             options['connection']['schema_metadata_enabled'] = \
                 connection_options_copy['schema_metadata_enabled']
             self.connection.reconnect()
-            set_default_connection(self.connection.alias)
+            set_default_connection(default_alias)
 
         return test_database_name
 
