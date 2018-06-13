@@ -1,7 +1,12 @@
 from threading import Lock
 
-from .compat import (CQLEngineException, PlainTextAuthProvider, Session,
-                     connection)
+from django_cassandra_engine.utils import get_cassandra_connections
+from .compat import (
+    CQLEngineException,
+    PlainTextAuthProvider,
+    Session,
+    connection,
+)
 
 
 class Cursor(object):
@@ -35,43 +40,59 @@ class FakeConnection(object):
 
 class CassandraConnection(object):
 
-    def __init__(self, **options):
-
+    def __init__(self, alias, **options):
+        self.alias = alias
         self.hosts = options.get('HOST').split(',')
         self.keyspace = options.get('NAME')
         self.user = options.get('USER')
         self.password = options.get('PASSWORD')
         self.options = options.get('OPTIONS', {})
-        self.connection_options = self.options.get('connection', {})
+        self.cluster_options = self.options.get('connection', {})
         self.session_options = self.options.get('session', {})
-
+        self.connection_options = {
+            'lazy_connect': self.cluster_options.pop('lazy_connect', False),
+            'retry_connect': self.cluster_options.pop('retry_connect', False),
+            'consistency': self.cluster_options.pop('consistency', None)
+        }
         if self.user and self.password and \
-                'auth_provider' not in self.connection_options:
-            self.connection_options['auth_provider'] = \
+                'auth_provider' not in self.cluster_options:
+            self.cluster_options['auth_provider'] = \
                 PlainTextAuthProvider(username=self.user,
                                       password=self.password)
 
-        self.lock = Lock()
-        self.session = None
-        self.cluster = None
-        self.setup()
+        self.default = alias == 'default' or \
+            len(list(get_cassandra_connections())) == 1 or \
+            self.cluster_options.pop('default', False)
 
-    def setup(self):
+        self.lock = Lock()
+        self.register()
+
+    def register(self):
         with self.lock:
             try:
-                self.session = connection.get_session()
+                connection.get_connection(name=self.alias)
             except CQLEngineException:
-                pass
-            if not (self.session is None or self.session.is_shutdown):
-                # already connected
-                return
+                if self.default:
+                    from cassandra.cqlengine import models
+                    models.DEFAULT_KEYSPACE = self.keyspace
 
-            for option, value in self.session_options.items():
-                setattr(Session, option, value)
-            connection.setup(self.hosts, self.keyspace,
-                             **self.connection_options)
-            self.session = connection.get_session()
-            self.cluster = connection.get_cluster()
+                for option, value in self.session_options.items():
+                    setattr(Session, option, value)
+
+                connection.register_connection(
+                    self.alias,
+                    hosts=self.hosts,
+                    default=self.default,
+                    cluster_options=self.cluster_options,
+                    **self.connection_options)
+
+    @property
+    def cluster(self):
+        return connection.get_cluster(connection=self.alias)
+
+    @property
+    def session(self):
+        return connection.get_session(connection=self.alias)
 
     def commit(self):
         pass
@@ -89,16 +110,9 @@ class CassandraConnection(object):
     def close(self):
         """ We would like to keep connection always open by default """
 
-    def close_all(self):
+    def unregister(self):
         """
-        Close all db connections
+        Unregister this connection
         """
         with self.lock:
-            if self.cluster is not None:
-                self.cluster.shutdown()
-
-            if self.session is not None and not self.session.is_shutdown:
-                self.session.shutdown()
-
-            self.session = None
-            self.cluster = None
+            connection.unregister_connection(self.alias)

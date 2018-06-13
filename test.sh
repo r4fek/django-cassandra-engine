@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker-compose run web python testproject/runtests.py
+docker-compose run web tox

@@ -1,3 +1,5 @@
+from cassandra.policies import RoundRobinPolicy
+
 from .base import *
 
 # Database
@@ -14,15 +16,18 @@ DATABASES = {
         'USER': 'user',
         'PASSWORD': 'pass',
         'TEST_NAME': 'test_db',
-        'HOST': '127.0.0.1',
+        'HOST': CASSANDRA_HOST,
         'OPTIONS': {
             'replication': {
                 'strategy_class': 'SimpleStrategy',
                 'replication_factor': 1,
             },
             'connection': {
+                'default': True,
                 'retry_connect': True,
-                'consistency': ConsistencyLevel.ALL
+                'consistency': ConsistencyLevel.ALL,
+                'load_balancing_policy': RoundRobinPolicy(),
+                'protocol_version': 3
             },
             'session': {
                 'default_timeout': 15
@@ -33,7 +38,7 @@ DATABASES = {
         'ENGINE': 'django_cassandra_engine',
         'NAME': 'db2',
         'TEST_NAME': 'test_db2',
-        'HOST': '127.0.0.1',
+        'HOST': CASSANDRA_HOST,
         'OPTIONS': {
             'replication': {
                 'strategy_class': 'SimpleStrategy',
@@ -41,7 +46,9 @@ DATABASES = {
             },
             'connection': {
                 'retry_connect': True,
-                'consistency': ConsistencyLevel.ALL
+                'consistency': ConsistencyLevel.ALL,
+                'load_balancing_policy': RoundRobinPolicy(),
+                'protocol_version': 3
             },
             'session': {
                 'default_timeout': 15

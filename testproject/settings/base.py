@@ -75,3 +75,25 @@ USE_TZ = True
 STATIC_URL = '/static/'
 SESSION_ENGINE = 'django_cassandra_engine.sessions.backends.db'
 CASSANDRA_FALLBACK_ORDER_BY_PYTHON = True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'cassandra': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        }
+    },
+}
+
+CASSANDRA_HOST = os.getenv('CASS_HOST')

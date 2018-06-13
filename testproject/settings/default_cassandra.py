@@ -1,3 +1,5 @@
+from cassandra.policies import RoundRobinPolicy
+
 from .base import *
 
 DATABASES = {
@@ -7,7 +9,7 @@ DATABASES = {
         'USER': 'user',
         'PASSWORD': 'pass',
         'TEST_NAME': 'test_db',
-        'HOST': '127.0.0.1',
+        'HOST': CASSANDRA_HOST,
         'OPTIONS': {
             'replication': {
                 'strategy_class': 'SimpleStrategy',
@@ -15,7 +17,9 @@ DATABASES = {
             },
             'connection': {
                 'retry_connect': True,
-                'consistency': ConsistencyLevel.ALL
+                'consistency': ConsistencyLevel.ALL,
+                'load_balancing_policy': RoundRobinPolicy(),
+                'protocol_version': 3
             },
             'session': {
                 'default_timeout': 15

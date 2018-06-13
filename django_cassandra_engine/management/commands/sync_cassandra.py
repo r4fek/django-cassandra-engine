@@ -68,9 +68,15 @@ class Command(BaseCommand):
         self.stdout.write('Creating keyspace {}..'.format(keyspace))
 
         if strategy_class == 'SimpleStrategy':
-            management.create_keyspace_simple(keyspace, replication_factor)
+            management.create_keyspace_simple(
+                keyspace,
+                replication_factor,
+                connections=[alias])
         else:
-            management.create_keyspace_network_topology(keyspace, replication_opts)
+            management.create_keyspace_network_topology(
+                keyspace,
+                replication_opts,
+                connections=[alias])
 
         for app_name, app_models \
                 in connection.introspection.cql_models.items():
@@ -78,7 +84,7 @@ class Command(BaseCommand):
                 self.stdout.write('Syncing %s.%s' % (app_name, model.__name__))
                 # patch this object used for type check in management.sync_table()
                 management.Model = (Model, DjangoCassandraModel)
-                management.sync_table(model)
+                management.sync_table(model, connections=[alias])
 
     def handle(self, **options):
 
