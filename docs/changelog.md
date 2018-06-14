@@ -1,4 +1,10 @@
 # Django Cassandra Engine - CHANGELOG
+
+## Version 1.5.0 (14.06.2018)
+
+* Support multiple cassandra databases
+* Add docker-compose setup for better testing
+
 ## Version 1.4.0 (15.02.2018)
 
 * Support Django 2.0.x
