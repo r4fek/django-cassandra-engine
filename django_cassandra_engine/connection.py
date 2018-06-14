@@ -1,5 +1,3 @@
-from threading import Lock
-
 from django_cassandra_engine.utils import get_cassandra_connections
 from .compat import (
     CQLEngineException,
@@ -64,27 +62,25 @@ class CassandraConnection(object):
             len(list(get_cassandra_connections())) == 1 or \
             self.cluster_options.pop('default', False)
 
-        self.lock = Lock()
         self.register()
 
     def register(self):
-        with self.lock:
-            try:
-                connection.get_connection(name=self.alias)
-            except CQLEngineException:
-                if self.default:
-                    from cassandra.cqlengine import models
-                    models.DEFAULT_KEYSPACE = self.keyspace
+        try:
+            connection.get_connection(name=self.alias)
+        except CQLEngineException:
+            if self.default:
+                from cassandra.cqlengine import models
+                models.DEFAULT_KEYSPACE = self.keyspace
 
-                for option, value in self.session_options.items():
-                    setattr(Session, option, value)
+            for option, value in self.session_options.items():
+                setattr(Session, option, value)
 
-                connection.register_connection(
-                    self.alias,
-                    hosts=self.hosts,
-                    default=self.default,
-                    cluster_options=self.cluster_options,
-                    **self.connection_options)
+            connection.register_connection(
+                self.alias,
+                hosts=self.hosts,
+                default=self.default,
+                cluster_options=self.cluster_options,
+                **self.connection_options)
 
     @property
     def cluster(self):
@@ -114,5 +110,4 @@ class CassandraConnection(object):
         """
         Unregister this connection
         """
-        with self.lock:
-            connection.unregister_connection(self.alias)
+        connection.unregister_connection(self.alias)

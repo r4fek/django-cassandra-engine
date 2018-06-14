@@ -1,4 +1,4 @@
-from threading import RLock
+import threading
 
 try:
     from django.db.backends.base.base import (
@@ -86,7 +86,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         self.commit_on_exit = False
         self.connected = False
         self.autocommit = True
-        self.connect_lock = RLock()
+        self._connect_lock = threading.RLock()
 
         if self.client is None:
             # Set up the associated backend objects
@@ -112,7 +112,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         pass
 
     def connect(self):
-        with self.connect_lock:
+        with self._connect_lock:
             if not self.connected or self.connection is None:
                 settings = self.settings_dict
                 self.connection = CassandraConnection(self.alias, **settings)
@@ -127,11 +127,12 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         raise AttributeError(attr)
 
     def reconnect(self):
-        if self.connected:
-            self.connection.unregister()
-            del self.connection
-            self.connected = False
-        self.connect()
+        with self._connect_lock:
+            if self.connected:
+                self.connection.unregister()
+                del self.connection
+                self.connected = False
+            self.connect()
 
     def close_if_unusable_or_obsolete(self):
         self.connect()
