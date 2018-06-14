@@ -1,5 +1,6 @@
-FROM python:2.7
+FROM python:3.6
 ENV PYTHONUNBUFFERED=1
+ENV CASS_HOST=cassandra
 RUN mkdir /code
 WORKDIR /code
 ADD requirements.txt /code/

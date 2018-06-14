@@ -1,3 +1,5 @@
+import threading
+
 try:
     from django.db.backends.base.base import (
         connection_created,
@@ -84,6 +86,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         self.commit_on_exit = False
         self.connected = False
         self.autocommit = True
+        self._connect_lock = threading.RLock()
 
         if self.client is None:
             # Set up the associated backend objects
@@ -109,11 +112,12 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         pass
 
     def connect(self):
-        if not self.connected or self.connection is None:
-            settings = self.settings_dict
-            self.connection = CassandraConnection(**settings)
-            connection_created.send(sender=self.__class__, connection=self)
-            self.connected = True
+        with self._connect_lock:
+            if not self.connected or self.connection is None:
+                settings = self.settings_dict
+                self.connection = CassandraConnection(self.alias, **settings)
+                connection_created.send(sender=self.__class__, connection=self)
+                self.connected = True
 
     def __getattr__(self, attr):
         if attr == "connection":
@@ -123,12 +127,12 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         raise AttributeError(attr)
 
     def reconnect(self):
-
-        if self.connected:
-            self.connection.close_all()
-            del self.connection
-            self.connected = False
-        self.connect()
+        with self._connect_lock:
+            if self.connected:
+                self.connection.unregister()
+                del self.connection
+                self.connected = False
+            self.connect()
 
     def close_if_unusable_or_obsolete(self):
         self.connect()
@@ -142,18 +146,13 @@ class DatabaseWrapper(BaseDatabaseWrapper):
     def _rollback(self):
         pass
 
-    def _cursor(self):
-        # Error if keyspace for cursor doesn't exist. django-nose uses
-        # a cursor to check if it should create a db or not. Any
-        # exception will do, and this will raise a KeyError if the
-        # keyspace doesn't exist.
-        from cassandra.cqlengine import connection
+    def _cursor(self, *args, **kwargs):
         keyspace = self.settings_dict['NAME']
-        if not connection.cluster.schema_metadata_enabled and \
-                keyspace not in connection.cluster.metadata.keyspaces:
-            connection.cluster.refresh_schema_metadata()
+        if not self.connection.cluster.schema_metadata_enabled and \
+                keyspace not in self.connection.cluster.metadata.keyspaces:
+            self.connection.cluster.refresh_schema_metadata()
 
-        connection.cluster.metadata.keyspaces[keyspace]
+        self.connection.cluster.metadata.keyspaces[keyspace]
         return CursorWrapper(self.connection.cursor(), self)
 
     def schema_editor(self, *args, **kwargs):
