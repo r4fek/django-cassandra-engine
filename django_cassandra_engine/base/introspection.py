@@ -24,10 +24,12 @@ class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
         """
 
         apps = get_installed_apps()
+        connection = self.connection.connection.alias
         keyspace = self.connection.connection.keyspace
+
         for app in apps:
-            self._cql_models[app.__name__] = get_cql_models(app,
-                                                            keyspace=keyspace)
+            self._cql_models[app.__name__] = get_cql_models(
+                app, connection=connection, keyspace=keyspace)
 
     @property
     def cql_models(self):

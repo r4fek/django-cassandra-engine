@@ -2,6 +2,7 @@ import inspect
 
 import django
 from django.conf import settings
+from django.db import DEFAULT_DB_ALIAS
 
 from .compat import cqlengine
 
@@ -66,18 +67,19 @@ def get_installed_apps():
         return models.get_apps()
 
 
-def get_cql_models(app, keyspace=None):
+def get_cql_models(app, connection=None, keyspace=None):
     """
     :param app: django models module
-    :param keyspace: database name (keyspace)
+    :param connection: connection name
+    :param keyspace: keyspace
     :return: list of all cassandra.cqlengine.Model within app that should be
     synced to keyspace.
     """
-    from cassandra.cqlengine.models import DEFAULT_KEYSPACE
     from .models import DjangoCassandraModel
-    keyspace = keyspace or DEFAULT_KEYSPACE
-
+    single_cassandra_connection = len(list(get_cassandra_connections())) == 1
     models = []
+    is_default_connection = connection == DEFAULT_DB_ALIAS or single_cassandra_connection
+
     for name, obj in inspect.getmembers(app):
         cql_model_types = (
             cqlengine.models.Model,
@@ -87,8 +89,9 @@ def get_cql_models(app, keyspace=None):
             inspect.isclass(obj) and issubclass(obj, cql_model_types) and
             not obj.__abstract__
         ):
-            if (obj.__keyspace__ is None and keyspace == DEFAULT_KEYSPACE) \
-                    or obj.__keyspace__ == keyspace:
+            if obj.__connection__ == connection or \
+                    (obj.__connection__ is None and is_default_connection) or \
+                    obj.__connection__ is None and obj.__keyspace__ is not None and obj.__keyspace__ == keyspace:
                 models.append(obj)
 
     return models
