@@ -66,7 +66,7 @@ class Command(BaseCommand):
         replication_factor = replication_opts.pop('replication_factor', 1)
 
         self.stdout.write('Creating keyspace {} [CONNECTION {}] ..'.format(
-            keyspace, connection))
+            keyspace, alias))
 
         if strategy_class == 'SimpleStrategy':
             management.create_keyspace_simple(
