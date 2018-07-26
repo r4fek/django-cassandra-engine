@@ -1,11 +1,8 @@
 # Django Cassandra Engine - CHANGELOG
 
-## Version 1.5.2 (26.07.2018)
+## Version 1.5.3 (26.07.2018)
 
 * Turn `schema_metadata_enabled` on while syncing database
-
-## Version 1.5.1 (26.07.2018)
-
 * Make get_cql_models connection aware
 
 ## Version 1.5.0 (14.06.2018)
