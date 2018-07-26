@@ -65,7 +65,8 @@ class Command(BaseCommand):
                                               'SimpleStrategy')
         replication_factor = replication_opts.pop('replication_factor', 1)
 
-        self.stdout.write('Creating keyspace {}..'.format(keyspace))
+        self.stdout.write('Creating keyspace {} [CONNECTION {}] ..'.format(
+            keyspace, connection))
 
         if strategy_class == 'SimpleStrategy':
             management.create_keyspace_simple(
@@ -78,13 +79,17 @@ class Command(BaseCommand):
                 replication_opts,
                 connections=[alias])
 
+        connection.connection.cluster.refresh_schema_metadata()
+        connection.connection.cluster.schema_metadata_enabled = True
+
         for app_name, app_models \
                 in connection.introspection.cql_models.items():
             for model in app_models:
                 self.stdout.write('Syncing %s.%s' % (app_name, model.__name__))
                 # patch this object used for type check in management.sync_table()
                 management.Model = (Model, DjangoCassandraModel)
-                management.sync_table(model, connections=[alias])
+                management.sync_table(model, keyspaces=[keyspace],
+                                      connections=[alias])
 
     def handle(self, **options):
 
