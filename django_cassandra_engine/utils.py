@@ -76,9 +76,10 @@ def get_cql_models(app, connection=None, keyspace=None):
     synced to keyspace.
     """
     from .models import DjangoCassandraModel
-    single_cassandra_connection = len(list(get_cassandra_connections())) == 1
     models = []
-    is_default_connection = connection == DEFAULT_DB_ALIAS or single_cassandra_connection
+    single_cassandra_connection = len(list(get_cassandra_connections())) == 1
+    is_default_connection = connection == DEFAULT_DB_ALIAS or \
+        single_cassandra_connection
 
     for name, obj in inspect.getmembers(app):
         cql_model_types = (

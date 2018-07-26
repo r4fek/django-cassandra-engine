@@ -1,5 +1,9 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 1.5.1 (26.07.2018)
+
+* Make get_cql_models connection aware
+
 ## Version 1.5.0 (14.06.2018)
 
 * Support multiple cassandra databases
