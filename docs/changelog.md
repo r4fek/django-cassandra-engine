@@ -1,5 +1,9 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 1.5.4 (01.10.2018)
+
+* Upgrade `Django` and `cassandra-driver` deps
+
 ## Version 1.5.3 (26.07.2018)
 
 * Turn `schema_metadata_enabled` on while syncing database
