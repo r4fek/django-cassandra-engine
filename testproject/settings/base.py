@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 BASE_APPS = [
     'django_cassandra_engine',
     'django_cassandra_engine.sessions',
-    'django.contrib.admin',
+    #'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.messages',
