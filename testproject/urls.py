@@ -1,7 +1,5 @@
 from django.conf.urls import include, url
 
-from django.contrib import admin
-
 from testproject.app import views
 
 
@@ -10,6 +8,4 @@ urlpatterns = [
     url(r'^$', views.home, name='home'),
     # url(r'^blog/', include('blog.urls')),
     url(r'^common/', include('common.urls')),
-
-    url(r'^admin/', admin.site.urls),
 ]
