@@ -1,6 +1,5 @@
 import django
 from cassandra.cqlengine.connection import set_default_connection
-from cassandra import AlreadyExists
 
 from django_cassandra_engine.utils import get_default_cassandra_connection
 from ..compat import create_keyspace_simple, drop_keyspace
@@ -54,13 +53,10 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
         replication_opts = options.get('replication', {})
         replication_factor = replication_opts.pop('replication_factor', 1)
 
-        try:
-            create_keyspace_simple(
-                self.connection.settings_dict['NAME'],
-                replication_factor,
-                connections=[self.connection.alias])
-        except AlreadyExists:
-            pass
+        create_keyspace_simple(
+            test_database_name,
+            replication_factor,
+            connections=[self.connection.alias])
 
         settings.DATABASES[self.connection.alias]["NAME"] = test_database_name
         self.connection.settings_dict["NAME"] = test_database_name
