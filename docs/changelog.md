@@ -1,5 +1,10 @@
 # Django Cassandra Engine - CHANGELOG
 
+
+## Version 1.5.5 (30.01.2019)
+
+* Create the test keyspace not in the runtime keyspace (by @andydawkins)
+
 ## Version 1.5.4 (01.10.2018)
 
 * Upgrade `Django` and `cassandra-driver` deps
