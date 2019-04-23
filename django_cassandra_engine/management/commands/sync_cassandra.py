@@ -3,6 +3,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db import connections
 from django_cassandra_engine.models import DjangoCassandraModel
 from django_cassandra_engine.utils import get_engine_from_db_alias
+from django.apps import apps
 
 from ...compat import Model, management
 
