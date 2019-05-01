@@ -1,3 +1,4 @@
+dist: xenial
 language: python
 sudo: required
 services:
@@ -26,6 +27,7 @@ addons:
     - pypy-dev
     - libev4
     - libev-dev
+    - sqlite3
 
 install:
   - pip install tox
