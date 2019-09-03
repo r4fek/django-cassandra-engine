@@ -54,7 +54,7 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
         replication_factor = replication_opts.pop('replication_factor', 1)
 
         create_keyspace_simple(
-            self.connection.settings_dict['NAME'],
+            test_database_name,
             replication_factor,
             connections=[self.connection.alias])
 
