@@ -1,8 +1,7 @@
 import django
-from cassandra.cqlengine.connection import set_default_connection
-
 from django_cassandra_engine.utils import get_default_cassandra_connection
-from ..compat import create_keyspace_simple, drop_keyspace
+from ..compat import create_keyspace_simple, drop_keyspace, \
+    set_default_connection
 
 if django.VERSION[0:2] >= (1, 8):
     from django.db.backends.base.creation import BaseDatabaseCreation
