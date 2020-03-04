@@ -1,6 +1,10 @@
 dist: xenial
+sudo: false
+
 language: python
-sudo: required
+python:
+  - "3.7"
+
 services:
   - cassandra
 before_script:
@@ -16,21 +20,19 @@ env:
     - CASS_DRIVER_NO_CYTHON=1
     - CASS_HOST=127.0.0.1
 
-python:
-  - "3.7"
-
 addons:
   apt:
     packages:
     - build-essential
     - python-dev
     - pypy-dev
+    - libc-ares-dev
     - libev4
     - libev-dev
     - sqlite3
 
 install:
-  - pip install tox
+  - pip install tox-travis lz4
 
 script:
   - tox -e $TOX_ENV
