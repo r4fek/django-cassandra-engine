@@ -6,7 +6,6 @@ python:
   - "3.7"
 
 before_script:
-  - jdk_switcher use openjdk8
   - echo "deb http://www.apache.org/dist/cassandra/debian 39x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
   - wget -qO - https://www.apache.org/dist/cassandra/KEYS | sudo apt-key add -
   - sudo apt update
