@@ -32,7 +32,7 @@ addons:
     - sqlite3
 
 install:
-  - pip install tox-travis lz4
+  - pip install tox-travis lz4 cqlsh
 
 script:
   - tox -e $TOX_ENV
