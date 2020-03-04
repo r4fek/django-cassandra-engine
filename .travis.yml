@@ -12,7 +12,7 @@ before_script:
   - sudo apt install cassandra
   - sudo systemctl enable cassandra
   - sudo systemctl start cassandra
-  - bash travis/setup_cassandra.sh
+  - sleep 30
 
 env:
   matrix:
