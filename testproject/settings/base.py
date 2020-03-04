@@ -78,20 +78,10 @@ CASSANDRA_FALLBACK_ORDER_BY_PYTHON = True
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
+    'handlers': {'console': {'class': 'logging.StreamHandler',},},
     'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'INFO',
-        },
-        'cassandra': {
-            'handlers': ['console'],
-            'level': 'INFO',
-        }
+        'django': {'handlers': ['console'], 'level': 'INFO',},
+        'cassandra': {'handlers': ['console'], 'level': 'DEBUG',},
     },
 }
 

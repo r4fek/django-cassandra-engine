@@ -11,8 +11,7 @@ before_script:
   - sudo apt update
   - sudo apt install cassandra
   - sudo service cassandra start
-  - sleep 30
-  - service cassandra status
+  - sleep 5
 
 env:
   matrix:

@@ -1,9 +1,6 @@
 import django
 
-if django.VERSION[0:2] >= (1, 8):
-    from django.db.backends.base.features import BaseDatabaseFeatures
-else:
-    from django.db.backends import BaseDatabaseFeatures
+from django.db.backends.base.features import BaseDatabaseFeatures
 
 
 class CassandraDatabaseFeatures(BaseDatabaseFeatures):

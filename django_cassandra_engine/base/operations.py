@@ -1,12 +1,7 @@
-import django
-if django.VERSION[0:2] >= (1, 8):
-    from django.db.backends.base.operations import BaseDatabaseOperations
-else:
-    from django.db.backends import BaseDatabaseOperations
+from django.db.backends.base.operations import BaseDatabaseOperations
 
 
 class CassandraDatabaseOperations(BaseDatabaseOperations):
-
     def pk_default_value(self):
         """
         Returns None, to be interpreted by back-ends as a request to

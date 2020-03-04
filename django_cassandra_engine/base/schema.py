@@ -1,12 +1,7 @@
-import django
-if django.VERSION[0:2] >= (1, 8):
-    from django.db.backends.base.schema import BaseDatabaseSchemaEditor
-else:
-    from django.db.backends.schema import BaseDatabaseSchemaEditor
+from django.db.backends.base.schema import BaseDatabaseSchemaEditor
 
 
 class CassandraDatabaseSchemaEditor(BaseDatabaseSchemaEditor):
-
     def prepare_default(self, value):
         return value
 
@@ -17,7 +12,8 @@ class CassandraDatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         # Hack to disable checking migrations for cassandra connection
         try:
             from django.db.migrations.exceptions import (
-                MigrationSchemaMissing as Exc)
+                MigrationSchemaMissing as Exc,
+            )
         except ImportError:
             from django.core.exceptions import ImproperlyConfigured as Exc
         raise Exc('No schema for cassandra database')

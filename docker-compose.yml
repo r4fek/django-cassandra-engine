@@ -3,7 +3,7 @@ version: '3'
 services:
   cassandra:
     hostname: cassandra
-    image: cassandra:3.11
+    image: cassandra:latest
     volumes:
       - /var/lib/cassandra:/var/lib/cassandra
     expose:

@@ -13,8 +13,8 @@ DATABASES = {
     'cassandra': {
         'ENGINE': 'django_cassandra_engine',
         'NAME': 'db',
-        'USER': 'user',
-        'PASSWORD': 'pass',
+        'USER': 'cassandra',
+        'PASSWORD': 'cassandra',
         'TEST_NAME': 'test_db',
         'HOST': CASSANDRA_HOST,
         'OPTIONS': {
@@ -27,13 +27,10 @@ DATABASES = {
                 'retry_connect': True,
                 'consistency': ConsistencyLevel.ALL,
                 'load_balancing_policy': RoundRobinPolicy(),
-                'protocol_version': 3
             },
-            'session': {
-                'default_timeout': 15
-            }
-        }
-    }
+            'session': {'default_timeout': 15},
+        },
+    },
 }
 
 INSTALLED_APPS = BASE_APPS + ['app', 'common', 'model_meta']
