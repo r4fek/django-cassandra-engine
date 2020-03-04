@@ -1,13 +1,17 @@
-dist: trusty
+dist: bionic
 sudo: required
 
 language: python
 python:
   - "3.7"
 
-services:
-  - cassandra
 before_script:
+  - echo "deb http://www.apache.org/dist/cassandra/debian 39x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
+  - curl https://www.apache.org/dist/cassandra/KEYS | sudo apt-key add -
+  - sudo apt update
+  - sudo apt install cassandra
+  - sudo systemctl enable cassandra
+  - sudo systemctl start cassandra
   - bash travis/setup_cassandra.sh
 
 env:
@@ -30,6 +34,7 @@ addons:
     - libev4
     - libev-dev
     - sqlite3
+    - curl
 
 install:
   - pip install tox-travis lz4 cqlsh
