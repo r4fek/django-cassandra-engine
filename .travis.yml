@@ -9,7 +9,7 @@ before_script:
   - echo "deb http://www.apache.org/dist/cassandra/debian 39x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
   - wget -qO - https://www.apache.org/dist/cassandra/KEYS | sudo apt-key add -
   - sudo apt update
-  - sudo apt install cassandra
+  - sudo apt install cassandra openjdk-8-jre openjdk-8-jdk
   - sudo service cassandra start
   - sleep 30
   - service cassandra status
@@ -28,7 +28,6 @@ env:
 addons:
   apt:
     packages:
-    - openjdk-8-jdk
     - build-essential
     - python3-dev
     - python3-pip
