@@ -7,7 +7,8 @@ python:
 
 before_script:
   - echo "deb http://www.apache.org/dist/cassandra/debian 39x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
-  - curl https://www.apache.org/dist/cassandra/KEYS | sudo apt-key add -
+  - wget -q -O - https://www.apache.org/dist/cassandra/KEYS
+  - sudo apt-key add KEYS
   - sudo apt update
   - sudo apt install cassandra
   - sudo systemctl enable cassandra
@@ -35,6 +36,9 @@ addons:
     - libev-dev
     - sqlite3
     - curl
+    - ca-certificates
+    - wget
+    - gnupg
 
 install:
   - pip install tox-travis lz4 cqlsh
