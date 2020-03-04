@@ -3,6 +3,8 @@ language: python
 sudo: required
 services:
   - cassandra
+before_script:
+  - bash travis/setup_cassandra.sh
 
 env:
   matrix:
