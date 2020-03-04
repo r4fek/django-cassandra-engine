@@ -6,7 +6,7 @@ python:
   - "3.7"
 
 before_script:
-  - jdk_switcher use oraclejdk8
+  - jdk_switcher use openjdk8
   - echo "deb http://www.apache.org/dist/cassandra/debian 39x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
   - wget -qO - https://www.apache.org/dist/cassandra/KEYS | sudo apt-key add -
   - sudo apt update
@@ -14,7 +14,7 @@ before_script:
   - sudo service cassandra start
   - sleep 30
   - service cassandra status
-  - cassandra
+  - java -version
 
 env:
   matrix:
@@ -45,7 +45,7 @@ addons:
     - gnupg
 
 jdk:
-  - oraclejdk8
+  - openjdk8
 
 install:
   - pip3 install tox-travis lz4 cqlsh
