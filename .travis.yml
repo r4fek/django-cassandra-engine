@@ -29,7 +29,6 @@ env:
 addons:
   apt:
     packages:
-    - oracle-java8-installer
     - apt-transport-https
     - build-essential
     - python3-dev
