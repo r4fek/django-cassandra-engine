@@ -13,6 +13,7 @@ before_script:
   - sudo systemctl enable cassandra
   - sudo systemctl start cassandra
   - sleep 30
+  - cat /var/log/casandra/system.log
 
 env:
   matrix:
