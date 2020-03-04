@@ -6,18 +6,16 @@ services:
 
 env:
   matrix:
-    - TOX_ENV=py27-django110
-    - TOX_ENV=py36-django110
-    - TOX_ENV=py27-django111
-    - TOX_ENV=py36-django111
-    - TOX_ENV=py36-django21
-    - TOX_ENV=py36-djangomaster
+    - TOX_ENV=py37-django21
+    - TOX_ENV=py37-django22
+    - TOX_ENV=py37-django30
+    - TOX_ENV=py37-djangomaster
   global:
     - CASS_DRIVER_NO_CYTHON=1
     - CASS_HOST=127.0.0.1
 
 python:
-  - "3.6"
+  - "3.7"
 
 addons:
   apt:
