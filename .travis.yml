@@ -10,9 +10,9 @@ before_script:
   - wget -qO - https://www.apache.org/dist/cassandra/KEYS | sudo apt-key add -
   - sudo apt update
   - sudo apt install cassandra
-  - sudo systemctl enable cassandra
-  - sudo systemctl start cassandra
+  - sudo service cassandra start
   - sleep 30
+  - service cassandra status
   - cat /var/log/casandra/system.log
 
 env:
