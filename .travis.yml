@@ -6,16 +6,13 @@ python:
   - "3.7"
 
 before_script:
-  - sudo apt purge -y openjdk-11-jdk openjdk-11-jre
-  - sudo apt install -y openjdk-8-jdk openjdk-8-jre
-  - echo "deb http://www.apache.org/dist/cassandra/debian 39x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
+  - echo "deb http://www.apache.org/dist/cassandra/debian 40x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
   - wget -qO - https://www.apache.org/dist/cassandra/KEYS | sudo apt-key add -
   - sudo apt update
   - sudo apt install cassandra
   - sudo service cassandra start
   - sleep 30
   - service cassandra status
-  - java -version
 
 env:
   matrix:
