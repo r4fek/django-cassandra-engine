@@ -6,8 +6,7 @@ from django_cassandra_engine.utils import get_installed_apps, get_cql_models
 
 class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
     def __init__(self, *args, **kwargs):
-
-        super(CassandraDatabaseIntrospection, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._cql_models = {}
         self._models_discovered = False
 
@@ -32,6 +31,12 @@ class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
             self._discover_models()
             self._models_discovered = True
         return self._cql_models
+
+    def get_migratable_models(self):
+        return self.cql_models
+
+    def installed_models(self, tables):
+        return self.cql_models
 
     def django_table_names(self, only_existing=False, **kwargs):
         """
@@ -73,6 +78,9 @@ class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
         """
         Sequences are not supported
         """
+        return []
+
+    def get_sequences(self, *args, **kwargs):
         return []
 
     def get_relations(self, *_):

@@ -1,7 +1,7 @@
 -r requirements.txt
 django-nose
 djangorestframework
-freezegun
+freezegun==0.3.6
 mock
 nose
 pypandoc

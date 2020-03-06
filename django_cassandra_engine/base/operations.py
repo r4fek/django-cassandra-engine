@@ -1,4 +1,5 @@
 from django.db.backends.base.operations import BaseDatabaseOperations
+from django_cassandra_engine.utils import get_cassandra_connection
 
 
 class CassandraDatabaseOperations(BaseDatabaseOperations):
@@ -35,8 +36,14 @@ class CassandraDatabaseOperations(BaseDatabaseOperations):
         :returns: an empty list
         """
 
-        for table in tables:
-            qs = "TRUNCATE {}".format(table)
-            self.connection.connection.execute(qs)
+        if tables:
+            cql_list = []
 
+            for table in tables:
+                cql_list.append(f"TRUNCATE {table}")
+            return cql_list
         return []
+
+    def execute_sql_flush(self, using, cql_list):
+        for cql in cql_list:
+            self.connection.connection.execute(cql)

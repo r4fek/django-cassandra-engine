@@ -4,6 +4,8 @@ from mock import patch, call
 
 import django
 from django.core.management import call_command
+from django_cassandra_engine.models import DjangoCassandraModel
+from django_cassandra_engine.compat import Model
 from django_cassandra_engine.utils import (
     get_cassandra_connection,
     get_cassandra_db_alias,
@@ -33,30 +35,15 @@ class SyncCassandraCommandTestCase(TestCase):
         mock_management.create_keyspace_simple.assert_called_once_with(
             self.keyspace, replication_factor, connections=[alias]
         )
+        mock_management.Model = (Model, DjangoCassandraModel)
 
+        calls = []
         for model in all_models:
-            mock_management.sync_table.assert_has_call(call(model))
-
-    @skipIf(django.VERSION >= (1, 9), "Django >=1.9 does not support syncdb")
-    def test_syncdb_of_another_database(self):
-        """
-        Test if syncdb of another database works as before
-        """
-        import django
-
-        if django.VERSION[0:2] >= (1, 8):
-            base_command = (
-                "django.core.management.commands.syncdb.Command.handle"
-            )
-        else:
-            base_command = (
-                "django.core.management.commands.syncdb.Command.handle_noargs"
+            calls.append(
+                call(model, keyspaces=[self.keyspace], connections=[alias])
             )
 
-        with patch(base_command) as handle_mock:
-            call_command('syncdb', database='mysql')
-
-        handle_mock.assert_called_once()
+        mock_management.sync_table.assert_has_calls(calls, any_order=True)
 
 
 class FlushCommandTestCase(TestCase):

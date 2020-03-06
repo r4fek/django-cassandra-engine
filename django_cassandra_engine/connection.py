@@ -20,6 +20,12 @@ class Cursor(object):
     def fetchmany(self, _):
         return []
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.close()
+
 
 class FakeConnection(object):
     def commit(self):

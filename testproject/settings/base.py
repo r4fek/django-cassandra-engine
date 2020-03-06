@@ -81,7 +81,7 @@ LOGGING = {
     'handlers': {'console': {'class': 'logging.StreamHandler',},},
     'loggers': {
         'django': {'handlers': ['console'], 'level': 'INFO',},
-        'cassandra': {'handlers': ['console'], 'level': 'DEBUG',},
+        'cassandra': {'handlers': ['console'], 'level': 'ERROR',},
     },
 }
 

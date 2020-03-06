@@ -11,7 +11,7 @@ before_script:
   - sudo apt update
   - sudo apt install cassandra
   - sudo service cassandra start
-  - sleep 5
+
 
 env:
   matrix:
@@ -44,7 +44,7 @@ jdk:
   - openjdk8
 
 install:
-  - pip3 install tox-travis lz4 cqlsh
+  - pip3 install tox-travis lz4
 
 script:
-  - tox -e $TOX_ENV
+  - ./wait_for_it.sh 127.0.0.1:9042 -- tox -e $TOX_ENV
