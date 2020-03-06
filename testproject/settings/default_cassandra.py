@@ -21,6 +21,7 @@ DATABASES = {
                 'consistency': ConsistencyLevel.ALL,
                 'load_balancing_policy': RoundRobinPolicy(),
             },
+            'session': {'default_timeout': 15},
         },
     },
     'other': {

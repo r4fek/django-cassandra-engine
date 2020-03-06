@@ -9,7 +9,7 @@ services:
 
   web:
     build: .
-    command: /bin/bash -c "cd testproject && ../wait-for-it.sh cassandra:9042 -- python manage.py sync_cassandra && python manage.py runserver 0.0.0.0:8000"
+    command: /bin/bash -c "cd testproject && wait-for-it cassandra:9042 -- python manage.py sync_cassandra && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
