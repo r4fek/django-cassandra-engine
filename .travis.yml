@@ -12,7 +12,6 @@ before_script:
   - sudo apt install cassandra
   - sudo service cassandra start
 
-
 env:
   matrix:
     - TOX_ENV=py37-django21
@@ -39,12 +38,10 @@ addons:
     - ca-certificates
     - wget
     - gnupg
-
-jdk:
-  - openjdk8
+    - wait-for-it
 
 install:
   - pip3 install tox-travis lz4
 
 script:
-  - ./wait_for_it.sh 127.0.0.1:9042 -- tox -e $TOX_ENV
+  - wait-for-it 127.0.0.1:9042 -- tox -e $TOX_ENV
