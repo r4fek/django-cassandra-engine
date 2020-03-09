@@ -1,32 +1,29 @@
-import base64
-import string
-import logging
-
-import six
-import unittest
 from datetime import timedelta
-
-from mock import Mock
+import base64
+import logging
+import string
+import unittest
 
 from django.conf import settings
 from django.core.cache import InvalidCacheBackendError
 from django.test.utils import override_settings
+from django.utils import timezone
+from django.utils.encoding import force_text
+from mock import Mock
+import six
+
+from django_cassandra_engine.sessions.backends.cached_db import (
+    SessionStore as CachedDatabaseSession,
+)
+from django_cassandra_engine.sessions.backends.db import (
+    SessionStore as DatabaseSession,
+)
+from django_cassandra_engine.test import TestCase
 
 try:
     from django.test.utils import ignore_warnings
 except ImportError:
     ignore_warnings = Mock()
-
-from django.utils import timezone
-from django.utils.encoding import force_text
-
-from django_cassandra_engine.test import TestCase
-from django_cassandra_engine.sessions.backends.db import (
-    SessionStore as DatabaseSession,
-)
-from django_cassandra_engine.sessions.backends.cached_db import (
-    SessionStore as CachedDatabaseSession,
-)
 
 
 class SessionTestsMixin(object):
@@ -304,15 +301,6 @@ class SessionTestsMixin(object):
         data = {'a test key': 'a test value'}
         encoded = self.session.encode(data)
         self.assertEqual(self.session.decode(encoded), data)
-
-    def test_decode_failure_logged_to_security(self):
-        bad_encode = base64.b64encode(b'flaskdj:alkdjf')
-        with self.assertLogs(
-            'django.security.SuspiciousSession', logging.WARN
-        ) as calls:
-            self.assertEqual({}, self.session.decode(bad_encode))
-            # check that the failed decode is logged
-            self.assertGreaterEqual(len(calls), 1)
 
     def test_actual_expiry(self):
         # this doesn't work with JSONSerializer (serializing timedelta)
