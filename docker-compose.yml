@@ -20,7 +20,7 @@ services:
       - cassandra
     environment:
       - PYTHONUNBUFFERED=1
-      - PYTHONDONTWRITEBITECODE=1
+      - PYTHONDONTWRITEBYTECODE=1
       - CASS_HOST=cassandra
 
 networks:
