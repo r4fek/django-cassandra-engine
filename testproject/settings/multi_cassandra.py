@@ -45,7 +45,6 @@ DATABASES = {
                 'retry_connect': True,
                 'consistency': ConsistencyLevel.ALL,
                 'load_balancing_policy': RoundRobinPolicy(),
-                'protocol_version': 3,
             },
             'session': {'default_timeout': 15},
         },

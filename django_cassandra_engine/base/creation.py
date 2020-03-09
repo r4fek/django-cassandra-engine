@@ -27,7 +27,6 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
             'NAME'
         ]
         test_database_name = self._get_test_db_name()
-
         # Set all models keyspace to the test keyspace
         self.set_models_keyspace(test_database_name)
 

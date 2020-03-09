@@ -36,7 +36,6 @@ BASE_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_nose',
 ]
 
 INSTALLED_APPS = BASE_APPS

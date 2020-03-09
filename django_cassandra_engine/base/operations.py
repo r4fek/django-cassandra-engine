@@ -47,3 +47,6 @@ class CassandraDatabaseOperations(BaseDatabaseOperations):
     def execute_sql_flush(self, using, cql_list):
         for cql in cql_list:
             self.connection.connection.execute(cql)
+
+    def prepare_sql_script(self, sql):
+        return [sql]

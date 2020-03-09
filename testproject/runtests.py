@@ -37,7 +37,9 @@ def run_tests(foo, settings='settings', extra=(), test_builtin=False):
         '============================\n'.format(settings)
     )
     return execute(
-        ['./manage.py', 'test', '--settings', settings] + list(extra) + apps
+        ['./manage.py', 'test', '-v', '2', '--settings', settings]
+        + list(extra)
+        + apps
     )
 
 

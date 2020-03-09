@@ -1,8 +1,6 @@
 -r requirements.txt
-django-nose
 djangorestframework
 freezegun==0.3.6
 mock
-nose
 pypandoc
 tox

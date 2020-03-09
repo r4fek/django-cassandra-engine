@@ -1,10 +1,15 @@
 from django.core.management import call_command
 from django.test import TestCase as DjangoTestCase
 
-from django_cassandra_engine.utils import get_cassandra_connections
+from django_cassandra_engine.utils import (
+    get_cassandra_connections,
+    get_cassandra_db_aliases,
+)
 
 
 class TestCase(DjangoTestCase):
+    databases = list(get_cassandra_db_aliases())
+
     def _should_reload_connections(self):
         return False
 

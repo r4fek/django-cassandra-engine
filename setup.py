@@ -35,7 +35,7 @@ setup(
         exclude=['tests', 'tests.*', 'testproject', 'testproject.*']
     ),
     test_suite='testproject.runtests.main',
-    tests_require=['mock', 'django-nose'],
+    tests_require=['mock'],
     zip_safe=False,
     classifiers=[
         'Development Status :: 5 - Production/Stable',

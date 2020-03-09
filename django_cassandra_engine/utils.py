@@ -16,8 +16,9 @@ class CursorWrapper(object):
         self.cursor = cursor
         self.db = db
 
-    WRAP_ERROR_ATTRS = frozenset(['fetchone', 'fetchmany', 'fetchall',
-                                  'nextset'])
+    WRAP_ERROR_ATTRS = frozenset(
+        ['fetchone', 'fetchmany', 'fetchall', 'nextset']
+    )
 
     def __getattr__(self, attr):
         cursor_attr = getattr(self.cursor, attr)
@@ -60,10 +61,15 @@ def get_installed_apps():
     """
     if django.VERSION >= (1, 7):
         from django.apps import apps
-        return [a.models_module for a in apps.get_app_configs()
-                if a.models_module is not None]
+
+        return [
+            a.models_module
+            for a in apps.get_app_configs()
+            if a.models_module is not None
+        ]
     else:
         from django.db import models
+
         return models.get_apps()
 
 
@@ -76,23 +82,27 @@ def get_cql_models(app, connection=None, keyspace=None):
     synced to keyspace.
     """
     from .models import DjangoCassandraModel
+
     models = []
     single_cassandra_connection = len(list(get_cassandra_connections())) == 1
-    is_default_connection = connection == DEFAULT_DB_ALIAS or \
-        single_cassandra_connection
+    is_default_connection = (
+        connection == DEFAULT_DB_ALIAS or single_cassandra_connection
+    )
 
     for name, obj in inspect.getmembers(app):
-        cql_model_types = (
-            cqlengine.models.Model,
-            DjangoCassandraModel
-        )
+        cql_model_types = (cqlengine.models.Model, DjangoCassandraModel)
         if (
-            inspect.isclass(obj) and issubclass(obj, cql_model_types) and
-            not obj.__abstract__
+            inspect.isclass(obj)
+            and issubclass(obj, cql_model_types)
+            and not obj.__abstract__
         ):
-            if obj.__connection__ == connection or \
-                    (obj.__connection__ is None and is_default_connection) or \
-                    obj.__connection__ is None and obj.__keyspace__ is not None and obj.__keyspace__ == keyspace:
+            if (
+                obj.__connection__ == connection
+                or (obj.__connection__ is None and is_default_connection)
+                or obj.__connection__ is None
+                and obj.__keyspace__ is not None
+                and obj.__keyspace__ == keyspace
+            ):
                 models.append(obj)
 
     return models
@@ -105,6 +115,7 @@ def get_cassandra_connections():
     """
 
     from django.db import connections
+
     for alias in connections:
         engine = connections[alias].settings_dict.get('ENGINE', '')
         if engine == 'django_cassandra_engine':
@@ -139,12 +150,17 @@ def get_cassandra_connection(alias=None, name=None):
             return connection
 
 
-def get_cassandra_db_alias():
+def get_cassandra_db_aliases():
     from django.db import connections
+
     for alias in connections:
         engine = connections[alias].settings_dict.get('ENGINE', '')
         if engine == 'django_cassandra_engine':
-            return alias
+            yield alias
+
+
+def get_cassandra_db_alias():
+    return get_cassandra_db_aliases().__next__()
 
 
 def get_engine_from_db_alias(db_alias):
