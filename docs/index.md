@@ -27,10 +27,6 @@ in the way you're used to. You can focus on writing a good code.
 * works well along with relational databases
 * storing [sessions](guide/sessions.md) in Cassandra
 
-## Plans (TODO)
-
-* User model stored in Cassandra (auth module)
-
 ## Requirements
 
 * Python>=3.7
