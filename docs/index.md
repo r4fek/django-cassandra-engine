@@ -33,10 +33,9 @@ in the way you're used to. You can focus on writing a good code.
 
 ## Requirements
 
-* Python>=2.7
+* Python>=3.7
 * Cassandra>=2.0
-* cassandra-driver>=3.13
-* Django>=1.10
+* cassandra-driver
 
 ---
 
