@@ -1,15 +1,11 @@
 import uuid
-from unittest import skipIf
 import django
-
-from common.test_utils import CassandraTestCase
+from django_cassandra_engine.test import TestCase as CassandraTestCase
 from common.forms import CassandraFamilyMemberForm
 from common.models import CassandraFamilyMember
 
 
-@skipIf(django.VERSION[1] < 10, "For Django>1.10 only")
 class TestModelForm(CassandraTestCase):
-
     def setUp(self):
         self.some_uuid = uuid.uuid4()
         self.family_member = CassandraFamilyMember.objects.create(
@@ -22,14 +18,16 @@ class TestModelForm(CassandraTestCase):
         )
 
     def test_form_save(self):
-        form = CassandraFamilyMemberForm(data=dict(
-            id=self.some_uuid,
-            first_name='Homer',
-            last_name='Simpson',
-            is_real=False,
-            favourite_number=666,
-            favourite_float_number=43.4,
-        ))
+        form = CassandraFamilyMemberForm(
+            data=dict(
+                id=self.some_uuid,
+                first_name='Homer',
+                last_name='Simpson',
+                is_real=False,
+                favourite_number=666,
+                favourite_float_number=43.4,
+            )
+        )
         instance = form.save()
 
         self.assertEqual(instance.id, str(self.some_uuid))
@@ -45,7 +43,9 @@ class TestModelForm(CassandraTestCase):
                 favourite_float_number=existing.favourite_float_number,
                 first_name='Marge',
                 last_name=existing.last_name,
-            ), instance=existing)
+            ),
+            instance=existing,
+        )
         form.is_valid()
         self.assertEqual(form.errors, {})
         self.assertTrue(form.is_valid())

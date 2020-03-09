@@ -1,19 +1,12 @@
 from itertools import chain
 
-import django
-if django.VERSION[0:2] >= (1, 8):
-    from django.db.backends.base.introspection import BaseDatabaseIntrospection
-else:
-    from django.db.backends import BaseDatabaseIntrospection
-
+from django.db.backends.base.introspection import BaseDatabaseIntrospection
 from django_cassandra_engine.utils import get_installed_apps, get_cql_models
 
 
 class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
-
     def __init__(self, *args, **kwargs):
-
-        super(CassandraDatabaseIntrospection, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._cql_models = {}
         self._models_discovered = False
 
@@ -29,7 +22,8 @@ class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
 
         for app in apps:
             self._cql_models[app.__name__] = get_cql_models(
-                app, connection=connection, keyspace=keyspace)
+                app, connection=connection, keyspace=keyspace
+            )
 
     @property
     def cql_models(self):
@@ -38,6 +32,12 @@ class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
             self._models_discovered = True
         return self._cql_models
 
+    def get_migratable_models(self):
+        return self.cql_models
+
+    def installed_models(self, tables):
+        return self.cql_models
+
     def django_table_names(self, only_existing=False, **kwargs):
         """
         Returns a list of all table names that have associated cqlengine models
@@ -45,8 +45,10 @@ class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
         """
 
         all_models = list(chain.from_iterable(self.cql_models.values()))
-        tables = [model.column_family_name(include_keyspace=False)
-                  for model in all_models]
+        tables = [
+            model.column_family_name(include_keyspace=False)
+            for model in all_models
+        ]
 
         return tables
 
@@ -60,8 +62,10 @@ class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
 
         connection = self.connection.connection
         keyspace_name = connection.keyspace
-        if not connection.cluster.schema_metadata_enabled and \
-                keyspace_name not in connection.cluster.metadata.keyspaces:
+        if (
+            not connection.cluster.schema_metadata_enabled
+            and keyspace_name not in connection.cluster.metadata.keyspaces
+        ):
             connection.cluster.refresh_schema_metadata()
 
         keyspace = connection.cluster.metadata.keyspaces[keyspace_name]
@@ -74,6 +78,9 @@ class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
         """
         Sequences are not supported
         """
+        return []
+
+    def get_sequences(self, *args, **kwargs):
         return []
 
     def get_relations(self, *_):

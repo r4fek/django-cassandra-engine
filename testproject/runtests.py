@@ -27,31 +27,31 @@ def run_tests(foo, settings='settings', extra=(), test_builtin=False):
 
     if not test_builtin:
         apps = [
-            name for name in apps if not name.startswith('django.contrib.')]
+            name for name in apps if not name.startswith('django.contrib.')
+        ]
 
     os.chdir(test_dir_abspath)
-    print('\n============================\n'
-          'Running tests with settings: {}\n'
-          '============================\n'.format(settings))
+    print(
+        '\n============================\n'
+        'Running tests with settings: {}\n'
+        '============================\n'.format(settings)
+    )
     return execute(
-        ['./manage.py', 'test', '--settings', settings] + list(extra) + apps)
+        ['./manage.py', 'test', '-v', '2', '--settings', settings]
+        + list(extra)
+        + apps
+    )
 
 
 def main():
 
-    default_cass = import_module(
-        'settings.default_cassandra')
-    default_only_cass = import_module(
-        'settings.default_only_cassandra')
-    secondary_cassandra = import_module(
-        'settings.secondary_cassandra')
-    multi_cassandra = import_module(
-        'settings.multi_cassandra')
-    metadata_disabled = import_module(
-        'settings.metadata_disabled')
+    default_cass = import_module('settings.default_cassandra')
+    default_only_cass = import_module('settings.default_only_cassandra')
+    secondary_cassandra = import_module('settings.secondary_cassandra')
+    multi_cassandra = import_module('settings.multi_cassandra')
+    metadata_disabled = import_module('settings.metadata_disabled')
 
-    if django.VERSION[0:2] >= (1, 7):
-        django.setup()
+    django.setup()
 
     run_tests(default_cass)
     run_tests(default_only_cass)

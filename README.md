@@ -20,10 +20,6 @@ All tools you need to start your journey with Apache Cassandra and Django Framew
 * working django forms
 * usable admin panel with Cassandra models
 
-## Plans (TODO) ##
-
-* User model stored in Cassandra (auth module)
-
 ## Installation ##
 
 Recommended installation:
@@ -80,6 +76,6 @@ If this project help you reduce time to develop, you can give me a cup of coffee
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/rrafek/5)
 
 ## License ##
-Copyright (c) 2014-2018, [Rafał Furmański](https://rafal-furmanski.com).
+Copyright (c) 2014-2020, [Rafał Furmański](https://linkedin.com/in/furmanski).
 
 All rights reserved. Licensed under BSD 2-Clause License.

@@ -1,12 +1,8 @@
-import django
-if django.VERSION[0:2] >= (1, 8):
-    from django.db.backends.base.operations import BaseDatabaseOperations
-else:
-    from django.db.backends import BaseDatabaseOperations
+from django.db.backends.base.operations import BaseDatabaseOperations
+from django_cassandra_engine.utils import get_cassandra_connection
 
 
 class CassandraDatabaseOperations(BaseDatabaseOperations):
-
     def pk_default_value(self):
         """
         Returns None, to be interpreted by back-ends as a request to
@@ -40,8 +36,17 @@ class CassandraDatabaseOperations(BaseDatabaseOperations):
         :returns: an empty list
         """
 
-        for table in tables:
-            qs = "TRUNCATE {}".format(table)
-            self.connection.connection.execute(qs)
+        if tables:
+            cql_list = []
 
+            for table in tables:
+                cql_list.append(f"TRUNCATE {table}")
+            return cql_list
         return []
+
+    def execute_sql_flush(self, using, cql_list):
+        for cql in cql_list:
+            self.connection.connection.execute(cql)
+
+    def prepare_sql_script(self, sql):
+        return [sql]

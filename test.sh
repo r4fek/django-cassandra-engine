@@ -1,3 +1,4 @@
 #!/bin/bash
 
-docker-compose run web tox
+docker-compose up -d
+docker-compose run web wait-for-it cassandra:9042 -- tox
