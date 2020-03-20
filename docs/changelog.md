@@ -1,5 +1,9 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 1.6.1 (20.03.2020)
+
+* Updated requirements #136 (by @hsamfm)
+
 ## Version 1.6.0 (09.03.2020)
 
 * Support Django 3.x #135
