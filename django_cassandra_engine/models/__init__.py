@@ -741,6 +741,9 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
         conditions = []
         for col in colnames:
             try:
+                if hasattr(col, 'resolve_expression'):
+                    warnings.warn('Sorting by Django DB Expressions is not supported')
+                    continue
                 conditions.append('"{0}" {1}'.format(
                     *self._get_ordering_condition(col))
                 )
@@ -781,6 +784,9 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
 
     def _clone(self):
         return copy.deepcopy(self)
+    
+    def iterator(self, *args, **kwargs):
+        return super(query.ModelQuerySet, self).all()
 
 
 class DjangoCassandraModel(
