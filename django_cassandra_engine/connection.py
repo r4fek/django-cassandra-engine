@@ -20,9 +20,14 @@ class Cursor(object):
     def fetchmany(self, _):
         return []
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.close()
+
 
 class FakeConnection(object):
-
     def commit(self):
         pass
 
@@ -37,7 +42,6 @@ class FakeConnection(object):
 
 
 class CassandraConnection(object):
-
     def __init__(self, alias, **options):
         self.alias = alias
         self.hosts = options.get('HOST').split(',')
@@ -50,17 +54,22 @@ class CassandraConnection(object):
         self.connection_options = {
             'lazy_connect': self.cluster_options.pop('lazy_connect', False),
             'retry_connect': self.cluster_options.pop('retry_connect', False),
-            'consistency': self.cluster_options.pop('consistency', None)
+            'consistency': self.cluster_options.pop('consistency', None),
         }
-        if self.user and self.password and \
-                'auth_provider' not in self.cluster_options:
-            self.cluster_options['auth_provider'] = \
-                PlainTextAuthProvider(username=self.user,
-                                      password=self.password)
+        if (
+            self.user
+            and self.password
+            and 'auth_provider' not in self.cluster_options
+        ):
+            self.cluster_options['auth_provider'] = PlainTextAuthProvider(
+                username=self.user, password=self.password
+            )
 
-        self.default = alias == 'default' or \
-            len(list(get_cassandra_connections())) == 1 or \
-            self.cluster_options.pop('default', False)
+        self.default = (
+            alias == 'default'
+            or len(list(get_cassandra_connections())) == 1
+            or self.cluster_options.pop('default', False)
+        )
 
         self.register()
 
@@ -70,6 +79,7 @@ class CassandraConnection(object):
         except CQLEngineException:
             if self.default:
                 from cassandra.cqlengine import models
+
                 models.DEFAULT_KEYSPACE = self.keyspace
 
             for option, value in self.session_options.items():
@@ -80,7 +90,8 @@ class CassandraConnection(object):
                 hosts=self.hosts,
                 default=self.default,
                 cluster_options=self.cluster_options,
-                **self.connection_options)
+                **self.connection_options
+            )
 
     @property
     def cluster(self):

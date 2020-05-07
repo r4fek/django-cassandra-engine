@@ -1,5 +1,3 @@
-from __future__ import absolute_import, unicode_literals
-
 import os
 
 from django.apps import AppConfig as DjangoAppConfig
@@ -43,6 +41,7 @@ class CallableBool:
 def has_default(self):
     return CallableBool(self.default is not None)
 
+
 # monkey patch Column.has_default to be able to use function call too
 columns.Column.has_default = property(has_default)
 
@@ -55,9 +54,10 @@ class AppConfig(DjangoAppConfig):
 
     def connect(self):
         from django_cassandra_engine.utils import get_cassandra_connections
+
         for _, conn in get_cassandra_connections():
             conn.connect()
 
     def import_models(self, *args, **kwargs):
         self.connect()
-        return super(AppConfig, self).import_models(*args, **kwargs)
+        return super().import_models(*args, **kwargs)

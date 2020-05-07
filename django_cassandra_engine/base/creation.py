@@ -3,14 +3,10 @@ from django_cassandra_engine.utils import get_default_cassandra_connection
 from ..compat import create_keyspace_simple, drop_keyspace, \
     set_default_connection
 
-if django.VERSION[0:2] >= (1, 8):
-    from django.db.backends.base.creation import BaseDatabaseCreation
-else:
-    from django.db.backends.creation import BaseDatabaseCreation
+from django.db.backends.base.creation import BaseDatabaseCreation
 
 
 class CassandraDatabaseCreation(BaseDatabaseCreation):
-
     def create_test_db(self, verbosity=1, autoclobber=False, **kwargs):
         """
         Creates a test database, prompting the user for confirmation if the
@@ -26,10 +22,10 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
         # If using django-nose, its runner has already set the db name
         # to test_*, so restore it here so that all the models for the
         # live keyspace can be found.
-        self.connection.connection.keyspace = \
-            self.connection.settings_dict['NAME']
+        self.connection.connection.keyspace = self.connection.settings_dict[
+            'NAME'
+        ]
         test_database_name = self._get_test_db_name()
-
         # Set all models keyspace to the test keyspace
         self.set_models_keyspace(test_database_name)
 
@@ -37,8 +33,10 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
             test_db_repr = ''
             if verbosity >= 2:
                 test_db_repr = " ('%s')" % test_database_name
-            print("Creating test database for alias '%s'%s..." % (
-                self.connection.alias, test_db_repr))
+            print(
+                "Creating test database for alias '%s'%s..."
+                % (self.connection.alias, test_db_repr)
+            )
 
         options = self.connection.settings_dict.get('OPTIONS', {})
 
@@ -55,7 +53,8 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
         create_keyspace_simple(
             test_database_name,
             replication_factor,
-            connections=[self.connection.alias])
+            connections=[self.connection.alias],
+        )
 
         settings.DATABASES[self.connection.alias]["NAME"] = test_database_name
         self.connection.settings_dict["NAME"] = test_database_name
@@ -69,14 +68,18 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
         call_command(
             'sync_cassandra',
             verbosity=max(verbosity - 1, 0),
-            database=self.connection.alias
+            database=self.connection.alias,
         )
 
         # restore the original connection options
         if not connection_options_copy.get('schema_metadata_enabled', True):
-            print('Disabling metadata on %s' % self.connection.settings_dict['NAME'])
-            options['connection']['schema_metadata_enabled'] = \
-                connection_options_copy['schema_metadata_enabled']
+            print(
+                'Disabling metadata on %s'
+                % self.connection.settings_dict['NAME']
+            )
+            options['connection'][
+                'schema_metadata_enabled'
+            ] = connection_options_copy['schema_metadata_enabled']
             self.connection.reconnect()
             set_default_connection(default_alias)
 

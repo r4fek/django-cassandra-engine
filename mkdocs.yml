@@ -3,7 +3,7 @@ site_description: Apache Cassandra Database Wrapper for Django
 site_url: https://r4fek.github.io/django-cassandra-engine
 site_author: Rafał Furmański
 
-copyright: Copyright 2014-2016, <a href="https://rafal-furmanski.com" title="Rafał Furmański homepage" target="_blank">Rafał Furmański</a>
+copyright: Copyright 2014-2020, <a href="https://linkedin.com/in/furmanski" title="Rafał Furmański" target="_blank">Rafał Furmański</a>
 theme: material
 google_analytics: ['UA-38726443-3', 'auto']
 
@@ -12,7 +12,7 @@ repo_url: https://github.com/r4fek/django-cassandra-engine
 
 # Options
 extra:
-  version: 1.5.5-bgds-1
+  version: 1.6.0
   logo: images/dj_cassandra.png
   author:
     github: r4fek

@@ -1,34 +1,47 @@
-language: python
+dist: bionic
 sudo: required
-services:
-  - cassandra
+
+language: python
+python:
+  - "3.7"
+
+before_script:
+  - echo "deb http://www.apache.org/dist/cassandra/debian 40x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
+  - wget -qO - https://www.apache.org/dist/cassandra/KEYS | sudo apt-key add -
+  - sudo apt update
+  - sudo apt install cassandra
+  - sudo service cassandra start
 
 env:
   matrix:
-    - TOX_ENV=py27-django110
-    - TOX_ENV=py36-django110
-    - TOX_ENV=py27-django111
-    - TOX_ENV=py36-django111
-    - TOX_ENV=py36-django21
-    - TOX_ENV=py36-djangomaster
+    - TOX_ENV=py37-django21
+    - TOX_ENV=py37-django22
+    - TOX_ENV=py37-django30
+    - TOX_ENV=py37-djangomaster
   global:
     - CASS_DRIVER_NO_CYTHON=1
     - CASS_HOST=127.0.0.1
 
-python:
-  - "3.6"
-
 addons:
   apt:
     packages:
+    - apt-transport-https
     - build-essential
-    - python-dev
+    - python3-dev
+    - python3-pip
     - pypy-dev
+    - libc-ares-dev
     - libev4
     - libev-dev
+    - sqlite3
+    - curl
+    - ca-certificates
+    - wget
+    - gnupg
+    - wait-for-it
 
 install:
-  - pip install tox
+  - pip3 install tox-travis lz4
 
 script:
-  - tox -e $TOX_ENV
+  - wait-for-it 127.0.0.1:9042 -- tox -e $TOX_ENV

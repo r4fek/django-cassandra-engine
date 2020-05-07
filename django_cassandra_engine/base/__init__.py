@@ -3,7 +3,7 @@ import threading
 try:
     from django.db.backends.base.base import (
         connection_created,
-        BaseDatabaseWrapper
+        BaseDatabaseWrapper,
     )
 except ImportError:
     try:
@@ -68,7 +68,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         'gt': '> %s',
         'gte': '>= %s',
         'lt': '< %s',
-        'lte': '<= %s'
+        'lte': '<= %s',
     }
 
     client = None
@@ -148,8 +148,10 @@ class DatabaseWrapper(BaseDatabaseWrapper):
 
     def _cursor(self, *args, **kwargs):
         keyspace = self.settings_dict['NAME']
-        if not self.connection.cluster.schema_metadata_enabled and \
-                keyspace not in self.connection.cluster.metadata.keyspaces:
+        if (
+            not self.connection.cluster.schema_metadata_enabled
+            and keyspace not in self.connection.cluster.metadata.keyspaces
+        ):
             self.connection.cluster.refresh_schema_metadata()
 
         self.connection.cluster.metadata.keyspaces[keyspace]

@@ -27,7 +27,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1"]
 
 BASE_APPS = [
     'django_cassandra_engine',
@@ -36,7 +36,6 @@ BASE_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_nose',
 ]
 
 INSTALLED_APPS = BASE_APPS
@@ -78,20 +77,10 @@ CASSANDRA_FALLBACK_ORDER_BY_PYTHON = True
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
+    'handlers': {'console': {'class': 'logging.StreamHandler',},},
     'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'INFO',
-        },
-        'cassandra': {
-            'handlers': ['console'],
-            'level': 'INFO',
-        }
+        'django': {'handlers': ['console'], 'level': 'INFO',},
+        'cassandra': {'handlers': ['console'], 'level': 'ERROR',},
     },
 }
 

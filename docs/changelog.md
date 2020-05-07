@@ -1,5 +1,10 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 1.6.0 (09.03.2020)
+
+* Support Django 3.x #135
+* Fix tests
+* Update cassandra-driver to 3.22.0
 
 ## Version 1.5.5 (30.01.2019)
 

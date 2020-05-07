@@ -6,8 +6,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django_cassandra_engine',
         'NAME': 'db',
-        'USER': 'user',
-        'PASSWORD': 'pass',
+        'USER': 'cassandra',
+        'PASSWORD': 'cassandra',
         'TEST_NAME': 'test_db',
         'HOST': CASSANDRA_HOST,
         'OPTIONS': {
@@ -17,14 +17,12 @@ DATABASES = {
             },
             'connection': {
                 'retry_connect': True,
+                'lazy_connect': True,
                 'consistency': ConsistencyLevel.ALL,
                 'load_balancing_policy': RoundRobinPolicy(),
-                'protocol_version': 3
             },
-            'session': {
-                'default_timeout': 15
-            }
-        }
+            'session': {'default_timeout': 15},
+        },
     },
     'other': {
         'ENGINE': 'django.db.backends.sqlite3',

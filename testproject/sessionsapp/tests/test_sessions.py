@@ -1,30 +1,29 @@
-import base64
-import string
-
-import six
-import unittest
 from datetime import timedelta
-
-from mock import Mock
+import base64
+import logging
+import string
+import unittest
 
 from django.conf import settings
 from django.core.cache import InvalidCacheBackendError
-from django.test.utils import override_settings, patch_logger
+from django.test.utils import override_settings
+from django.utils import timezone
+from django.utils.encoding import force_text
+from mock import Mock
+import six
+
+from django_cassandra_engine.sessions.backends.cached_db import (
+    SessionStore as CachedDatabaseSession,
+)
+from django_cassandra_engine.sessions.backends.db import (
+    SessionStore as DatabaseSession,
+)
+from django_cassandra_engine.test import TestCase
+
 try:
     from django.test.utils import ignore_warnings
 except ImportError:
     ignore_warnings = Mock()
-
-from django.utils import timezone
-from django.utils.encoding import force_text
-
-from django_cassandra_engine.test import TestCase
-from django_cassandra_engine.sessions.backends.db import (
-    SessionStore as DatabaseSession
-)
-from django_cassandra_engine.sessions.backends.cached_db import (
-    SessionStore as CachedDatabaseSession
-)
 
 
 class SessionTestsMixin(object):
@@ -67,8 +66,9 @@ class SessionTestsMixin(object):
         self.assertEqual(self.session.get('some key'), None)
 
     def test_pop_default(self):
-        self.assertEqual(self.session.pop('some key', 'does not exist'),
-                         'does not exist')
+        self.assertEqual(
+            self.session.pop('some key', 'does not exist'), 'does not exist'
+        )
         self.assertTrue(self.session.accessed)
         self.assertFalse(self.session.modified)
 
@@ -139,9 +139,14 @@ class SessionTestsMixin(object):
         self.assertTrue(self.session.modified)
 
     def test_save(self):
-        if (hasattr(self.session, '_cache') and 'DummyCache' in
-                settings.CACHES[settings.SESSION_CACHE_ALIAS]['BACKEND']):
-            raise unittest.SkipTest("Session saving tests require a real cache backend")
+        if (
+            hasattr(self.session, '_cache')
+            and 'DummyCache'
+            in settings.CACHES[settings.SESSION_CACHE_ALIAS]['BACKEND']
+        ):
+            raise unittest.SkipTest(
+                "Session saving tests require a real cache backend"
+            )
         self.session.save()
         self.assertTrue(self.session.exists(self.session.session_key))
 
@@ -203,18 +208,23 @@ class SessionTestsMixin(object):
     def test_session_key_is_read_only(self):
         def set_session_key(session):
             session.session_key = session._get_new_session_key()
+
         with self.assertRaises(AttributeError):
             set_session_key(self.session)
 
     # Custom session expiry
     def test_default_expiry(self):
         # A normal session has a max age equal to settings
-        self.assertEqual(self.session.get_expiry_age(), settings.SESSION_COOKIE_AGE)
+        self.assertEqual(
+            self.session.get_expiry_age(), settings.SESSION_COOKIE_AGE
+        )
 
         # So does a custom session with an idle expiration time of 0 (but it'll
         # expire at browser close)
         self.session.set_expiry(0)
-        self.assertEqual(self.session.get_expiry_age(), settings.SESSION_COOKIE_AGE)
+        self.assertEqual(
+            self.session.get_expiry_age(), settings.SESSION_COOKIE_AGE
+        )
 
     def test_custom_expiry_seconds(self):
         modification = timezone.now()
@@ -259,7 +269,9 @@ class SessionTestsMixin(object):
         self.session.set_expiry(None)
         self.session.set_expiry(10)
         self.session.set_expiry(None)
-        self.assertEqual(self.session.get_expiry_age(), settings.SESSION_COOKIE_AGE)
+        self.assertEqual(
+            self.session.get_expiry_age(), settings.SESSION_COOKIE_AGE
+        )
 
     def test_get_expire_at_browser_close(self):
         # Tests get_expire_at_browser_close with different settings and different
@@ -290,18 +302,14 @@ class SessionTestsMixin(object):
         encoded = self.session.encode(data)
         self.assertEqual(self.session.decode(encoded), data)
 
-    def test_decode_failure_logged_to_security(self):
-        bad_encode = base64.b64encode(b'flaskdj:alkdjf')
-        with patch_logger('django.security.SuspiciousSession', 'warning') as calls:
-            self.assertEqual({}, self.session.decode(bad_encode))
-            # check that the failed decode is logged
-            self.assertEqual(len(calls), 1)
-            self.assertIn('corrupted', calls[0])
-
     def test_actual_expiry(self):
         # this doesn't work with JSONSerializer (serializing timedelta)
-        with override_settings(SESSION_SERIALIZER='django.contrib.sessions.serializers.PickleSerializer'):
-            self.session = self.backend()  # reinitialize after overriding settings
+        with override_settings(
+            SESSION_SERIALIZER='django.contrib.sessions.serializers.PickleSerializer'
+        ):
+            self.session = (
+                self.backend()
+            )  # reinitialize after overriding settings
 
             # Regression test for #19200
             old_session_key = None
