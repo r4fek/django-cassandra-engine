@@ -11,6 +11,7 @@ try:
         ModelMetaClass, ModelException, ColumnDescriptor,
         ModelDefinitionException, BaseModel, Model
     )
+    from dse.cqlengine.statements import SelectStatement
     from dse.util import OrderedDict
 except ImportError:
     try:
@@ -25,6 +26,7 @@ except ImportError:
             ModelDefinitionException, BaseModel, Model
         )
         from cassandra.util import OrderedDict
+        from cassandra.cqlengine.statements import SelectStatement
     except ImportError:
             raise ImportError('You must install either dse-driver or '
                               + 'cassandra-driver!')

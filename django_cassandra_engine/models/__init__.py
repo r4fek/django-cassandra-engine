@@ -17,7 +17,7 @@ from django.db.models import options
 
 from ..compat import (BaseModel, ColumnDescriptor, ModelDefinitionException,
                       ModelException, ModelMetaClass, OrderedDict, columns,
-                      query)
+                      query, SelectStatement)
 from .constants import ORDER_BY_WARN, ORDER_BY_ERROR_HELP, PK_META_MISSING_HELP
 from . import django_field_methods
 from . import django_model_methods
@@ -656,6 +656,45 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
         super(query.ModelQuerySet, self).__init__(*args, **kwargs)
         self._allow_filtering = True
         self.query = StubQuery(model=self.model)
+        self.consistency_level_read = self._get_consistency_level_read()
+        self.consistency_level_write = self._get_consistency_level_write()
+
+    def _get_consistency_level_read(self):
+        return self._get_consistency_level("_cassandra_consistency_level_read")
+
+    def _get_consistency_level_write(self):
+        return self._get_consistency_level("_cassandra_consistency_level_write")
+
+    def _get_consistency_level(self, field_name):
+        if hasattr(self.model, field_name):
+            return getattr(self.model, field_name)
+        return None
+
+    def _execute(self, statement):
+        """
+        If there is a default consistency level for read or write and the consistency
+        is not specified we will update this consistency before the _execute call and
+        after the result is processed we will reset again the consistency to avoid
+        confusion with the .consistency() usage.
+        """
+        consistency_changed = False
+        if self._consistency is None:
+            if isinstance(statement, SelectStatement):
+                if self.consistency_level_read is not None:
+                    self._consistency = self.consistency_level_read
+                    consistency_changed = True
+            else:
+                if self.consistency_level_write is not None:
+                    self._consistency = self.consistency_level_write
+                    consistency_changed = True
+
+        result = super(query.ModelQuerySet, self)._execute(statement)
+        if not consistency_changed:
+            return result
+
+        if consistency_changed:
+            self._consistency = None
+        return result
 
     def _select_fields(self):
         if self._defer_fields or self._only_fields:
@@ -803,6 +842,8 @@ class DjangoCassandraModel(
             new_method = partial(method, self)
             setattr(self, method_name, new_method)
 
+        self._set_consistency_level()
+
     def __hash__(self):
         if self._get_pk_val() is None:
             raise TypeError("Model instances without primary key value are unhashable")
@@ -853,3 +894,7 @@ class DjangoCassandraModel(
                 return list(six.itervalues(cls._primary_keys))[0]
         except IndexError:
             return None
+
+    def _set_consistency_level(self):
+        if hasattr(self, "_cassandra_consistency_level_write"):
+            self.consistency(self._cassandra_consistency_level_write)
