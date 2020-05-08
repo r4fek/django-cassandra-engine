@@ -20,7 +20,7 @@ with open('requirements.txt', 'r') as f:
 
 setup(
     name='django-cassandra-engine',
-    version='1.6.0',
+    version='.'.join(map(str, meta.__version__)),
     author=meta.__author__,
     author_email=meta.__contact__,
     url=meta.__homepage__,
