@@ -4,8 +4,8 @@ from .compat import (
     PlainTextAuthProvider,
     Session,
     connection,
+    Cluster
 )
-
 
 class Cursor(object):
     def __init__(self, connection):
@@ -84,14 +84,22 @@ class CassandraConnection(object):
 
             for option, value in self.session_options.items():
                 setattr(Session, option, value)
-
-            connection.register_connection(
-                self.alias,
-                hosts=self.hosts,
-                default=self.default,
-                cluster_options=self.cluster_options,
-                **self.connection_options
-            )
+            if 'cloud' in self.cluster_options:
+                cluster = Cluster(**self.cluster_options)
+                session = cluster.connect()
+                connection.register_connection(
+                    self.alias,
+                    default=self.default,
+                    session=session
+                )
+            else:
+                connection.register_connection(
+                    self.alias,
+                    hosts=self.hosts,
+                    default=self.default,
+                    cluster_options=self.cluster_options,
+                    **self.connection_options
+                )   
 
     @property
     def cluster(self):
