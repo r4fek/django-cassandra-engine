@@ -19,6 +19,7 @@ All tools you need to start your journey with Apache Cassandra and Django Framew
 * storing sessions in Cassandra
 * working django forms
 * usable admin panel with Cassandra models
+* support DataStax Astra cloud hosted Cassandra
 
 ## Installation ##
 
