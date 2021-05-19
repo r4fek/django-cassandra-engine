@@ -5,8 +5,12 @@ language: python
 python:
   - "3.7"
 
-services:
-  - cassandra
+before_script:
+  - echo "deb http://www.apache.org/dist/cassandra/debian 40x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
+  - wget -qO - https://www.apache.org/dist/cassandra/KEYS | sudo apt-key add -
+  - sudo apt update
+  - sudo apt install cassandra
+  - sudo service cassandra start
 
 env:
   matrix:
@@ -42,4 +46,4 @@ install:
   - pip3 install tox-travis lz4
 
 script:
-  - wait-for-it 127.0.0.1:9042 -t 30 -- tox -e $TOX_ENV
+  - wait-for-it 127.0.0.1:9042 -t 120 -- tox -e $TOX_ENV
