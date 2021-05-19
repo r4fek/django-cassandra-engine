@@ -1,8 +1,8 @@
 import inspect
 
-import django
 from django.conf import settings
 from django.db import DEFAULT_DB_ALIAS
+import django
 
 from .compat import cqlengine
 
@@ -59,18 +59,13 @@ def get_installed_apps():
     """
     Return list of all installed apps
     """
-    if django.VERSION >= (1, 7):
-        from django.apps import apps
+    from django.apps import apps
 
-        return [
-            a.models_module
-            for a in apps.get_app_configs()
-            if a.models_module is not None
-        ]
-    else:
-        from django.db import models
-
-        return models.get_apps()
+    return [
+        a.models_module
+        for a in apps.get_app_configs()
+        if a.models_module is not None
+    ]
 
 
 def get_cql_models(app, connection=None, keyspace=None):

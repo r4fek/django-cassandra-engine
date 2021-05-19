@@ -230,7 +230,6 @@ class TestDjangoCassandraModel(CassandraTestCase):
         ]
         self.assertEqual(len(all_things.values_list('pk')), len(expected))
 
-    @skipIf(django.VERSION[1] < 10, "For Django>1.10 only")
     def test_private_fields_are_set(self):
         private_fields = [
             f.name for f in CassandraFamilyMember._meta.private_fields

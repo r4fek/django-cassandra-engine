@@ -17,6 +17,8 @@ env:
     - TOX_ENV=py37-django21
     - TOX_ENV=py37-django22
     - TOX_ENV=py37-django30
+    - TOX_ENV=py37-django31
+    - TOX_ENV=py37-django32
     - TOX_ENV=py37-djangomaster
   global:
     - CASS_DRIVER_NO_CYTHON=1

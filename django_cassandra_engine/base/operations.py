@@ -1,4 +1,5 @@
 from django.db.backends.base.operations import BaseDatabaseOperations
+
 from django_cassandra_engine.utils import get_cassandra_connection
 
 
@@ -29,10 +30,9 @@ class CassandraDatabaseOperations(BaseDatabaseOperations):
         """
         return value
 
-    def sql_flush(self, style, tables, sequences, allow_cascade=False):
+    def sql_flush(self, style, tables, *args, **kwargs):
         """
         Truncate all existing tables in current keyspace.
-
         :returns: an empty list
         """
 
@@ -44,8 +44,11 @@ class CassandraDatabaseOperations(BaseDatabaseOperations):
             return cql_list
         return []
 
-    def execute_sql_flush(self, using, cql_list):
-        for cql in cql_list:
+    def execute_sql_flush(self, *args):
+        # In previous django versions first parameter was `using` and second `sql_list`.
+        # In Django 3.1 only one parameter `sql_list` is present.
+        # One thing is certain though: last parameter is `sql_list`
+        for cql in args[-1]:
             self.connection.connection.execute(cql)
 
     def prepare_sql_script(self, sql):
