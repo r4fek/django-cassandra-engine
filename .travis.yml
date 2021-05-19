@@ -46,4 +46,4 @@ install:
   - pip3 install tox-travis lz4
 
 script:
-  - wait-for-it 127.0.0.1:9042 -- tox -e $TOX_ENV
+  - wait-for-it 127.0.0.1:9042 -t 30 -- tox -e $TOX_ENV
