@@ -1,27 +1,36 @@
-import logging
-import inspect
-import copy
-import warnings
-from operator import attrgetter
-import collections
 from functools import partial
 from itertools import chain
+from operator import attrgetter
+import collections
+import copy
+import inspect
+import logging
+import warnings
 
-import six
-from django.conf import settings
 from django.apps import apps
+from django.conf import settings
 from django.core import validators
-from django.db.models.base import ModelBase
-from django.utils.translation import ugettext_lazy as _
 from django.db.models import options
+from django.db.models.base import ModelBase
+from django.utils.translation import gettext_lazy as _
+import six
 
-from ..compat import (BaseModel, ColumnDescriptor, ModelDefinitionException,
-                      ModelException, ModelMetaClass, OrderedDict, columns,
-                      query)
-from .constants import ORDER_BY_WARN, ORDER_BY_ERROR_HELP, PK_META_MISSING_HELP
-from . import django_field_methods
-from . import django_model_methods
-
+from ..compat import (
+    BaseModel,
+    ColumnDescriptor,
+    ModelDefinitionException,
+    ModelException,
+    ModelMetaClass,
+    OrderedDict,
+    columns,
+    query,
+)
+from . import django_field_methods, django_model_methods
+from .constants import (
+    ORDER_BY_ERROR_HELP,
+    ORDER_BY_WARN,
+    PK_META_MISSING_HELP,
+)
 
 log = logging.getLogger(__name__)
 _django_manager_attr_names = ('objects', 'default_manager', '_default_manager',
