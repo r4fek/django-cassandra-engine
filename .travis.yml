@@ -4,6 +4,7 @@ sudo: required
 language: python
 python:
   - "3.7"
+  - "3.8"
 
 before_script:
   - echo "deb http://www.apache.org/dist/cassandra/debian 40x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
@@ -19,7 +20,7 @@ env:
     - TOX_ENV=py37-django30
     - TOX_ENV=py37-django31
     - TOX_ENV=py37-django32
-    - TOX_ENV=py37-djangomaster
+    - TOX_ENV=py38-djangomaster
   global:
     - CASS_DRIVER_NO_CYTHON=1
     - CASS_HOST=127.0.0.1
