@@ -1,16 +1,17 @@
 from datetime import datetime
 import logging
 
+from django.contrib.sessions.backends import db
 from django.contrib.sessions.backends.db import (
-    SessionStore as DjangoSessionStore
+    SessionStore as DjangoSessionStore,
 )
 from django.core.exceptions import SuspiciousOperation
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.functional import cached_property
-from django.contrib.sessions.backends import db
 
 # monkey patch for Django versions older than 1.9
 from django_cassandra_engine.sessions.models import Session as CassandraSession
+
 db.Session = CassandraSession
 
 
@@ -52,7 +53,7 @@ class SessionStore(DjangoSessionStore):
             if isinstance(e, SuspiciousOperation):
                 logger = logging.getLogger('django.security.%s' %
                                            e.__class__.__name__)
-                logger.warning(force_text(e))
+                logger.warning(force_str(e))
             self.create()
             return {}
 
