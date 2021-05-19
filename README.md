@@ -70,6 +70,6 @@ Recommended installation:
 The documentation can be found online [here](http://r4fek.github.io/django-cassandra-engine/).
 
 ## License ##
-Copyright (c) 2014-2020, [Rafał Furmański](https://linkedin.com/in/furmanski).
+Copyright (c) 2014-2021, [Rafał Furmański](https://linkedin.com/in/furmanski).
 
 All rights reserved. Licensed under BSD 2-Clause License.

@@ -1,5 +1,10 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 1.6.2 (19.05.2021)
+
+* Add support for Django 3.1 and 3.2
+* Fix #140: TypeError: sql_flush() got an unexpected keyword argument
+
 ## Version 1.6.1 (20.03.2020)
 
 * Updated requirements #136 (by @hsamfm)
