@@ -1,19 +1,19 @@
-from django.conf.urls import include, url
+from django.urls import include, re_path
 from rest_framework import routers
 
 from .views import (
-    ThingMultiplePKViewSet,
-    ThingMultiplePKListCreateAPIView,
+    ThingModelViewSet,
     ThingMultiplePKListAPIView,
-    ThingModelViewSet
+    ThingMultiplePKListCreateAPIView,
+    ThingMultiplePKViewSet,
 )
 
 router = routers.DefaultRouter()
 router.register(r'thing-modelviewset', ThingModelViewSet)
 
 urlpatterns = [
-    url(r'^thing-viewset/$', ThingMultiplePKViewSet.as_view({'get': 'list'}), name='thing_viewset_api'),
-    url(r'^thing-listcreate/$', ThingMultiplePKListCreateAPIView.as_view(), name='thing_listcreate_api'),
-    url(r'^thing-listview/$', ThingMultiplePKListAPIView.as_view(), name='thing_listview_api'),
-    url(r'^', include(router.urls)),
+    re_path(r'^thing-viewset/$', ThingMultiplePKViewSet.as_view({'get': 'list'}), name='thing_viewset_api'),
+    re_path(r'^thing-listcreate/$', ThingMultiplePKListCreateAPIView.as_view(), name='thing_listcreate_api'),
+    re_path(r'^thing-listview/$', ThingMultiplePKListAPIView.as_view(), name='thing_listview_api'),
+    re_path(r'^', include(router.urls)),
 ]

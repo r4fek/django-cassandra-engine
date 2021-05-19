@@ -1,11 +1,8 @@
-from django.conf.urls import include, url
+from django.urls import include, re_path
 
 from testproject.app import views
 
-
 urlpatterns = [
-    # Examples:
-    url(r'^$', views.home, name='home'),
-    # url(r'^blog/', include('blog.urls')),
-    url(r'^common/', include('common.urls')),
+    re_path(r'^$', views.home, name='home'),
+    re_path(r'^common/', include('common.urls')),
 ]
