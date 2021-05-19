@@ -8,7 +8,7 @@ from django.conf import settings
 from django.core.cache import InvalidCacheBackendError
 from django.test.utils import override_settings
 from django.utils import timezone
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from mock import Mock
 import six
 
@@ -344,7 +344,7 @@ class DatabaseSessionTestCase(SessionTestsMixin, TestCase):
         session_key = self.session.session_key
         s = self.model.objects.get(session_key=session_key)
 
-        self.assertEqual(force_text(s), session_key)
+        self.assertEqual(force_str(s), session_key)
 
     def test_session_get_decoded(self):
         """

@@ -3,13 +3,13 @@ from __future__ import unicode_literals
 import warnings
 
 from django import forms
-from django.utils.functional import Promise
-from django.utils.text import capfirst
 from django.core import checks, exceptions
-from django.utils.encoding import smart_text
 from django.utils.deprecation import (
     RemovedInNextVersionWarning as RemovedInDjango20Warning,
 )
+from django.utils.encoding import smart_str
+from django.utils.functional import Promise
+from django.utils.text import capfirst
 
 NOT_IMPL_MSG = 'Method not available on Cassandra model fields'
 
@@ -21,7 +21,7 @@ def value_from_object(self, obj):
 
 def value_to_string(self, obj):
     # Taken from django.db.models.fields.__init__
-    return smart_text(self.value_from_object(obj))
+    return smart_str(self.value_from_object(obj))
 
 
 def get_attname(self):

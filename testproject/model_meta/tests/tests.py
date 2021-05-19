@@ -1,16 +1,13 @@
-from unittest import skipIf
-
-import django
+from cassandra.cqlengine import columns as cassandra_columns
 from django.apps import apps
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.exceptions import FieldDoesNotExist
 from django.db.models.fields import Field
 from django.db.models.options import IMMUTABLE_WARNING
 from django.test import SimpleTestCase
-from cassandra.cqlengine import columns as cassandra_columns
-
 from model_meta.models import CassandraThing
 from model_meta.results import TEST_RESULTS
+import django
 
 
 class OptionsBaseTests(SimpleTestCase):
@@ -157,7 +154,6 @@ class RelatedObjectsTests(OptionsBaseTests):
             )
 
 
-@skipIf(django.VERSION[1] < 10, "For Django>1.10 only")
 class PrivateFieldsTests(OptionsBaseTests):
 
     def test_private_fields(self):

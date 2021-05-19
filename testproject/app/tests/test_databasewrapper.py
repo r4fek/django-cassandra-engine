@@ -1,17 +1,17 @@
 from datetime import datetime
 
+from app.models import ExampleModel, ExampleModel2
 from django.core.management import call_command
 from django.core.management.sql import sql_flush
 from mock import Mock
 
-from django_cassandra_engine.test import TestCase
 from django_cassandra_engine.connection import CassandraConnection
+from django_cassandra_engine.test import TestCase
 from django_cassandra_engine.utils import (
+    get_cassandra_connection,
     get_cql_models,
     get_installed_apps,
-    get_cassandra_connection,
 )
-from app.models import ExampleModel, ExampleModel2
 
 
 class DatabaseWrapperTestCase(TestCase):
@@ -52,7 +52,6 @@ class DatabaseWrapperTestCase(TestCase):
             interactive=False,
             database=self.connection.alias,
             skip_checks=True,
-            reset_sequences=False,
             allow_cascade=False,
             inhibit_post_migrate=True,
         )

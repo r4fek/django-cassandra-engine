@@ -3,7 +3,7 @@ sudo: required
 
 language: python
 python:
-  - "3.7"
+  - "3.8"
 
 before_script:
   - echo "deb http://www.apache.org/dist/cassandra/debian 40x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
@@ -14,10 +14,12 @@ before_script:
 
 env:
   matrix:
-    - TOX_ENV=py37-django21
-    - TOX_ENV=py37-django22
-    - TOX_ENV=py37-django30
-    - TOX_ENV=py37-djangomaster
+    - TOX_ENV=django21
+    - TOX_ENV=django22
+    - TOX_ENV=django30
+    - TOX_ENV=django31
+    - TOX_ENV=django32
+    - TOX_ENV=djangomaster
   global:
     - CASS_DRIVER_NO_CYTHON=1
     - CASS_HOST=127.0.0.1
@@ -44,4 +46,4 @@ install:
   - pip3 install tox-travis lz4
 
 script:
-  - wait-for-it 127.0.0.1:9042 -- tox -e $TOX_ENV
+  - wait-for-it 127.0.0.1:9042 -t 120 -- tox -e $TOX_ENV
