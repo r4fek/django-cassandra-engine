@@ -11,9 +11,9 @@ from rest_framework.serializers import (
     postgres_fields,
 )
 from rest_framework.utils.field_mapping import (
+    NUMERIC_FIELD_TYPES,
     ClassLookupDict,
     needs_label,
-    NUMERIC_FIELD_TYPES,
     validators,
 )
 
@@ -30,7 +30,8 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
         columns.BigInt: serializers.IntegerField,
         columns.VarInt: serializers.IntegerField,
         columns.Counter: serializers.IntegerField,
-        columns.Date: serializers.DateTimeField,
+        columns.DateTime: serializers.DateTimeField,
+        columns.Date: serializers.DateField,
         columns.Float: serializers.FloatField,
         columns.Double: serializers.FloatField,
         columns.Decimal: serializers.DecimalField,
