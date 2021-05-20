@@ -245,7 +245,7 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
                 '__discriminator_value__ specified, but no base columns defined with discriminator_column=True')
 
         discriminator_column_name, discriminator_column = \
-        discriminator_columns[0] if discriminator_columns else (None, None)
+            discriminator_columns[0] if discriminator_columns else (None, None)
 
         if isinstance(discriminator_column,
                       (columns.BaseContainerColumn, columns.Counter)):
@@ -369,11 +369,11 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
                     "{0} defines the column '{1}' more than once".format(name,
                                                                          v.db_field_name))
             if v.clustering_order and not (
-                v.primary_key and not v.partition_key):
+                    v.primary_key and not v.partition_key):
                 raise ModelException(
                     "clustering_order may be specified only for clustering primary keys")
             if v.clustering_order and v.clustering_order.lower() not in (
-            'asc', 'desc'):
+                    'asc', 'desc'):
                 raise ModelException(
                     "invalid clustering order '{0}' for column '{1}'".format(
                         repr(v.clustering_order), v.db_field_name))
