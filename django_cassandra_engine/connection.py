@@ -5,7 +5,7 @@ from .compat import (
     Session,
     connection,
 )
-
+import copy
 
 class Cursor(object):
     def __init__(self, connection):
@@ -48,7 +48,7 @@ class CassandraConnection(object):
         self.keyspace = options.get('NAME')
         self.user = options.get('USER')
         self.password = options.get('PASSWORD')
-        self.options = options.get('OPTIONS', {})
+        self.options = copy.deepcopy(options.get('OPTIONS', {}))
         self.cluster_options = self.options.get('connection', {})
         self.session_options = self.options.get('session', {})
         self.connection_options = {
