@@ -1,5 +1,9 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 1.6.3 (26.07.2021)
+
+* Support cloud cred bundle (#142)
+
 ## Version 1.6.2 (19.05.2021)
 
 * Add support for Django 3.1 and 3.2
