@@ -18,6 +18,7 @@ All tools you need to start your journey with Apache Cassandra and Django Framew
 * storing sessions in Cassandra
 * working django forms
 * usable admin panel with Cassandra models
+* support DataStax Astra cloud hosted Cassandra
 
 ## Sponsors ##
 Help support ongoing development and maintenance by [sponsoring Django Cassandra Engine](https://github.com/sponsors/r4fek).
@@ -73,6 +74,26 @@ Recommended installation:
 
 4. Run `./manage.py sync_cassandra`
 5. Done!
+
+## Connect to Cassandra with a Cloud Config bundle ##
+To connect to a hosted Cassandra cluster that provides a secure connection bundle (ex. DataStax Astra) change the `DATABASES` setting of your settings.py:
+
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django_cassandra_engine',
+                'NAME': 'db_name',
+                'TEST_NAME': 'db_name',
+                'USER': username,
+                'PASSWORD': password,
+                'OPTIONS': {
+                    'connection': {
+                        'cloud': {
+                            'secure_connect_bundle': '/path/to/secure/bundle.zip'
+                        },
+                    }
+                }
+            }
+        }
 
 ## Documentation ##
 
