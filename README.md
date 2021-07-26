@@ -19,6 +19,15 @@ All tools you need to start your journey with Apache Cassandra and Django Framew
 * working django forms
 * usable admin panel with Cassandra models
 
+## Sponsors ##
+Help support ongoing development and maintenance by [sponsoring Django Cassandra Engine](https://github.com/sponsors/r4fek).
+
+### Our Sponsors: ###
+<table><tr>
+<td align="center" width="300" ><a href="https://astra.dev/3xPljcu"><img src="https://www.datastax.com/sites/default/files/2021-07/astra-negative-square.png" width="90" height="90" alt="Astra DB" /><br />Astra DB</a><br/>Use Django with DataStax Astra DB - built on Apache Cassandra.</td>
+</tr></table>
+
+
 ## Installation ##
 
 Recommended installation:
