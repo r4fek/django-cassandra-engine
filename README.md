@@ -26,6 +26,7 @@ Help support ongoing development and maintenance by [sponsoring Django Cassandra
 ### Our Sponsors: ###
 <table><tr>
 <td align="center" width="300" ><a href="https://astra.dev/3xPljcu"><img src="https://www.datastax.com/sites/default/files/2021-07/astra-negative-square.png" width="90" height="90" alt="Astra DB" /><br />Astra DB</a><br/>Use Django with DataStax Astra DB - built on Apache Cassandra.</td>
+<td align="center" width="300" ><a href="https://github.com/NoiSek"><img src="https://avatars.githubusercontent.com/u/631328?v=4" width="90" height="90" alt="NoiSek" /><br/>NoiSek</a></td>
 </tr></table>
 
 
