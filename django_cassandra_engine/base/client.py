@@ -6,7 +6,7 @@ from django.db.backends.base.client import BaseDatabaseClient
 class CassandraDatabaseClient(BaseDatabaseClient):
     executable_name = 'cqlsh'
 
-    def runshell(self):
+    def runshell(self, *args, **kwargs):
         settings_dict = self.connection.settings_dict
         args = [self.executable_name]
         if settings_dict['HOST']:
