@@ -1,0 +1,64 @@
+name: Django Cassandra Engine
+
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  format:
+    name: Check formatting
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        toxenv: [fmt,lint]
+    env:
+      TOXENV: ${{ matrix.toxenv }}
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+
+      - name: Install and run tox
+        run: |
+          pip install tox
+          tox
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.8,3.9,3.10]
+        django: [30,31,32,40,main]
+
+    env:
+      TOXENV: py${{ matrix.python }}-django${{ matrix.django }}
+
+    services:
+      cassandra:
+        image: cassandra
+        ports:
+          - 9042:9042
+        options: --health-cmd "cqlsh --debug" --health-interval 5s --health-retries 10
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install and run tox
+        run: |
+          pip install tox
+          tox
