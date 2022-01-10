@@ -1,6 +1,4 @@
 from datetime import timedelta
-import base64
-import logging
 import string
 import unittest
 
