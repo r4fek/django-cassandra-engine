@@ -1,6 +1,5 @@
-import django
-
 from django.db.backends.base.features import BaseDatabaseFeatures
+import django
 
 
 class CassandraDatabaseFeatures(BaseDatabaseFeatures):

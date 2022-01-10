@@ -8,4 +8,4 @@ __contact__ = "r.furmanski@gmail.com"
 __homepage__ = "http://github.com/r4fek/django-cassandra-engine"
 __docformat__ = "markdown"
 
-default_app_config = 'django_cassandra_engine.apps.AppConfig'
+default_app_config = "django_cassandra_engine.apps.AppConfig"

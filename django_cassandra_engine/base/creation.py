@@ -1,10 +1,10 @@
-import django
 from cassandra.cqlengine.connection import set_default_connection
+from django.db.backends.base.creation import BaseDatabaseCreation
+import django
 
 from django_cassandra_engine.utils import get_default_cassandra_connection
-from ..compat import create_keyspace_simple, drop_keyspace
 
-from django.db.backends.base.creation import BaseDatabaseCreation
+from ..compat import create_keyspace_simple, drop_keyspace
 
 
 class CassandraDatabaseCreation(BaseDatabaseCreation):
@@ -23,15 +23,13 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
         # If using django-nose, its runner has already set the db name
         # to test_*, so restore it here so that all the models for the
         # live keyspace can be found.
-        self.connection.connection.keyspace = self.connection.settings_dict[
-            'NAME'
-        ]
+        self.connection.connection.keyspace = self.connection.settings_dict["NAME"]
         test_database_name = self._get_test_db_name()
         # Set all models keyspace to the test keyspace
         self.set_models_keyspace(test_database_name)
 
         if verbosity >= 1:
-            test_db_repr = ''
+            test_db_repr = ""
             if verbosity >= 2:
                 test_db_repr = " ('%s')" % test_database_name
             print(
@@ -39,17 +37,17 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
                 % (self.connection.alias, test_db_repr)
             )
 
-        options = self.connection.settings_dict.get('OPTIONS', {})
+        options = self.connection.settings_dict.get("OPTIONS", {})
 
         # temporarily enable schema metadata for sync_cassandra
-        connection_options_copy = options.get('connection', {}).copy()
-        if not connection_options_copy.get('schema_metadata_enabled', True):
-            options['connection']['schema_metadata_enabled'] = True
+        connection_options_copy = options.get("connection", {}).copy()
+        if not connection_options_copy.get("schema_metadata_enabled", True):
+            options["connection"]["schema_metadata_enabled"] = True
             self.connection.reconnect()
             set_default_connection(default_alias)
 
-        replication_opts = options.get('replication', {})
-        replication_factor = replication_opts.pop('replication_factor', 1)
+        replication_opts = options.get("replication", {})
+        replication_factor = replication_opts.pop("replication_factor", 1)
 
         create_keyspace_simple(
             test_database_name,
@@ -67,20 +65,17 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
         # This ensures we don't get flooded with messages during testing
         # (unless you really ask to be flooded)
         call_command(
-            'sync_cassandra',
+            "sync_cassandra",
             verbosity=max(verbosity - 1, 0),
             database=self.connection.alias,
         )
 
         # restore the original connection options
-        if not connection_options_copy.get('schema_metadata_enabled', True):
-            print(
-                'Disabling metadata on %s'
-                % self.connection.settings_dict['NAME']
-            )
-            options['connection'][
-                'schema_metadata_enabled'
-            ] = connection_options_copy['schema_metadata_enabled']
+        if not connection_options_copy.get("schema_metadata_enabled", True):
+            print("Disabling metadata on %s" % self.connection.settings_dict["NAME"])
+            options["connection"]["schema_metadata_enabled"] = connection_options_copy[
+                "schema_metadata_enabled"
+            ]
             self.connection.reconnect()
             set_default_connection(default_alias)
 

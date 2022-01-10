@@ -1,5 +1,4 @@
-from cassandra.cqlengine import columns
-from cassandra.cqlengine import models
+from cassandra.cqlengine import columns, models
 
 
 class ExampleModel(models.Model):

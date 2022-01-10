@@ -16,9 +16,7 @@ class CursorWrapper(object):
         self.cursor = cursor
         self.db = db
 
-    WRAP_ERROR_ATTRS = frozenset(
-        ['fetchone', 'fetchmany', 'fetchall', 'nextset']
-    )
+    WRAP_ERROR_ATTRS = frozenset(["fetchone", "fetchmany", "fetchall", "nextset"])
 
     def __getattr__(self, attr):
         cursor_attr = getattr(self.cursor, attr)
@@ -62,9 +60,7 @@ def get_installed_apps():
     from django.apps import apps
 
     return [
-        a.models_module
-        for a in apps.get_app_configs()
-        if a.models_module is not None
+        a.models_module for a in apps.get_app_configs() if a.models_module is not None
     ]
 
 
@@ -112,8 +108,8 @@ def get_cassandra_connections():
     from django.db import connections
 
     for alias in connections:
-        engine = connections[alias].settings_dict.get('ENGINE', '')
-        if engine == 'django_cassandra_engine':
+        engine = connections[alias].settings_dict.get("ENGINE", "")
+        if engine == "django_cassandra_engine":
             yield alias, connections[alias]
 
 
@@ -139,7 +135,7 @@ def get_cassandra_connection(alias=None, name=None):
             if alias == _alias:
                 return connection
         elif name is not None:
-            if name == connection.settings_dict['NAME']:
+            if name == connection.settings_dict["NAME"]:
                 return connection
         else:
             return connection
@@ -149,8 +145,8 @@ def get_cassandra_db_aliases():
     from django.db import connections
 
     for alias in connections:
-        engine = connections[alias].settings_dict.get('ENGINE', '')
-        if engine == 'django_cassandra_engine':
+        engine = connections[alias].settings_dict.get("ENGINE", "")
+        if engine == "django_cassandra_engine":
             yield alias
 
 
@@ -165,4 +161,4 @@ def get_engine_from_db_alias(db_alias):
              or None if db_alias was not found
     """
 
-    return settings.DATABASES.get(db_alias, {}).get('ENGINE', None)
+    return settings.DATABASES.get(db_alias, {}).get("ENGINE", None)

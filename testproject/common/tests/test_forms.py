@@ -1,8 +1,10 @@
 import uuid
+
 import django
-from django_cassandra_engine.test import TestCase as CassandraTestCase
+
 from common.forms import CassandraFamilyMemberForm
 from common.models import CassandraFamilyMember
+from django_cassandra_engine.test import TestCase as CassandraTestCase
 
 
 class TestModelForm(CassandraTestCase):
@@ -10,8 +12,8 @@ class TestModelForm(CassandraTestCase):
         self.some_uuid = uuid.uuid4()
         self.family_member = CassandraFamilyMember.objects.create(
             id=self.some_uuid,
-            first_name='Homer',
-            last_name='Simpson',
+            first_name="Homer",
+            last_name="Simpson",
             is_real=False,
             favourite_number=666,
             favourite_float_number=43.4,
@@ -21,8 +23,8 @@ class TestModelForm(CassandraTestCase):
         form = CassandraFamilyMemberForm(
             data=dict(
                 id=self.some_uuid,
-                first_name='Homer',
-                last_name='Simpson',
+                first_name="Homer",
+                last_name="Simpson",
                 is_real=False,
                 favourite_number=666,
                 favourite_float_number=43.4,
@@ -41,7 +43,7 @@ class TestModelForm(CassandraTestCase):
             data=dict(
                 id=existing.id,
                 favourite_float_number=existing.favourite_float_number,
-                first_name='Marge',
+                first_name="Marge",
                 last_name=existing.last_name,
             ),
             instance=existing,
@@ -52,4 +54,4 @@ class TestModelForm(CassandraTestCase):
 
         updated = form.save()
 
-        self.assertEqual(updated.first_name, 'Marge')
+        self.assertEqual(updated.first_name, "Marge")

@@ -1,7 +1,8 @@
 from itertools import chain
 
 from django.db.backends.base.introspection import BaseDatabaseIntrospection
-from django_cassandra_engine.utils import get_installed_apps, get_cql_models
+
+from django_cassandra_engine.utils import get_cql_models, get_installed_apps
 
 
 class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
@@ -46,8 +47,7 @@ class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
 
         all_models = list(chain.from_iterable(self.cql_models.values()))
         tables = [
-            model.column_family_name(include_keyspace=False)
-            for model in all_models
+            model.column_family_name(include_keyspace=False) for model in all_models
         ]
 
         return tables

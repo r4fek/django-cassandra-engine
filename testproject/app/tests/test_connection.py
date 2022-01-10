@@ -1,13 +1,12 @@
 from copy import copy
+from unittest import TestCase
 
-import mock
 from cassandra import ConsistencyLevel
 from cassandra.auth import PlainTextAuthProvider
 from cassandra.cluster import Cluster
 from cassandra.cqlengine import CQLEngineException
-from mock import patch, Mock
-
-from unittest import TestCase
+from mock import Mock, patch
+import mock
 
 from django_cassandra_engine.connection import CassandraConnection, Cursor
 from django_cassandra_engine.utils import get_cassandra_connection
@@ -50,14 +49,14 @@ class CassandraConnectionTestCase(TestCase):
         )
 
     def test_connection_options(self):
-        connection_options = self.cassandra_connection.settings_dict[
-            'OPTIONS'
-        ]['connection']
+        connection_options = self.cassandra_connection.settings_dict["OPTIONS"][
+            "connection"
+        ]
 
         opts = {
-            'lazy_connect': connection_options.pop('lazy_connect', False),
-            'retry_connect': connection_options.pop('retry_connect', False),
-            'consistency': connection_options.pop('consistency', None),
+            "lazy_connect": connection_options.pop("lazy_connect", False),
+            "retry_connect": connection_options.pop("retry_connect", False),
+            "consistency": connection_options.pop("consistency", None),
         }
         self.assertEqual(self.connection.connection_options, opts)
 
@@ -67,11 +66,11 @@ class CassandraConnectionTestCase(TestCase):
     ):
 
         settings = self.cassandra_connection.settings_dict
-        connection = CassandraConnection('default', **settings)
+        connection = CassandraConnection("default", **settings)
         connection_mock.get_connection.side_effect = CQLEngineException()
         connection.register()
         connection_mock.register_connection.assert_called_once_with(
-            'default',
+            "default",
             hosts=connection.hosts,
             default=mock.ANY,
             cluster_options=connection.cluster_options,
@@ -81,7 +80,7 @@ class CassandraConnectionTestCase(TestCase):
     @patch("django_cassandra_engine.connection.connection")
     def test_connection_register_called_second_time(self, connection_mock):
         settings = self.cassandra_connection.settings_dict
-        CassandraConnection('default', **settings)
+        CassandraConnection("default", **settings)
         connection_mock.get_connection.side_effect = CQLEngineException()
 
         self.assertFalse(connection_mock.register_connection.called)
@@ -89,48 +88,44 @@ class CassandraConnectionTestCase(TestCase):
     def test_connection_auth_provider_added_to_connection_options(self):
 
         settings = self.cassandra_connection.settings_dict
-        settings['USER'] = 'user'
-        settings['PASSWORD'] = 'pass'
-        connection = CassandraConnection('default', **settings)
+        settings["USER"] = "user"
+        settings["PASSWORD"] = "pass"
+        connection = CassandraConnection("default", **settings)
 
         self.assertIsInstance(
-            connection.cluster_options['auth_provider'], PlainTextAuthProvider
+            connection.cluster_options["auth_provider"], PlainTextAuthProvider
         )
 
-    @patch('django_cassandra_engine.connection.CassandraConnection.register')
+    @patch("django_cassandra_engine.connection.CassandraConnection.register")
     def test_connection_auth_provider_not_changed(self, register_mock):
 
         settings = copy(self.cassandra_connection.settings_dict)
-        settings['USER'] = 'user'
-        settings['PASSWORD'] = 'pass'
-        settings['OPTIONS']['connection'] = {}
-        settings['OPTIONS']['connection']['auth_provider'] = 'sth'
-        connection = CassandraConnection('default', **settings)
+        settings["USER"] = "user"
+        settings["PASSWORD"] = "pass"
+        settings["OPTIONS"]["connection"] = {}
+        settings["OPTIONS"]["connection"]["auth_provider"] = "sth"
+        connection = CassandraConnection("default", **settings)
 
         self.assertEqual(
-            connection.cluster_options['auth_provider'],
-            settings['OPTIONS']['connection']['auth_provider'],
+            connection.cluster_options["auth_provider"],
+            settings["OPTIONS"]["connection"]["auth_provider"],
         )
         register_mock.assert_called_once()
 
     def test_connection_session_options_default_timeout(self):
 
-        session_opts = self.cassandra_connection.settings_dict['OPTIONS'][
-            'session'
-        ]
+        session_opts = self.cassandra_connection.settings_dict["OPTIONS"]["session"]
         self.assertEqual(self.connection.session_options, session_opts)
         self.assertEqual(
             self.connection.session.default_timeout,
-            session_opts.get('default_timeout'),
+            session_opts.get("default_timeout"),
         )
 
     def test_connection_session_default_consistency(self):
 
         settings = self.cassandra_connection.settings_dict
-        settings['OPTIONS']['connection'] = {
-            'consistency': ConsistencyLevel.ALL
-        }
-        connection = CassandraConnection('def_consistency', **settings)
+        settings["OPTIONS"]["connection"] = {"consistency": ConsistencyLevel.ALL}
+        connection = CassandraConnection("def_consistency", **settings)
         self.assertEqual(
             connection.session.default_consistency_level, ConsistencyLevel.ALL
         )
@@ -138,11 +133,11 @@ class CassandraConnectionTestCase(TestCase):
     def test_raw_cql_cursor_queries(self):
         cursor = self.connection.cursor()
         self.assertEqual(
-            cursor.execute("SELECT count(*) from example_model")[0]['count'], 0
+            cursor.execute("SELECT count(*) from example_model")[0]["count"], 0
         )
 
         cursor.execute("INSERT INTO example_model (id) VALUES (1)")
 
         self.assertEqual(
-            cursor.execute("SELECT count(*) from example_model")[0]['count'], 1
+            cursor.execute("SELECT count(*) from example_model")[0]["count"], 1
         )

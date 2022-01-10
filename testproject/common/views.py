@@ -1,15 +1,15 @@
-from rest_framework.viewsets import ViewSet, ModelViewSet
-from rest_framework.generics import ListCreateAPIView, ListAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView
 from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet, ViewSet
 
-from .models import CassandraThingMultiplePK, CassandraThing
-from .serializers import ThingSerializer, ThingMultiplePKSerializer
+from .models import CassandraThing, CassandraThingMultiplePK
+from .serializers import ThingMultiplePKSerializer, ThingSerializer
 
 
 class ThingMultiplePKViewSet(ViewSet):
     def list(self, request):
         queryset = CassandraThingMultiplePK.objects.all()
-        serializer =ThingMultiplePKSerializer(queryset, many=True)
+        serializer = ThingMultiplePKSerializer(queryset, many=True)
         return Response(serializer.data)
 
 

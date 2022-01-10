@@ -23,7 +23,7 @@ class CallableBool:
         return self.value
 
     def __repr__(self):
-        return 'CallableBool(%r)' % self.value
+        return "CallableBool(%r)" % self.value
 
     def __eq__(self, other):
         return self.value == other
@@ -45,12 +45,12 @@ def has_default(self):
 # monkey patch Column.has_default to be able to use function call too
 columns.Column.has_default = property(has_default)
 
-if os.getenv('CQLENG_ALLOW_SCHEMA_MANAGEMENT') is None:
-    os.environ['CQLENG_ALLOW_SCHEMA_MANAGEMENT'] = '1'
+if os.getenv("CQLENG_ALLOW_SCHEMA_MANAGEMENT") is None:
+    os.environ["CQLENG_ALLOW_SCHEMA_MANAGEMENT"] = "1"
 
 
 class AppConfig(DjangoAppConfig):
-    name = 'django_cassandra_engine'
+    name = "django_cassandra_engine"
 
     def connect(self):
         from django_cassandra_engine.utils import get_cassandra_connections

@@ -1,10 +1,10 @@
 from datetime import datetime
 
-from app.models import ExampleModel, ExampleModel2
 from django.core.management import call_command
 from django.core.management.sql import sql_flush
 from mock import Mock
 
+from app.models import ExampleModel, ExampleModel2
 from django_cassandra_engine.connection import CassandraConnection
 from django_cassandra_engine.test import TestCase
 from django_cassandra_engine.utils import (
@@ -25,8 +25,7 @@ class DatabaseWrapperTestCase(TestCase):
             cls.all_models.extend(get_cql_models(app))
 
         cls.all_django_tables = [
-            model.column_family_name(include_keyspace=False)
-            for model in cls.all_models
+            model.column_family_name(include_keyspace=False) for model in cls.all_models
         ]
 
     def test_auto_connect(self):
@@ -38,16 +37,14 @@ class DatabaseWrapperTestCase(TestCase):
     def test_sql_flush_works(self):
 
         mock_style = Mock()
-        ExampleModel.objects.create(
-            id='1', created_at=datetime.now(), deleted=False
-        )
-        ExampleModel2.objects.create(id='3')
+        ExampleModel.objects.create(id="1", created_at=datetime.now(), deleted=False)
+        ExampleModel2.objects.create(id="3")
 
         self.assertEqual(ExampleModel.objects.count(), 1)
         self.assertEqual(ExampleModel2.objects.count(), 1)
 
         call_command(
-            'flush',
+            "flush",
             verbosity=1,
             interactive=False,
             database=self.connection.alias,

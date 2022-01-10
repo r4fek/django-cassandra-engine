@@ -11,7 +11,7 @@ from django.utils.encoding import smart_str
 from django.utils.functional import Promise
 from django.utils.text import capfirst
 
-NOT_IMPL_MSG = 'Method not available on Cassandra model fields'
+NOT_IMPL_MSG = "Method not available on Cassandra model fields"
 
 
 def value_from_object(self, obj):
@@ -31,7 +31,7 @@ def get_attname(self):
 
 def get_cache_name(self):
     # Taken from django.db.models.fields.__init__
-    return '_%s_cache' % self.name
+    return "_%s_cache" % self.name
 
 
 def get_attname_column(self):
@@ -62,8 +62,7 @@ def get_db_prep_value(self, value, connection, prepared=False):
 
 def get_db_prep_save(self, value, connection):
     # Taken from django.db.models.fields.__init__
-    return self.get_db_prep_value(value, connection=connection,
-                                  prepared=False)
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
 
 
 def get_db_converters(self, *args, **kwargs):
@@ -78,7 +77,7 @@ def get_internal_type(self):
 
 def save_form_data(self, instance, data):
     # Taken from django.db.models.fields.__init__
-    if data == '':
+    if data == "":
         data = None
     setattr(instance, self.name, data)
 
@@ -90,23 +89,24 @@ def get_filter_kwargs_for_object(self, obj):
 
 def formfield(self, form_class=None, choices_form_class=None, **kwargs):
     # Taken from django.db.models.fields.__init__
-    defaults = {'required': not self.blank,
-                'label': capfirst(self.verbose_name),
-                'help_text': self.help_text}
+    defaults = {
+        "required": not self.blank,
+        "label": capfirst(self.verbose_name),
+        "help_text": self.help_text,
+    }
     if self.has_default:
         if callable(self.default):
-            defaults['initial'] = self.default
-            defaults['show_hidden_initial'] = True
+            defaults["initial"] = self.default
+            defaults["show_hidden_initial"] = True
         else:
-            defaults['initial'] = self.get_default()
+            defaults["initial"] = self.get_default()
     if self.choices:
         # Fields with choices get special treatment.
-        include_blank = (self.blank or
-                         not (self.has_default or 'initial' in kwargs))
-        defaults['choices'] = self.get_choices(include_blank=include_blank)
-        defaults['coerce'] = self.to_python
+        include_blank = self.blank or not (self.has_default or "initial" in kwargs)
+        defaults["choices"] = self.get_choices(include_blank=include_blank)
+        defaults["coerce"] = self.to_python
         if self.null:
-            defaults['empty_value'] = None
+            defaults["empty_value"] = None
         if choices_form_class is not None:
             form_class = choices_form_class
         else:
@@ -115,9 +115,18 @@ def formfield(self, form_class=None, choices_form_class=None, **kwargs):
         # max_value) don't apply for choice fields, so be sure to only pass
         # the values that TypedChoiceField will understand.
         for k in list(kwargs):
-            if k not in ('coerce', 'empty_value', 'choices', 'required',
-                         'widget', 'label', 'initial', 'help_text',
-                         'error_messages', 'show_hidden_initial'):
+            if k not in (
+                "coerce",
+                "empty_value",
+                "choices",
+                "required",
+                "widget",
+                "label",
+                "initial",
+                "help_text",
+                "error_messages",
+                "show_hidden_initial",
+            ):
                 del kwargs[k]
     defaults.update(kwargs)
     if form_class is None:
@@ -142,7 +151,7 @@ def _check_db_index(self):
                 "'db_index' must be None, True or False.",
                 hint=None,
                 obj=self,
-                id='fields.E006',
+                id="fields.E006",
             )
         ]
     else:
@@ -151,31 +160,31 @@ def _check_db_index(self):
 
 def _check_field_name(self):
     # Taken from django.db.models.fields.__init__
-    if self.name.endswith('_'):
+    if self.name.endswith("_"):
         return [
             checks.Error(
-                'Field names must not end with an underscore.',
+                "Field names must not end with an underscore.",
                 hint=None,
                 obj=self,
-                id='fields.E001',
+                id="fields.E001",
             )
         ]
-    elif '__' in self.name:
+    elif "__" in self.name:
         return [
             checks.Error(
                 'Field names must not contain "__".',
                 hint=None,
                 obj=self,
-                id='fields.E002',
+                id="fields.E002",
             )
         ]
-    elif self.name == 'pk':
+    elif self.name == "pk":
         return [
             checks.Error(
                 "'pk' is a reserved word that cannot be used as a field name.",
                 hint=None,
                 obj=self,
-                id='fields.E003',
+                id="fields.E003",
             )
         ]
     else:
@@ -192,7 +201,7 @@ def run_validators(self, value):
         try:
             v(value)
         except exceptions.ValidationError as e:
-            if hasattr(e, 'code') and e.code in self.error_messages:
+            if hasattr(e, "code") and e.code in self.error_messages:
                 e.message = self.error_messages[e.code]
             errors.extend(e.error_list)
 
@@ -227,7 +236,9 @@ def rel(self):
     # Taken from django.db.models.fields.__init__
     warnings.warn(
         "Usage of field.rel has been deprecated. Use field.remote_field instead.",
-        RemovedInDjango20Warning, 2)
+        RemovedInDjango20Warning,
+        2,
+    )
     return self.remote_field
 
 
