@@ -7,10 +7,8 @@ RUN apt-get -y install wait-for-it
 
 RUN mkdir /code
 WORKDIR /code
-ADD requirements.txt /code/
-ADD requirements-dev.txt /code/
-RUN pip install -r requirements-dev.txt
+RUN pip install poetry
 ADD . /code/
-RUN pip3 install -e .
+RUN poetry install
 
 EXPOSE 8000

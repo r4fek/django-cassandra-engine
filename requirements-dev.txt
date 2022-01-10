@@ -1,6 +1,0 @@
--r requirements.txt
-djangorestframework
-freezegun==0.3.6
-mock
-pypandoc
-tox

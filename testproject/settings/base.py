@@ -95,4 +95,4 @@ LOGGING = {
     },
 }
 
-CASSANDRA_HOST = os.getenv("CASS_HOST")
+CASSANDRA_HOST = os.getenv("CASS_HOST", "127.0.0.1")

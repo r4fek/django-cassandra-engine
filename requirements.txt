@@ -1,2 +1,0 @@
-cassandra-driver>=3.25
-Django>=2.0

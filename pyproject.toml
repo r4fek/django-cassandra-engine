@@ -1,6 +1,54 @@
-[build-system]
-requires = [
-    "setuptools >= 35.0.2",
-    "setuptools_scm >= 2.0.0,<3"
+[tool.poetry]
+name = "django-cassandra-engine"
+version = "1.7.0"
+description = "Django Cassandra Engine"
+authors = ["Rafał Furmański <r.furmanski@gmail.com>"]
+license = "2-clause BSD"
+keywords= ["django", "cassandra", "engine", "backend", "driver", "wrapper", "database", "nonrel", "cqlengine"]
+readme = "README.md"
+homepage = "https://github.com/r4fek/django-cassandra-engine"
+repository = "https://github.com/r4fek/django-cassandra-engine"
+documentation = "https://r4fek.github.io/django-cassandra-engine/"
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Environment :: Web Environment',
+    'Environment :: Plugins',
+    'Framework :: Django',
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: BSD License',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Topic :: Database',
+    'Topic :: Internet',
+    'Topic :: Software Development :: Libraries :: Python Modules',
 ]
-build-backend = "setuptools.build_meta"
+packages = [{ include = "django_cassandra_engine" }]
+
+[tool.poetry.urls]
+Changelog = "https://r4fek.github.io/django-cassandra-engine/changelog/"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+django = "^3.0 || ^4.0"
+scylla-driver = "^3.25.0"
+
+[tool.poetry.dev-dependencies]
+black = {version = "*", allow-prereleases = true}
+coverage = "*"
+flake8 = "*"
+flake8-bandit = "*"
+flake8-blind-except = "*"
+flake8-docstrings = "*"
+flake8-logging-format = "*"
+flake8-print = "*"
+freezegun = "*"
+isort = "*"
+pre-commit = "*"
+tox = "*"
+
+[build-system]
+requires = ["poetry>=1.1.12"]
+build-backend = "poetry.masonry.api"
