@@ -17,13 +17,12 @@ from django_cassandra_engine.utils import CursorWrapper
 
 try:
     from django.db.backends.base.base import (
-        connection_created,
         BaseDatabaseWrapper,
+        connection_created,
     )
 except ImportError:
     try:
-        from django.db.backends import BaseDatabaseWrapper
-        from django.db.backends import connection_created
+        from django.db.backends import BaseDatabaseWrapper, connection_created
     except ImportError:
         from django.db.backends.signals import connection_created
 

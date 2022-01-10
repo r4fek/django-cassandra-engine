@@ -38,14 +38,16 @@ scylla-driver = "^3.25.0"
 [tool.poetry.dev-dependencies]
 black = {version = "*", allow-prereleases = true}
 coverage = "*"
+djangorestframework = "*"
 flake8 = "*"
 flake8-bandit = "*"
 flake8-blind-except = "*"
 flake8-docstrings = "*"
 flake8-logging-format = "*"
 flake8-print = "*"
-freezegun = "*"
+freezegun = "0.3.6"
 isort = "*"
+mock = "*"
 pre-commit = "*"
 tox = "*"
 

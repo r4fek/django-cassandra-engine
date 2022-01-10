@@ -13,8 +13,8 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
         database already exists. Returns the name of the test database created.
         """
         # Don't import django.core.management if it isn't needed.
-        from django.core.management import call_command
         from django.conf import settings
+        from django.core.management import call_command
 
         self.connection.connect()
         default_alias = get_default_cassandra_connection()[0]
