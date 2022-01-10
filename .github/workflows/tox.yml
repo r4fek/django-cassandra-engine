@@ -46,9 +46,9 @@ jobs:
       cassandra:
         image: cassandra
         ports:
-          - 9042:9042
-        options: --health-cmd "cqlsh --debug" --health-interval 5s --health-retries 10
-
+        - 9042
+        - 7199
+        options: --health-cmd 'cqlsh -e "USE system"' --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Check out the repository
         uses: actions/checkout@v2
