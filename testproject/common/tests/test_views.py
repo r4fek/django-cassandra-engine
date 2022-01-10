@@ -1,15 +1,11 @@
 from datetime import datetime
+from http import client
 
-from freezegun import freeze_time
-from six.moves import http_client
+from django.urls import reverse
 
 from common.models import CassandraThingMultiplePK
 from django_cassandra_engine.test import TestCase as CassandraTestCase
-
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from freezegun import freeze_time
 
 
 @freeze_time("14-06-15 15:44:25")
@@ -21,14 +17,14 @@ def create_thing():
 class TestViewSet(CassandraTestCase):
     def test_get_when_no_records_exist(self):
         response = self.client.get(reverse("thing_viewset_api"))
-        self.assertEqual(response.status_code, http_client.OK)
+        self.assertEqual(response.status_code, client.OK)
         self.assertEqual(response.json(), [])
 
     def test_get(self):
         thing = create_thing()
 
         response = self.client.get(reverse("thing_viewset_api"))
-        self.assertEqual(response.status_code, http_client.OK)
+        self.assertEqual(response.status_code, client.OK)
 
         expected_response = [
             {
@@ -45,7 +41,7 @@ class TestViewSet(CassandraTestCase):
 class TestListCreateAPIView(CassandraTestCase):
     def test_get_when_no_records_exist(self):
         response = self.client.get(reverse("thing_listcreate_api"))
-        self.assertEqual(response.status_code, http_client.OK)
+        self.assertEqual(response.status_code, client.OK)
         self.assertEqual(response.json(), [])
 
     def test_post(self):
@@ -53,7 +49,7 @@ class TestListCreateAPIView(CassandraTestCase):
             reverse("thing_listcreate_api"),
             {"created_on": "2015-06-14T15:44:25Z"},
         )
-        self.assertEqual(response.status_code, http_client.CREATED)
+        self.assertEqual(response.status_code, client.CREATED)
         assert CassandraThingMultiplePK.objects.all().count() == 1
 
 
@@ -62,7 +58,7 @@ class TestListAPIView(CassandraTestCase):
     def test_get(self):
         thing = create_thing()
         response = self.client.get(reverse("thing_listview_api"))
-        self.assertEqual(response.status_code, http_client.OK)
+        self.assertEqual(response.status_code, client.OK)
 
         expected_response = [
             {

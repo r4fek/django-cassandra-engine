@@ -10,7 +10,6 @@ from django.test.utils import override_settings
 from django.utils import timezone
 from django.utils.encoding import force_str
 from mock import Mock
-import six
 
 from django_cassandra_engine.sessions.backends.cached_db import (
     SessionStore as CachedDatabaseSession,
@@ -102,7 +101,7 @@ class SessionTestsMixin(object):
         self.session["x"] = 1
         self.session.modified = False
         self.session.accessed = False
-        i = six.iterkeys(self.session)
+        i = self.session.keys()
         self.assertTrue(hasattr(i, "__iter__"))
         self.assertTrue(self.session.accessed)
         self.assertFalse(self.session.modified)
@@ -112,7 +111,7 @@ class SessionTestsMixin(object):
         self.session["x"] = 1
         self.session.modified = False
         self.session.accessed = False
-        i = six.itervalues(self.session)
+        i = self.session.values()
         self.assertTrue(hasattr(i, "__iter__"))
         self.assertTrue(self.session.accessed)
         self.assertFalse(self.session.modified)
@@ -122,7 +121,7 @@ class SessionTestsMixin(object):
         self.session["x"] = 1
         self.session.modified = False
         self.session.accessed = False
-        i = six.iteritems(self.session)
+        i = self.session.items()
         self.assertTrue(hasattr(i, "__iter__"))
         self.assertTrue(self.session.accessed)
         self.assertFalse(self.session.modified)

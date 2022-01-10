@@ -5,6 +5,7 @@ import collections
 import copy
 import inspect
 import logging
+import types
 import warnings
 
 from django.apps import apps
@@ -13,7 +14,6 @@ from django.core import validators
 from django.db.models import options
 from django.db.models.base import ModelBase
 from django.utils.translation import gettext_lazy as _
-import six
 
 from ..compat import (
     BaseModel,
@@ -70,7 +70,7 @@ class DjangoCassandraOptions(options.Options):
             self._private_fields_name = "virtual_fields"
 
         # Add Columns as Django Fields
-        for column in six.itervalues(self._defined_columns):
+        for column in self._defined_columns.values():
             self.add_field(column)
         self.setup_pk()
 
@@ -99,7 +99,7 @@ class DjangoCassandraOptions(options.Options):
         self._expire_cache(reverse=False)
 
     def _get_fields(self, *args, **kwargs):
-        fields = six.itervalues(self._defined_columns)
+        fields = self._defined_columns.values()
         return options.make_immutable_fields_list("get_fields()", fields)
 
     def _set_column_django_attributes(self, cql_column, name):
@@ -185,7 +185,7 @@ class DjangoCassandraOptions(options.Options):
             django_field_methods.get_pk_value_on_save,
             django_field_methods.get_col,
         )
-        for name, cql_column in six.iteritems(self._defined_columns):
+        for name, cql_column in self._defined_columns.items():
             self._set_column_django_attributes(cql_column=cql_column, name=name)
             for method in methods_to_add:
                 try:
@@ -194,7 +194,7 @@ class DjangoCassandraOptions(options.Options):
                     # python 3
                     method_name = method.__name__
 
-                new_method = six.create_bound_method(method, cql_column)
+                new_method = types.MethodType(method, cql_column)
                 setattr(cql_column, method_name, new_method)
 
 
@@ -713,7 +713,7 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
         new_queryset = []
         for model in self.get_queryset():
             should_exclude_model = False
-            for field_name, field_value in six.iteritems(kwargs):
+            for field_name, field_value in kwargs.items():
                 if getattr(model, field_name) == field_value:
                     should_exclude_model = True
                     break
@@ -820,9 +820,7 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
         return super(query.ModelQuerySet, self).all()
 
 
-class DjangoCassandraModel(
-    six.with_metaclass(DjangoCassandraModelMetaClass, BaseModel)
-):
+class DjangoCassandraModel(BaseModel, metaclass=DjangoCassandraModelMetaClass):
     __queryset__ = DjangoCassandraQuerySet
     __abstract__ = True
     __table_name__ = None
@@ -860,7 +858,7 @@ class DjangoCassandraModel(
     @classmethod
     def _get_primary_key_columns(cls):
         return tuple(
-            c for c in six.itervalues(cls._columns) if c.is_primary_key is True
+            c for c in cls._columns.values() if c.is_primary_key is True
         )
 
     @classmethod
@@ -888,6 +886,6 @@ class DjangoCassandraModel(
                     raise RuntimeError(PK_META_MISSING_HELP.format(cls))
                 return cls._primary_keys[pk_field]
             else:
-                return list(six.itervalues(cls._primary_keys))[0]
+                return list(cls._primary_keys.values())[0]
         except IndexError:
             return None
