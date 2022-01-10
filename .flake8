@@ -24,6 +24,7 @@ ignore =
   ; D401  # [pydocstyle] First line should be in imperative mood
   ; S308  # [bandit] Use of mark_safe() may expose cross-site scripting vulnerabilities and should be reviewed.
   ; S703  # [bandit] Potential XSS on mark_safe function.
+  C901  # too complex
 
 per-file-ignores =
   ; D205 - 1 blank line required between summary line and description
@@ -39,3 +40,4 @@ per-file-ignores =
   ; F405 - may be undefined, or defined from star imports
   */settings.py:F403,F405
   */settings/*:F403,F405
+  */compat.py:F401

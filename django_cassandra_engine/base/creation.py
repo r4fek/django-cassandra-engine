@@ -1,6 +1,5 @@
 from cassandra.cqlengine.connection import set_default_connection
 from django.db.backends.base.creation import BaseDatabaseCreation
-import django
 
 from django_cassandra_engine.utils import get_default_cassandra_connection
 

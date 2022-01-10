@@ -6,7 +6,6 @@ from django.contrib.sessions.backends.cached_db import (
 from django_cassandra_engine.sessions.backends.db import (
     SessionStore as DBStore,
 )
-
 # monkey patch for Django versions older than 1.9
 from django_cassandra_engine.sessions.models import Session as CassandraSession
 

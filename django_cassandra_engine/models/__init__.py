@@ -371,12 +371,16 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
             attrs["pk"] = attrs[pk_name]
         else:
             # composite partition key case, get/set a tuple of values
-            _get = lambda self: tuple(
-                self._values[c].getval() for c in partition_keys.keys()
-            )
-            _set = lambda self, val: tuple(
-                self._values[c].setval(v) for (c, v) in zip(partition_keys.keys(), val)
-            )
+            def _get(s):
+                return tuple(
+                    s._values[c].getval() for c in partition_keys.keys()
+                )
+
+            def _set(s, val):
+                return tuple(
+                    s._values[c].setval(v) for (c, v) in zip(partition_keys.keys(), val)
+                )
+
             attrs["pk"] = property(_get, _set)
 
         # some validation

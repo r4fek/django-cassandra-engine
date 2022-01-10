@@ -1,7 +1,5 @@
 from django.db.backends.base.operations import BaseDatabaseOperations
 
-from django_cassandra_engine.utils import get_cassandra_connection
-
 
 class CassandraDatabaseOperations(BaseDatabaseOperations):
     def pk_default_value(self):

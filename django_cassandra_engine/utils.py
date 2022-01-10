@@ -2,14 +2,13 @@ import inspect
 
 from django.conf import settings
 from django.db import DEFAULT_DB_ALIAS
-import django
 
 from .compat import cqlengine
 
 
 class CursorWrapper(object):
     """
-    Simple CursorWrapper implementation based on django.db.utils.CursorWrapper
+    Simple CursorWrapper implementation based on `django.db.utils.CursorWrapper`
     """
 
     def __init__(self, cursor, db):
