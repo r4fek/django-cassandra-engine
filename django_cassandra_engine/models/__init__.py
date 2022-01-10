@@ -372,9 +372,7 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
         else:
             # composite partition key case, get/set a tuple of values
             def _get(s):
-                return tuple(
-                    s._values[c].getval() for c in partition_keys.keys()
-                )
+                return tuple(s._values[c].getval() for c in partition_keys.keys())
 
             def _set(s, val):
                 return tuple(
@@ -857,9 +855,7 @@ class DjangoCassandraModel(BaseModel, metaclass=DjangoCassandraModelMetaClass):
 
     @classmethod
     def _get_primary_key_columns(cls):
-        return tuple(
-            c for c in cls._columns.values() if c.is_primary_key is True
-        )
+        return tuple(c for c in cls._columns.values() if c.is_primary_key is True)
 
     @classmethod
     def _get_primary_key_column_names(cls):
