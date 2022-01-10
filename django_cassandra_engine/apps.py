@@ -6,9 +6,7 @@ from .compat import columns
 
 
 class CallableBool:
-    """
-    An boolean-like object that is also callable for backwards compatibility.
-    """
+    """An boolean-like object that is also callable for backwards compatibility."""
 
     def __init__(self, value):
         self.value = value

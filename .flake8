@@ -1,6 +1,6 @@
 [flake8]
-max-line-length = 120
-max-complexity = 8
+max-line-length = 88
+max-complexity = 42
 # http://flake8.pycqa.org/en/2.5.5/warnings.html#warning-error-codes
 ignore =
   # pydocstyle - docstring conventions (PEP257)
@@ -21,16 +21,16 @@ ignore =
   D400  # [pydocstyle] First line should end with a period
   S404  # Consider possible security implications associated with the subprocess module.
   S603  # subprocess call - check for execution of untrusted input.
-  ; D401  # [pydocstyle] First line should be in imperative mood
+  D401  # [pydocstyle] First line should be in imperative mood
   ; S308  # [bandit] Use of mark_safe() may expose cross-site scripting vulnerabilities and should be reviewed.
   ; S703  # [bandit] Potential XSS on mark_safe function.
-  C901  # too complex
-
+  S101  # use of assert
+  
 per-file-ignores =
   ; D205 - 1 blank line required between summary line and description
   ; D400 - First line should end with a period
   ; D401 - First line should be in imperative mood
-  ; S101 - use of assert
+  ; S101  # use of assert
   ; S106 - hard-coded password
   ; E501 - line-length
   ; E731 - assigning a lambda to a variable

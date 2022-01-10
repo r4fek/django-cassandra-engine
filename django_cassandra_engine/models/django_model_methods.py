@@ -1,8 +1,4 @@
-from django.core.exceptions import (
-    NON_FIELD_ERRORS,
-    FieldDoesNotExist,
-    ValidationError,
-)
+from django.core.exceptions import NON_FIELD_ERRORS, FieldDoesNotExist, ValidationError
 
 __ALL__ = (
     "_get_pk_val",

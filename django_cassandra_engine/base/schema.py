@@ -11,9 +11,7 @@ class CassandraDatabaseSchemaEditor(BaseDatabaseSchemaEditor):
     def create_model(self, model):
         # Hack to disable checking migrations for cassandra connection
         try:
-            from django.db.migrations.exceptions import (
-                MigrationSchemaMissing as Exc,
-            )
+            from django.db.migrations.exceptions import MigrationSchemaMissing as Exc
         except ImportError:
             from django.core.exceptions import ImproperlyConfigured as Exc
         raise Exc("No schema for cassandra database")

@@ -41,9 +41,7 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
     }
 
     def get_field_kwargs(self, field_name, model_field):
-        """
-        Creates a default instance of a basic non-relational field.
-        """
+        """Creates a default instance of a basic non-relational field."""
         kwargs = {}
         validator_kwarg = list(model_field.validators)
 
@@ -233,9 +231,7 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
         return kwargs
 
     def build_standard_field(self, field_name, model_field):
-        """
-        Create regular model fields.
-        """
+        """Create regular model fields."""
         field_mapping = ClassLookupDict(self.serializer_field_mapping)
 
         field_class = field_mapping[model_field]

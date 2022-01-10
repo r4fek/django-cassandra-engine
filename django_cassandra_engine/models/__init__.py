@@ -26,11 +26,7 @@ from ..compat import (
     query,
 )
 from . import django_field_methods, django_model_methods
-from .constants import (
-    ORDER_BY_ERROR_HELP,
-    ORDER_BY_WARN,
-    PK_META_MISSING_HELP,
-)
+from .constants import ORDER_BY_ERROR_HELP, ORDER_BY_WARN, PK_META_MISSING_HELP
 
 log = logging.getLogger(__name__)
 _django_manager_attr_names = (
@@ -198,7 +194,7 @@ class DjangoCassandraOptions(options.Options):
                 setattr(cql_column, method_name, new_method)
 
 
-class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
+class DjangoCassandraModelMetaClass(ModelBase, metaclass=ModelMetaClass):
     def __new__(cls, name, bases, attrs):
         parents = [b for b in bases if isinstance(b, DjangoCassandraModelMetaClass)]
 
@@ -247,14 +243,14 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
         is_polymorphic = len(discriminator_columns) > 0
         if len(discriminator_columns) > 1:
             raise ModelDefinitionException(
-                "only one discriminator_column can be defined in a model, {0} found".format(
-                    len(discriminator_columns)
-                )
+                "only one discriminator_column can be defined in a model, "
+                " {0} found".format(len(discriminator_columns))
             )
 
         if attrs["__discriminator_value__"] and not is_polymorphic:
             raise ModelDefinitionException(
-                "__discriminator_value__ specified, but no base columns defined with discriminator_column=True"
+                "__discriminator_value__ specified, but no base columns defined "
+                "with discriminator_column=True"
             )
 
         discriminator_column_name, discriminator_column = (

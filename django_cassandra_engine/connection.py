@@ -122,7 +122,5 @@ class CassandraConnection(object):
         """We would like to keep connection always open by default"""
 
     def unregister(self):
-        """
-        Unregister this connection
-        """
+        """Unregister this connection"""
         connection.unregister_connection(self.alias)

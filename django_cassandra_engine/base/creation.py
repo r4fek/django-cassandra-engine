@@ -1,9 +1,13 @@
+import logging
+
 from cassandra.cqlengine.connection import set_default_connection
 from django.db.backends.base.creation import BaseDatabaseCreation
 
 from django_cassandra_engine.utils import get_default_cassandra_connection
 
 from ..compat import create_keyspace_simple, drop_keyspace
+
+logger = logging.getLogger(__name__)
 
 
 class CassandraDatabaseCreation(BaseDatabaseCreation):
@@ -31,7 +35,7 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
             test_db_repr = ""
             if verbosity >= 2:
                 test_db_repr = " ('%s')" % test_database_name
-            print(
+            logger.info(
                 "Creating test database for alias '%s'%s..."
                 % (self.connection.alias, test_db_repr)
             )
@@ -71,7 +75,9 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
 
         # restore the original connection options
         if not connection_options_copy.get("schema_metadata_enabled", True):
-            print("Disabling metadata on %s" % self.connection.settings_dict["NAME"])
+            logger.info(
+                "Disabling metadata on %s" % self.connection.settings_dict["NAME"]
+            )
             options["connection"]["schema_metadata_enabled"] = connection_options_copy[
                 "schema_metadata_enabled"
             ]
@@ -86,7 +92,6 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
 
     def set_models_keyspace(self, keyspace):
         """Set keyspace for all connection models"""
-
         for models in self.connection.introspection.cql_models.values():
             for model in models:
                 model.__keyspace__ = keyspace

@@ -7,9 +7,7 @@ from .compat import cqlengine
 
 
 class CursorWrapper(object):
-    """
-    Simple CursorWrapper implementation based on `django.db.utils.CursorWrapper`
-    """
+    """Simple CursorWrapper implementation based on `django.db.utils.CursorWrapper`"""
 
     def __init__(self, cursor, db):
         self.cursor = cursor
@@ -53,9 +51,7 @@ class CursorWrapper(object):
 
 
 def get_installed_apps():
-    """
-    Return list of all installed apps
-    """
+    """Return list of all installed apps"""
     from django.apps import apps
 
     return [
@@ -103,7 +99,6 @@ def get_cassandra_connections():
     :return: List of tuples (db_alias, connection) for all cassandra
     connections in DATABASES dict.
     """
-
     from django.db import connections
 
     for alias in connections:
@@ -125,10 +120,7 @@ def get_default_cassandra_connection():
 
 
 def get_cassandra_connection(alias=None, name=None):
-    """
-    :return: cassandra connection matching alias or name or just first found.
-    """
-
+    """:return: cassandra connection matching alias or name or just first found."""
     for _alias, connection in get_cassandra_connections():
         if alias is not None:
             if alias == _alias:
@@ -159,5 +151,4 @@ def get_engine_from_db_alias(db_alias):
     :return: database engine from DATABASES dict corresponding to db_alias
              or None if db_alias was not found
     """
-
     return settings.DATABASES.get(db_alias, {}).get("ENGINE", None)

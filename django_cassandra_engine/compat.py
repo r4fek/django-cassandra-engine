@@ -4,13 +4,7 @@ try:
     from dse import cqlengine
     from dse.auth import PlainTextAuthProvider
     from dse.cluster import Cluster, Session
-    from dse.cqlengine import (
-        CQLEngineException,
-        columns,
-        connection,
-        management,
-        query,
-    )
+    from dse.cqlengine import CQLEngineException, columns, connection, management, query
     from dse.cqlengine.management import create_keyspace_simple, drop_keyspace
     from dse.cqlengine.models import (
         BaseModel,
@@ -33,10 +27,7 @@ except ImportError:
             management,
             query,
         )
-        from cassandra.cqlengine.management import (
-            create_keyspace_simple,
-            drop_keyspace,
-        )
+        from cassandra.cqlengine.management import create_keyspace_simple, drop_keyspace
         from cassandra.cqlengine.models import (
             BaseModel,
             ColumnDescriptor,

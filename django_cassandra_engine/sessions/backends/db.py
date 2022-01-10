@@ -2,9 +2,7 @@ from datetime import datetime
 import logging
 
 from django.contrib.sessions.backends import db
-from django.contrib.sessions.backends.db import (
-    SessionStore as DjangoSessionStore,
-)
+from django.contrib.sessions.backends.db import SessionStore as DjangoSessionStore
 from django.core.exceptions import SuspiciousOperation
 from django.utils.encoding import force_str
 from django.utils.functional import cached_property
@@ -18,9 +16,7 @@ db.Session = CassandraSession
 class SessionStore(DjangoSessionStore):
     @classmethod
     def get_model_class(cls):
-        """
-        Avoid circular import
-        """
+        """Avoid circular import"""
         from django_cassandra_engine.sessions.models import Session
 
         return Session
@@ -88,6 +84,4 @@ class SessionStore(DjangoSessionStore):
 
     @classmethod
     def clear_expired(cls):
-        """
-        # TODO: implement this
-        """
+        """TODO: implement this"""

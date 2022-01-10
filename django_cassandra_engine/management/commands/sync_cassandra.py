@@ -26,7 +26,6 @@ class Command(BaseCommand):
         Import the 'management' module within each installed app, to register
         dispatcher events.
         """
-
         from importlib import import_module
 
         for app_config in apps.get_app_configs():

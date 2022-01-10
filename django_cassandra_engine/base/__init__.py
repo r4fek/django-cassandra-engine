@@ -3,23 +3,15 @@ import threading
 from django_cassandra_engine.base.client import CassandraDatabaseClient
 from django_cassandra_engine.base.creation import CassandraDatabaseCreation
 from django_cassandra_engine.base.features import CassandraDatabaseFeatures
-from django_cassandra_engine.base.introspection import (
-    CassandraDatabaseIntrospection,
-)
+from django_cassandra_engine.base.introspection import CassandraDatabaseIntrospection
 from django_cassandra_engine.base.operations import CassandraDatabaseOperations
 from django_cassandra_engine.base.schema import CassandraDatabaseSchemaEditor
 from django_cassandra_engine.base.validation import CassandraDatabaseValidation
-from django_cassandra_engine.connection import (
-    CassandraConnection,
-    FakeConnection,
-)
+from django_cassandra_engine.connection import CassandraConnection, FakeConnection
 from django_cassandra_engine.utils import CursorWrapper
 
 try:
-    from django.db.backends.base.base import (
-        BaseDatabaseWrapper,
-        connection_created,
-    )
+    from django.db.backends.base.base import BaseDatabaseWrapper, connection_created
 except ImportError:
     try:
         from django.db.backends import BaseDatabaseWrapper, connection_created
@@ -157,7 +149,5 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         return CursorWrapper(self.connection.cursor(), self)
 
     def schema_editor(self, *args, **kwargs):
-        """
-        Returns a new instance of this backends' SchemaEditor (Django>=1.7)
-        """
+        """Returns a new instance of this backends' SchemaEditor (Django>=1.7)"""
         return CassandraDatabaseSchemaEditor(self, *args, **kwargs)
