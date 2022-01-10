@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 import django_cassandra_engine as meta
-
 
 DESCRIPTION = 'Django Cassandra Engine - the Cassandra backend for Django'
 
@@ -50,6 +49,8 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'Topic :: Database',
         'Topic :: Internet',
         'Topic :: Software Development :: Libraries :: Python Modules',

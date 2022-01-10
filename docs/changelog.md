@@ -1,5 +1,10 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 1.6.4 (10.01.2022)
+
+* Fix(command/dbshell): Avoid raise TypeError when django-3.2 pass `options['parameters']` (#154) - thanks @icycandle!
+* Support Django 4.x
+
 ## Version 1.6.3 (26.07.2021)
 
 * Support cloud cred bundle (#142)
