@@ -83,10 +83,10 @@ To connect to a hosted Cassandra cluster that provides a secure connection bundl
         DATABASES = {
             'default': {
                 'ENGINE': 'django_cassandra_engine',
-                'NAME': 'db_name',
-                'TEST_NAME': 'db_name',
-                'USER': username,
-                'PASSWORD': password,
+                'NAME': 'keyspace_name',
+                'TEST_NAME': 'table_name',
+                'USER': 'token',
+                'PASSWORD': token_value,
                 'OPTIONS': {
                     'connection': {
                         'cloud': {
