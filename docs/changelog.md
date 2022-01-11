@@ -9,6 +9,7 @@
 * Get rid of travis build system in favor of Github Actions (faster build times, better integration with Github)
 * Reformat entire codebase with flake8, isort and black
 * Add code style check to the build process
+* Use Poetry to install the package and maintain dependencies
 
 ## Version 1.6.3 (26.07.2021)
 

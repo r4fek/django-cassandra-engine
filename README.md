@@ -4,7 +4,6 @@
 All tools you need to start your journey with Apache Cassandra and Django Framework!
 
 [![Latest version](https://img.shields.io/pypi/v/django-cassandra-engine.svg "Latest version")](https://pypi.python.org/pypi/django-cassandra-engine/)
-[![CI](https://api.travis-ci.org/r4fek/django-cassandra-engine.svg?branch=master "CI")](https://travis-ci.org/r4fek/django-cassandra-engine)
 
 Discord: https://discord.gg/pxunMGmDNc
 ## Features ##
