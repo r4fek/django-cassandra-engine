@@ -1,10 +1,11 @@
 from functools import partial
 from itertools import chain
 from operator import attrgetter
-import collections
+import collections.abc
 import copy
 import inspect
 import logging
+import types
 import warnings
 
 from django.apps import apps
@@ -13,7 +14,6 @@ from django.core import validators
 from django.db.models import options
 from django.db.models.base import ModelBase
 from django.utils.translation import gettext_lazy as _
-import six
 
 from ..compat import (
     BaseModel,
@@ -26,30 +26,32 @@ from ..compat import (
     query,
 )
 from . import django_field_methods, django_model_methods
-from .constants import (
-    ORDER_BY_ERROR_HELP,
-    ORDER_BY_WARN,
-    PK_META_MISSING_HELP,
-)
+from .constants import ORDER_BY_ERROR_HELP, ORDER_BY_WARN, PK_META_MISSING_HELP
 
 log = logging.getLogger(__name__)
-_django_manager_attr_names = ('objects', 'default_manager', '_default_manager',
-                              'base_manager', '_base_manager')
+_django_manager_attr_names = (
+    "objects",
+    "default_manager",
+    "_default_manager",
+    "base_manager",
+    "_base_manager",
+)
 
 
 class DjangoCassandraOptions(options.Options):
     default_field_error_messages = {
-        'invalid_choice': _('Value %(value)r is not a valid choice.'),
-        'null': _('This field cannot be null.'),
-        'blank': _('This field cannot be blank.'),
-        'unique': _('%(model_name)s with this %(field_label)s '
-                    'already exists.'),
-        'unique_for_date': _("%(field_label)s must be unique for "
-                             "%(date_field_label)s %(lookup_type)s."),
+        "invalid_choice": _("Value %(value)r is not a valid choice."),
+        "null": _("This field cannot be null."),
+        "blank": _("This field cannot be blank."),
+        "unique": _("%(model_name)s with this %(field_label)s " "already exists."),
+        "unique_for_date": _(
+            "%(field_label)s must be unique for "
+            "%(date_field_label)s %(lookup_type)s."
+        ),
     }
 
     def __init__(self, *args, **kwargs):
-        self.model_inst = kwargs.pop('cls')
+        self.model_inst = kwargs.pop("cls")
         self._defined_columns = self.model_inst._defined_columns
 
         # Add Django attibutes to Columns
@@ -58,13 +60,13 @@ class DjangoCassandraOptions(options.Options):
         # Call Django to create _meta object
         super(DjangoCassandraOptions, self).__init__(*args, **kwargs)
 
-        self._private_fields_name = 'private_fields'
-        if hasattr(self, 'virtual_fields'):
+        self._private_fields_name = "private_fields"
+        if hasattr(self, "virtual_fields"):
             # Django < 1.10
-            self._private_fields_name = 'virtual_fields'
+            self._private_fields_name = "virtual_fields"
 
         # Add Columns as Django Fields
-        for column in six.itervalues(self._defined_columns):
+        for column in self._defined_columns.values():
             self.add_field(column)
         self.setup_pk()
 
@@ -93,14 +95,18 @@ class DjangoCassandraOptions(options.Options):
         self._expire_cache(reverse=False)
 
     def _get_fields(self, *args, **kwargs):
-        fields = six.itervalues(self._defined_columns)
-        return options.make_immutable_fields_list('get_fields()', fields)
+        fields = self._defined_columns.values()
+        return options.make_immutable_fields_list("get_fields()", fields)
 
     def _set_column_django_attributes(self, cql_column, name):
         allow_null = (
-            (not cql_column.required and
-             not cql_column.is_primary_key and
-             not cql_column.partition_key) or cql_column.has_default and not cql_column.required
+            (
+                not cql_column.required
+                and not cql_column.is_primary_key
+                and not cql_column.partition_key
+            )
+            or cql_column.has_default
+            and not cql_column.required
         )
         cql_column.error_messages = self.default_field_error_messages
         cql_column.empty_values = list(validators.EMPTY_VALUES)
@@ -109,7 +115,7 @@ class DjangoCassandraOptions(options.Options):
         cql_column.unique = cql_column.is_primary_key
         cql_column.hidden = False
         cql_column.auto_created = False
-        cql_column.help_text = ''
+        cql_column.help_text = ""
         cql_column.blank = allow_null
         cql_column.null = allow_null
         cql_column.choices = []
@@ -139,7 +145,6 @@ class DjangoCassandraOptions(options.Options):
     def _give_columns_django_field_attributes(self):
         """
         Add Django Field attributes to each cqlengine.Column instance.
-
         So that the Django Options class may interact with it as if it were
         a Django Field.
         """
@@ -175,7 +180,7 @@ class DjangoCassandraOptions(options.Options):
             django_field_methods.get_pk_value_on_save,
             django_field_methods.get_col,
         )
-        for name, cql_column in six.iteritems(self._defined_columns):
+        for name, cql_column in self._defined_columns.items():
             self._set_column_django_attributes(cql_column=cql_column, name=name)
             for method in methods_to_add:
                 try:
@@ -184,12 +189,11 @@ class DjangoCassandraOptions(options.Options):
                     # python 3
                     method_name = method.__name__
 
-                new_method = six.create_bound_method(method, cql_column)
+                new_method = types.MethodType(method, cql_column)
                 setattr(cql_column, method_name, new_method)
 
 
 class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
-
     def __new__(cls, name, bases, attrs):
         parents = [b for b in bases if isinstance(b, DjangoCassandraModelMetaClass)]
 
@@ -209,55 +213,63 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
         # get inherited properties
         inherited_columns = OrderedDict()
         for base in bases:
-            for k, v in getattr(base, '_defined_columns', {}).items():
+            for k, v in getattr(base, "_defined_columns", {}).items():
                 inherited_columns.setdefault(k, v)
 
         # short circuit __abstract__ inheritance
-        is_abstract = attrs['__abstract__'] = attrs.get('__abstract__', False)
+        is_abstract = attrs["__abstract__"] = attrs.get("__abstract__", False)
 
         # short circuit __discriminator_value__ inheritance
-        attrs['__discriminator_value__'] = attrs.get('__discriminator_value__')
+        attrs["__discriminator_value__"] = attrs.get("__discriminator_value__")
 
         # TODO __default__ttl__ should be removed in the next major release
-        options = attrs.get('__options__') or {}
-        attrs['__default_ttl__'] = options.get('default_time_to_live')
+        options = attrs.get("__options__") or {}
+        attrs["__default_ttl__"] = options.get("default_time_to_live")
 
-        column_definitions = [(k, v) for k, v in attrs.items() if
-                              isinstance(v, columns.Column)]
-        column_definitions = sorted(column_definitions,
-                                    key=lambda x: x[1].position)
+        column_definitions = [
+            (k, v) for k, v in attrs.items() if isinstance(v, columns.Column)
+        ]
+        column_definitions = sorted(column_definitions, key=lambda x: x[1].position)
 
         is_polymorphic_base = any(
-            [c[1].discriminator_column for c in column_definitions])
+            [c[1].discriminator_column for c in column_definitions]
+        )
 
-        column_definitions = [x for x in
-                              inherited_columns.items()] + column_definitions
-        discriminator_columns = [c for c in column_definitions if
-                                 c[1].discriminator_column]
+        column_definitions = [x for x in inherited_columns.items()] + column_definitions
+        discriminator_columns = [
+            c for c in column_definitions if c[1].discriminator_column
+        ]
         is_polymorphic = len(discriminator_columns) > 0
         if len(discriminator_columns) > 1:
             raise ModelDefinitionException(
-                'only one discriminator_column can be defined in a model, {0} found'.format(
-                    len(discriminator_columns)))
+                "only one discriminator_column can be defined in a model, "
+                "{0} found".format(len(discriminator_columns))
+            )
 
-        if attrs['__discriminator_value__'] and not is_polymorphic:
+        if attrs["__discriminator_value__"] and not is_polymorphic:
             raise ModelDefinitionException(
-                '__discriminator_value__ specified, but no base columns defined with discriminator_column=True')
+                "__discriminator_value__ specified, but no base columns defined "
+                "with discriminator_column=True"
+            )
 
-        discriminator_column_name, discriminator_column = \
+        discriminator_column_name, discriminator_column = (
             discriminator_columns[0] if discriminator_columns else (None, None)
+        )
 
-        if isinstance(discriminator_column,
-                      (columns.BaseContainerColumn, columns.Counter)):
+        if isinstance(
+            discriminator_column, (columns.BaseContainerColumn, columns.Counter)
+        ):
             raise ModelDefinitionException(
-                'counter and container columns cannot be used as discriminator columns')
+                "counter and container columns cannot be used as discriminator columns"
+            )
 
         # find polymorphic base class
         polymorphic_base = None
         if is_polymorphic and not is_polymorphic_base:
+
             def _get_polymorphic_base(bases):
                 for base in bases:
-                    if getattr(base, '_is_polymorphic_base', False):
+                    if getattr(base, "_is_polymorphic_base", False):
                         return base
                     klass = _get_polymorphic_base(base.__bases__)
                     if klass:
@@ -268,22 +280,21 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
         defined_columns = OrderedDict(column_definitions)
 
         # check for primary key
-        if not is_abstract and not any(
-                [v.primary_key for k, v in column_definitions]):
-            raise ModelDefinitionException(
-                "At least 1 primary key is required.")
+        if not is_abstract and not any([v.primary_key for k, v in column_definitions]):
+            raise ModelDefinitionException("At least 1 primary key is required.")
 
-        counter_columns = [c for c in defined_columns.values() if
-                           isinstance(c, columns.Counter)]
-        data_columns = [c for c in defined_columns.values() if
-                        not c.primary_key and not isinstance(c,
-                                                             columns.Counter)]
+        counter_columns = [
+            c for c in defined_columns.values() if isinstance(c, columns.Counter)
+        ]
+        data_columns = [
+            c
+            for c in defined_columns.values()
+            if not c.primary_key and not isinstance(c, columns.Counter)
+        ]
         if counter_columns and data_columns:
-            raise ModelDefinitionException(
-                'counter models may not have data columns')
+            raise ModelDefinitionException("counter models may not have data columns")
 
-        has_partition_keys = any(
-            v.partition_key for (k, v) in column_definitions)
+        has_partition_keys = any(v.partition_key for (k, v) in column_definitions)
 
         def _transform_column(col_name, col_obj):
             column_dict[col_name] = col_obj
@@ -299,14 +310,14 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
             # don't allow a column with the same name as a built-in attribute or method
             if k in BaseModel.__dict__:
                 raise ModelDefinitionException(
-                    "column '{0}' conflicts with built-in attribute/method".format(
-                        k))
+                    "column '{0}' conflicts with built-in attribute/method".format(k)
+                )
 
             # counter column primary keys are not allowed
-            if (v.primary_key or v.partition_key) and isinstance(v,
-                                                                 columns.Counter):
+            if (v.primary_key or v.partition_key) and isinstance(v, columns.Counter):
                 raise ModelDefinitionException(
-                    'counter columns cannot be used as primary keys')
+                    "counter columns cannot be used as primary keys"
+                )
 
             # this will mark the first primary key column as a partition
             # key, if one hasn't been set already
@@ -325,20 +336,23 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
             _transform_column(k, v)
 
         partition_keys = OrderedDict(
-            k for k in primary_keys.items() if k[1].partition_key)
+            k for k in primary_keys.items() if k[1].partition_key
+        )
         clustering_keys = OrderedDict(
-            k for k in primary_keys.items() if not k[1].partition_key)
+            k for k in primary_keys.items() if not k[1].partition_key
+        )
 
-        if attrs.get('__compute_routing_key__', True):
+        if attrs.get("__compute_routing_key__", True):
             key_cols = [c for c in partition_keys.values()]
             partition_key_index = dict(
-                (col.db_field_name, col._partition_key_index) for col in
-                key_cols)
+                (col.db_field_name, col._partition_key_index) for col in key_cols
+            )
             key_cql_types = [c.cql_type for c in key_cols]
             key_serializer = staticmethod(
-                lambda parts, proto_version: [t.to_binary(p, proto_version) for
-                                              t, p in
-                                              zip(key_cql_types, parts)])
+                lambda parts, proto_version: [
+                    t.to_binary(p, proto_version) for t, p in zip(key_cql_types, parts)
+                ]
+            )
         else:
             partition_key_index = {}
             key_serializer = staticmethod(lambda parts, proto_version: None)
@@ -346,19 +360,21 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
         # setup partition key shortcut
         if len(partition_keys) == 0:
             if not is_abstract:
-                raise ModelException(
-                    "at least one partition key must be defined")
+                raise ModelException("at least one partition key must be defined")
         if len(partition_keys) == 1:
             pk_name = [x for x in partition_keys.keys()][0]
-            attrs['pk'] = attrs[pk_name]
+            attrs["pk"] = attrs[pk_name]
         else:
             # composite partition key case, get/set a tuple of values
-            _get = lambda self: tuple(
-                self._values[c].getval() for c in partition_keys.keys())
-            _set = lambda self, val: tuple(
-                self._values[c].setval(v) for (c, v) in
-                zip(partition_keys.keys(), val))
-            attrs['pk'] = property(_get, _set)
+            def _get(s):
+                return tuple(s._values[c].getval() for c in partition_keys.keys())
+
+            def _set(s, val):
+                return tuple(
+                    s._values[c].setval(v) for (c, v) in zip(partition_keys.keys(), val)
+                )
+
+            attrs["pk"] = property(_get, _set)
 
         # some validation
         col_names = set()
@@ -366,17 +382,20 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
             # check for duplicate column names
             if v.db_field_name in col_names:
                 raise ModelException(
-                    "{0} defines the column '{1}' more than once".format(name,
-                                                                         v.db_field_name))
-            if v.clustering_order and not (
-                    v.primary_key and not v.partition_key):
+                    "{0} defines the column '{1}' more than once".format(
+                        name, v.db_field_name
+                    )
+                )
+            if v.clustering_order and not (v.primary_key and not v.partition_key):
                 raise ModelException(
-                    "clustering_order may be specified only for clustering primary keys")
-            if v.clustering_order and v.clustering_order.lower() not in (
-                    'asc', 'desc'):
+                    "clustering_order may be specified only for clustering primary keys"
+                )
+            if v.clustering_order and v.clustering_order.lower() not in ("asc", "desc"):
                 raise ModelException(
                     "invalid clustering order '{0}' for column '{1}'".format(
-                        repr(v.clustering_order), v.db_field_name))
+                        repr(v.clustering_order), v.db_field_name
+                    )
+                )
             col_names.add(v.db_field_name)
 
         # create db_name -> model name map for loading
@@ -387,53 +406,53 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
                 db_map[db_field] = col_name
 
         # add management members to the class
-        attrs['_columns'] = column_dict
-        attrs['_primary_keys'] = primary_keys
-        attrs['_defined_columns'] = defined_columns
+        attrs["_columns"] = column_dict
+        attrs["_primary_keys"] = primary_keys
+        attrs["_defined_columns"] = defined_columns
 
         # maps the database field to the models key
-        attrs['_db_map'] = db_map
-        attrs['_pk_name'] = pk_name
-        attrs['_dynamic_columns'] = {}
+        attrs["_db_map"] = db_map
+        attrs["_pk_name"] = pk_name
+        attrs["_dynamic_columns"] = {}
 
-        attrs['_partition_keys'] = partition_keys
-        attrs['_partition_key_index'] = partition_key_index
-        attrs['_key_serializer'] = key_serializer
-        attrs['_clustering_keys'] = clustering_keys
-        attrs['_has_counter'] = len(counter_columns) > 0
+        attrs["_partition_keys"] = partition_keys
+        attrs["_partition_key_index"] = partition_key_index
+        attrs["_key_serializer"] = key_serializer
+        attrs["_clustering_keys"] = clustering_keys
+        attrs["_has_counter"] = len(counter_columns) > 0
 
         # add polymorphic management attributes
-        attrs['_is_polymorphic_base'] = is_polymorphic_base
-        attrs['_is_polymorphic'] = is_polymorphic
-        attrs['_polymorphic_base'] = polymorphic_base
-        attrs['_discriminator_column'] = discriminator_column
-        attrs['_discriminator_column_name'] = discriminator_column_name
-        attrs['_discriminator_map'] = {} if is_polymorphic_base else None
+        attrs["_is_polymorphic_base"] = is_polymorphic_base
+        attrs["_is_polymorphic"] = is_polymorphic
+        attrs["_polymorphic_base"] = polymorphic_base
+        attrs["_discriminator_column"] = discriminator_column
+        attrs["_discriminator_column_name"] = discriminator_column_name
+        attrs["_discriminator_map"] = {} if is_polymorphic_base else None
 
         # setup class exceptions
         DoesNotExistBase = None
         for base in bases:
-            DoesNotExistBase = getattr(base, 'DoesNotExist', None)
+            DoesNotExistBase = getattr(base, "DoesNotExist", None)
             if DoesNotExistBase is not None:
                 break
 
-        DoesNotExistBase = DoesNotExistBase or attrs.pop('DoesNotExist',
-                                                         BaseModel.DoesNotExist)
-        attrs['DoesNotExist'] = type('DoesNotExist', (DoesNotExistBase,), {})
+        DoesNotExistBase = DoesNotExistBase or attrs.pop(
+            "DoesNotExist", BaseModel.DoesNotExist
+        )
+        attrs["DoesNotExist"] = type("DoesNotExist", (DoesNotExistBase,), {})
 
         MultipleObjectsReturnedBase = None
         for base in bases:
-            MultipleObjectsReturnedBase = getattr(base,
-                                                  'MultipleObjectsReturned',
-                                                  None)
+            MultipleObjectsReturnedBase = getattr(base, "MultipleObjectsReturned", None)
             if MultipleObjectsReturnedBase is not None:
                 break
 
         MultipleObjectsReturnedBase = MultipleObjectsReturnedBase or attrs.pop(
-            'MultipleObjectsReturned', BaseModel.MultipleObjectsReturned)
-        attrs['MultipleObjectsReturned'] = type('MultipleObjectsReturned',
-                                                (MultipleObjectsReturnedBase,),
-                                                {})
+            "MultipleObjectsReturned", BaseModel.MultipleObjectsReturned
+        )
+        attrs["MultipleObjectsReturned"] = type(
+            "MultipleObjectsReturned", (MultipleObjectsReturnedBase,), {}
+        )
 
         # create the class and add a QuerySet to it
         klass = super(ModelBase, cls).__new__(cls, name, bases, attrs)
@@ -452,9 +471,7 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
         klass._deferred = False
         if not is_abstract:
             klass = cls._add_django_meta_and_register_model(
-                klass=klass,
-                attrs=attrs,
-                name=name
+                klass=klass, attrs=attrs, name=name
             )
         return klass
 
@@ -462,30 +479,30 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
         django_meta_default_names = options.DEFAULT_NAMES
 
         # patch django so Meta.get_pk_field can be specified these models
-        options.DEFAULT_NAMES = django_meta_default_names + ('get_pk_field',)
+        options.DEFAULT_NAMES = django_meta_default_names + ("get_pk_field",)
 
         # We should call the contribute_to_class method only if it's bound
-        if not inspect.isclass(value) and hasattr(value, 'contribute_to_class'):
+        if not inspect.isclass(value) and hasattr(value, "contribute_to_class"):
             value.contribute_to_class(cls, name)
         else:
             try:
                 setattr(cls, name, value)
             except AttributeError:
-                raise AttributeError('failed to set attribute {}'.format(name))
+                raise AttributeError("failed to set attribute {}".format(name))
         options.DEFAULT_NAMES = django_meta_default_names
 
     @classmethod
     def _add_django_meta_and_register_model(cls, klass, attrs, name):
         # Create the class.
-        module = attrs.get('__module__')
+        module = attrs.get("__module__")
         if not module:
             return klass
 
         new_class = klass
-        attr_meta = attrs.pop('Meta', None)
-        abstract = getattr(attr_meta, 'abstract', False)
+        attr_meta = attrs.pop("Meta", None)
+        abstract = getattr(attr_meta, "abstract", False)
         if not attr_meta:
-            meta = getattr(new_class, 'Meta', None)
+            meta = getattr(new_class, "Meta", None)
         else:
             meta = attr_meta
 
@@ -497,7 +514,7 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
         # Look for an application configuration to attach the model to.
         app_config = apps.get_containing_app_config(module)
 
-        if getattr(meta, 'app_label', None) is None:
+        if getattr(meta, "app_label", None) is None:
             if app_config is None:
                 if not abstract:
                     raise RuntimeError(
@@ -511,7 +528,8 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
 
         # Add _meta/Options attribute to the model
         new_class.add_to_class(
-            '_meta', DjangoCassandraOptions(meta, app_label, cls=new_class))
+            "_meta", DjangoCassandraOptions(meta, app_label, cls=new_class)
+        )
         # Add manager to the model
         for manager_attr in _django_manager_attr_names:
             new_class.add_to_class(manager_attr, new_class.objects)
@@ -528,7 +546,6 @@ class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
 def convert_pk_field_names_to_real(model, field_names):
     """
     Convert field names including 'pk' to the real field names:
-
     >>> convert_pk_field_names_to_real(['pk', 'another_field'])
     ['real_pk_field', 'another_field']
     """
@@ -540,25 +557,24 @@ def convert_pk_field_names_to_real(model, field_names):
 
     real_field_names = []
     for name in field_names:
-        if name == 'pk':
+        if name == "pk":
             for real_pk_field_name in pk_field_names:
                 append_field(real_pk_field_name)
-        elif name == '-pk':
+        elif name == "-pk":
             for real_pk_field_name in pk_field_names:
-                append_field('-' + real_pk_field_name)
+                append_field("-" + real_pk_field_name)
         else:
             append_field(name)
     return real_field_names
 
 
 class ReadOnlyDjangoCassandraQuerySet(list):
-    name = 'objects'
+    name = "objects"
     use_in_migrations = False
 
     def __init__(self, data, model_class):
-        if not isinstance(data, collections.Iterable):
-            raise TypeError(
-                'ReadOnlyDjangoCassandraQuerySet requires iterable data')
+        if not isinstance(data, collections.abc.Iterable):
+            raise TypeError("ReadOnlyDjangoCassandraQuerySet requires iterable data")
         super(ReadOnlyDjangoCassandraQuerySet, self).__init__(data)
         self.model = model_class
         self.query = StubQuery(model=self.model)
@@ -586,8 +602,7 @@ class ReadOnlyDjangoCassandraQuerySet(list):
         return len(self) > 0
 
     def values_list(self, *fields, **kwargs):
-        fields = convert_pk_field_names_to_real(model=self.model,
-                                                field_names=fields)
+        fields = convert_pk_field_names_to_real(model=self.model, field_names=fields)
 
         values_list = []
         for model_record in self:
@@ -596,49 +611,48 @@ class ReadOnlyDjangoCassandraQuerySet(list):
                 values_list_item.append(model_record[field_name])
             values_list.append(values_list_item)
 
-        if kwargs.get('flat') is True:
+        if kwargs.get("flat") is True:
             values_list = list(chain.from_iterable(values_list))
         return values_list
 
     def _raise_not_implemented(self, method_name):
         raise NotImplementedError(
-            'You cannot .{}() on a DjangoCassandraQuerySet which '
-            'has been ordered using python'.format(method_name)
+            "You cannot .{}() on a DjangoCassandraQuerySet which "
+            "has been ordered using python".format(method_name)
         )
 
     def filter(self, **kwargs):
-        self._raise_not_implemented(method_name='filter')
+        self._raise_not_implemented(method_name="filter")
 
     def get(self, **kwargs):
-        self._raise_not_implemented(method_name='get')
+        self._raise_not_implemented(method_name="get")
 
     def distinct(self, *args, **kwargs):
-        self._raise_not_implemented(method_name='distinct')
+        self._raise_not_implemented(method_name="distinct")
 
     def limit(self, *args, **kwargs):
-        self._raise_not_implemented(method_name='limit')
+        self._raise_not_implemented(method_name="limit")
 
     def only(self, *args, **kwargs):
-        self._raise_not_implemented(method_name='only')
+        self._raise_not_implemented(method_name="only")
 
     def create(self, *args, **kwargs):
-        self._raise_not_implemented(method_name='create')
+        self._raise_not_implemented(method_name="create")
 
     def delete(self, *args, **kwargs):
-        self._raise_not_implemented(method_name='delete')
+        self._raise_not_implemented(method_name="delete")
 
     def defer(self, *args, **kwargs):
-        self._raise_not_implemented(method_name='defer')
+        self._raise_not_implemented(method_name="defer")
 
     def exclude(self, *args, **kwargs):
-        self._raise_not_implemented(method_name='defer')
+        self._raise_not_implemented(method_name="defer")
 
 
 class StubQuery(object):
-
     def __init__(self, model):
         self.model = model
-        self.order_by = ['pk']
+        self.order_by = ["pk"]
 
     @property
     def select_related(self):
@@ -658,7 +672,7 @@ class StubQuery(object):
 
 
 class DjangoCassandraQuerySet(query.ModelQuerySet):
-    name = 'objects'
+    name = "objects"
     use_in_migrations = False
 
     def __init__(self, *args, **kwargs):
@@ -691,25 +705,25 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
         new_queryset = []
         for model in self.get_queryset():
             should_exclude_model = False
-            for field_name, field_value in six.iteritems(kwargs):
+            for field_name, field_value in kwargs.items():
                 if getattr(model, field_name) == field_value:
                     should_exclude_model = True
                     break
             if not should_exclude_model:
                 new_queryset.append(model)
-        return ReadOnlyDjangoCassandraQuerySet(
-            new_queryset, model_class=self.model)
+        return ReadOnlyDjangoCassandraQuerySet(new_queryset, model_class=self.model)
 
     def python_order_by(self, qset, colnames):
         if not isinstance(qset, list):
-            raise TypeError('qset must be a list')
-        colnames = convert_pk_field_names_to_real(model=self.model,
-                                                  field_names=colnames)
+            raise TypeError("qset must be a list")
+        colnames = convert_pk_field_names_to_real(
+            model=self.model, field_names=colnames
+        )
 
-        any_cols_revesed = any(c.startswith('-') for c in colnames)
+        any_cols_revesed = any(c.startswith("-") for c in colnames)
         if any_cols_revesed:
             for col in colnames:
-                should_reverse = col.startswith('-')
+                should_reverse = col.startswith("-")
                 if should_reverse:
                     col = col[1:]
 
@@ -717,7 +731,7 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
         else:
             new_colnames = []
             for col in colnames:
-                if col == 'pk':
+                if col == "pk":
                     pk_cols = self.model._get_primary_key_column_names()
                     for pk_name in pk_cols:
                         new_colnames.append(pk_name)
@@ -726,8 +740,7 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
             try:
                 qset.sort(key=attrgetter(*new_colnames))
             except AttributeError:
-                msg = 'Can\'t resolve one of column names: {}'.format(
-                    *new_colnames)
+                msg = "Can't resolve one of column names: {}".format(*new_colnames)
                 raise query.QueryException(msg)
 
         return ReadOnlyDjangoCassandraQuerySet(qset, model_class=self.model)
@@ -750,17 +763,16 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
         conditions = []
         for col in colnames:
             try:
-                if hasattr(col, 'resolve_expression'):
-                    warnings.warn('Sorting by Django DB Expressions is not supported')
+                if hasattr(col, "resolve_expression"):
+                    warnings.warn("Sorting by Django DB Expressions is not supported")
                     continue
-                conditions.append('"{0}" {1}'.format(
-                    *self._get_ordering_condition(col))
+                conditions.append(
+                    '"{0}" {1}'.format(*self._get_ordering_condition(col))
                 )
             except query.QueryException as exc:
-                order_by_exception = (
-                    'Can\'t order' in str(exc) or
-                    'Can\'t resolve the column name' in str(exc)
-                )
+                order_by_exception = "Can't order" in str(
+                    exc
+                ) or "Can't resolve the column name" in str(exc)
 
                 if order_by_exception:
                     order_using_python = settings.CASSANDRA_FALLBACK_ORDER_BY_PYTHON
@@ -770,8 +782,9 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
                         warnings.warn(msg)
                     else:
                         raise query.QueryException(
-                            '{exc}\n\n'
-                            '{help}'.format(exc=exc, help=ORDER_BY_ERROR_HELP))
+                            "{exc}\n\n"
+                            "{help}".format(exc=exc, help=ORDER_BY_ERROR_HELP)
+                        )
                 else:
                     raise exc
 
@@ -784,23 +797,22 @@ class DjangoCassandraQuerySet(query.ModelQuerySet):
             return clone
 
     def values_list(self, *fields, **kwargs):
-        if 'pk' in fields:
+        if "pk" in fields:
             fields = convert_pk_field_names_to_real(
-                model=self.model, field_names=fields)
+                model=self.model, field_names=fields
+            )
 
         super_values_list = super(DjangoCassandraQuerySet, self).values_list
         return super_values_list(*fields, **kwargs)
 
     def _clone(self):
         return copy.deepcopy(self)
-    
+
     def iterator(self, *args, **kwargs):
         return super(query.ModelQuerySet, self).all()
 
 
-class DjangoCassandraModel(
-    six.with_metaclass(DjangoCassandraModelMetaClass, BaseModel)
-):
+class DjangoCassandraModel(BaseModel, metaclass=DjangoCassandraModelMetaClass):
     __queryset__ = DjangoCassandraQuerySet
     __abstract__ = True
     __table_name__ = None
@@ -825,20 +837,19 @@ class DjangoCassandraModel(
 
     @classmethod
     def get(cls, *args, **kwargs):
-        raise AttributeError('model has no attribute \'get\'')
+        raise AttributeError("model has no attribute 'get'")
 
     @classmethod
     def filter(cls, *args, **kwargs):
-        raise AttributeError('model has no attribute \'filter\'')
+        raise AttributeError("model has no attribute 'filter'")
 
     @classmethod
     def all(cls, *args, **kwargs):
-        raise AttributeError('model has no attribute \'all\'')
+        raise AttributeError("model has no attribute 'all'")
 
     @classmethod
     def _get_primary_key_columns(cls):
-        return tuple(c for c in six.itervalues(cls._columns)
-                     if c.is_primary_key is True)
+        return tuple(c for c in cls._columns.values() if c.is_primary_key is True)
 
     @classmethod
     def _get_primary_key_column_names(cls):
@@ -848,10 +859,9 @@ class DjangoCassandraModel(
     def _get_column(cls, name):
         """
         Based on cqlengine.models.BaseModel._get_column.
-
         But to work with 'pk'
         """
-        if name == 'pk':
+        if name == "pk":
             return cls._meta.get_field(cls._meta.pk.name)
         return cls._columns[name]
 
@@ -865,6 +875,6 @@ class DjangoCassandraModel(
                     raise RuntimeError(PK_META_MISSING_HELP.format(cls))
                 return cls._primary_keys[pk_field]
             else:
-                return list(six.itervalues(cls._primary_keys))[0]
+                return list(cls._primary_keys.values())[0]
         except IndexError:
             return None

@@ -1,7 +1,5 @@
 from django.db.backends.base.operations import BaseDatabaseOperations
 
-from django_cassandra_engine.utils import get_cassandra_connection
-
 
 class CassandraDatabaseOperations(BaseDatabaseOperations):
     def pk_default_value(self):
@@ -19,15 +17,11 @@ class CassandraDatabaseOperations(BaseDatabaseOperations):
         return name
 
     def prep_for_like_query(self, value):
-        """
-        Does no conversion, parent string-cast is SQL specific.
-        """
+        """Does no conversion, parent string-cast is SQL specific."""
         return value
 
     def prep_for_iexact_query(self, value):
-        """
-        Does no conversion, parent string-cast is SQL specific.
-        """
+        """Does no conversion, parent string-cast is SQL specific."""
         return value
 
     def sql_flush(self, style, tables, *args, **kwargs):
@@ -35,7 +29,6 @@ class CassandraDatabaseOperations(BaseDatabaseOperations):
         Truncate all existing tables in current keyspace.
         :returns: an empty list
         """
-
         if tables:
             cql_list = []
 

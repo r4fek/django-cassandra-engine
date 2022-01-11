@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 
-import os
-import sys
+from importlib import import_module
 from subprocess import check_call as execute
 from types import ModuleType
+import os
+import sys
 
 import django
-from importlib import import_module
-
 
 os.environ["DJANGO_SETTINGS_MODULE"] = "settings.default_only_cassandra"
 
@@ -18,7 +17,7 @@ test_dir_abspath = os.path.split(os.path.abspath(__file__))[0]
 sys.path.insert(0, test_dir)
 
 
-def run_tests(foo, settings='settings', extra=(), test_builtin=False):
+def run_tests(foo, settings="settings", extra=(), test_builtin=False):
     if isinstance(foo, ModuleType):
         settings = foo.__name__
         apps = list(foo.INSTALLED_APPS)
@@ -26,30 +25,26 @@ def run_tests(foo, settings='settings', extra=(), test_builtin=False):
         apps = list(foo)
 
     if not test_builtin:
-        apps = [
-            name for name in apps if not name.startswith('django.contrib.')
-        ]
+        apps = [name for name in apps if not name.startswith("django.contrib.")]
 
     os.chdir(test_dir_abspath)
     print(
-        '\n============================\n'
-        'Running tests with settings: {}\n'
-        '============================\n'.format(settings)
+        "\n============================\n"
+        "Running tests with settings: {}\n"
+        "============================\n".format(settings)
     )
     return execute(
-        ['./manage.py', 'test', '-v', '2', '--settings', settings]
-        + list(extra)
-        + apps
+        ["./manage.py", "test", "-v", "2", "--settings", settings] + list(extra) + apps
     )
 
 
 def main():
 
-    default_cass = import_module('settings.default_cassandra')
-    default_only_cass = import_module('settings.default_only_cassandra')
-    secondary_cassandra = import_module('settings.secondary_cassandra')
-    multi_cassandra = import_module('settings.multi_cassandra')
-    metadata_disabled = import_module('settings.metadata_disabled')
+    default_cass = import_module("settings.default_cassandra")
+    default_only_cass = import_module("settings.default_only_cassandra")
+    secondary_cassandra = import_module("settings.secondary_cassandra")
+    multi_cassandra = import_module("settings.multi_cassandra")
+    metadata_disabled = import_module("settings.metadata_disabled")
 
     django.setup()
 
@@ -61,5 +56,5 @@ def main():
     sys.exit(0)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

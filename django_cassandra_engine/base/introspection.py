@@ -1,7 +1,8 @@
 from itertools import chain
 
 from django.db.backends.base.introspection import BaseDatabaseIntrospection
-from django_cassandra_engine.utils import get_installed_apps, get_cql_models
+
+from django_cassandra_engine.utils import get_cql_models, get_installed_apps
 
 
 class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
@@ -15,7 +16,6 @@ class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
         Return a dict containing a list of cassandra.cqlengine.Model classes
         within installed App.
         """
-
         apps = get_installed_apps()
         connection = self.connection.connection.alias
         keyspace = self.connection.connection.keyspace
@@ -43,19 +43,15 @@ class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
         Returns a list of all table names that have associated cqlengine models
         and are present in settings.INSTALLED_APPS.
         """
-
         all_models = list(chain.from_iterable(self.cql_models.values()))
         tables = [
-            model.column_family_name(include_keyspace=False)
-            for model in all_models
+            model.column_family_name(include_keyspace=False) for model in all_models
         ]
 
         return tables
 
     def table_names(self, cursor=None, **kwargs):
-        """
-        Returns all table names in current keyspace
-        """
+        """Returns all table names in current keyspace"""
         # Avoid migration code being executed
         if cursor:
             return []
@@ -75,9 +71,7 @@ class CassandraDatabaseIntrospection(BaseDatabaseIntrospection):
         return self.table_names(cursor)
 
     def sequence_list(self):
-        """
-        Sequences are not supported
-        """
+        """Sequences are not supported"""
         return []
 
     def get_sequences(self, *args, **kwargs):

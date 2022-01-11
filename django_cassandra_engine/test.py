@@ -23,7 +23,7 @@ class TestCase(DjangoTestCase):
         for alias, _ in get_cassandra_connections():
             # Flush the database
             call_command(
-                'flush',
+                "flush",
                 verbosity=1,
                 interactive=False,
                 database=alias,

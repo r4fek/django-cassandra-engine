@@ -1,71 +1,67 @@
 from common.models import CassandraThing
 
-
 TEST_RESULTS = {
-    'get_all_field_names': {
+    "get_all_field_names": {
         CassandraThing: [
-            'id',
-            'data_abstract',
+            "id",
+            "data_abstract",
         ],
     },
-    'fields': {
+    "fields": {
         CassandraThing: [
-            'id',
-            'data_abstract',
+            "id",
+            "data_abstract",
         ],
     },
-    'local_fields': {
+    "local_fields": {
         CassandraThing: [],
     },
-    'local_concrete_fields': {
+    "local_concrete_fields": {
         CassandraThing: [],
     },
-    'many_to_many': {
+    "many_to_many": {
         CassandraThing: [],
     },
-    'many_to_many_with_model': {
+    "many_to_many_with_model": {
         CassandraThing: [],
     },
-    'get_all_related_objects_with_model_legacy': {
+    "get_all_related_objects_with_model_legacy": {
         CassandraThing: (),
     },
-    'get_all_related_objects_with_model_hidden_local': {
+    "get_all_related_objects_with_model_hidden_local": {
         CassandraThing: (),
     },
-    'get_all_related_objects_with_model_hidden': {
+    "get_all_related_objects_with_model_hidden": {
         CassandraThing: (),
     },
-    'get_all_related_objects_with_model_local': {
+    "get_all_related_objects_with_model_local": {
         CassandraThing: (),
     },
-    'get_all_related_objects_with_model': {
+    "get_all_related_objects_with_model": {
         CassandraThing: (),
     },
-    'get_all_related_objects_with_model_local_legacy': {
+    "get_all_related_objects_with_model_local_legacy": {
         CassandraThing: (),
     },
-    'get_all_related_objects_with_model_hidden_legacy': {
+    "get_all_related_objects_with_model_hidden_legacy": {
         CassandraThing: (),
     },
-    'get_all_related_objects_with_model_hidden_local_legacy': {
+    "get_all_related_objects_with_model_hidden_local_legacy": {
         CassandraThing: (),
     },
-    'get_all_related_objects_with_model_proxy_hidden_legacy': {
+    "get_all_related_objects_with_model_proxy_hidden_legacy": {
         CassandraThing: (),
     },
-    'get_all_related_many_to_many_with_model_legacy': {
+    "get_all_related_many_to_many_with_model_legacy": {
         CassandraThing: (),
     },
-    'private_fields': {
-        CassandraThing: [
-            'id',
-            'data_abstract'
-        ],
+    "private_fields": {
+        CassandraThing: ["id", "data_abstract"],
     },
-    'labels': {
-        CassandraThing: 'common.CassandraThing',
+    "labels": {
+        CassandraThing: "common.CassandraThing",
     },
-    'lower_labels': {
-        CassandraThing: 'common.cassandrathing',
+    "lower_labels": {
+        CassandraThing: "common.cassandrathing",
     },
 }

@@ -1,31 +1,22 @@
 import threading
 
-try:
-    from django.db.backends.base.base import (
-        connection_created,
-        BaseDatabaseWrapper,
-    )
-except ImportError:
-    try:
-        from django.db.backends import BaseDatabaseWrapper
-        from django.db.backends import connection_created
-    except ImportError:
-        from django.db.backends.signals import connection_created
-
-from django_cassandra_engine.connection import (
-    CassandraConnection,
-    FakeConnection,
-)
 from django_cassandra_engine.base.client import CassandraDatabaseClient
 from django_cassandra_engine.base.creation import CassandraDatabaseCreation
-from django_cassandra_engine.base.schema import CassandraDatabaseSchemaEditor
 from django_cassandra_engine.base.features import CassandraDatabaseFeatures
+from django_cassandra_engine.base.introspection import CassandraDatabaseIntrospection
 from django_cassandra_engine.base.operations import CassandraDatabaseOperations
+from django_cassandra_engine.base.schema import CassandraDatabaseSchemaEditor
 from django_cassandra_engine.base.validation import CassandraDatabaseValidation
-from django_cassandra_engine.base.introspection import (
-    CassandraDatabaseIntrospection,
-)
+from django_cassandra_engine.connection import CassandraConnection, FakeConnection
 from django_cassandra_engine.utils import CursorWrapper
+
+try:
+    from django.db.backends.base.base import BaseDatabaseWrapper, connection_created
+except ImportError:
+    try:
+        from django.db.backends import BaseDatabaseWrapper, connection_created
+    except ImportError:
+        from django.db.backends.signals import connection_created
 
 
 class Database(object):
@@ -60,15 +51,15 @@ class Database(object):
 class DatabaseWrapper(BaseDatabaseWrapper):
 
     Database = Database
-    vendor = 'cassandra'
+    vendor = "cassandra"
 
     operators = {
-        'exact': '= %s',
-        'contains': 'CONTAINS %s',
-        'gt': '> %s',
-        'gte': '>= %s',
-        'lt': '< %s',
-        'lte': '<= %s',
+        "exact": "= %s",
+        "contains": "CONTAINS %s",
+        "gt": "> %s",
+        "gte": ">= %s",
+        "lt": "< %s",
+        "lte": "<= %s",
     }
 
     client = None
@@ -147,7 +138,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         pass
 
     def _cursor(self, *args, **kwargs):
-        keyspace = self.settings_dict['NAME']
+        keyspace = self.settings_dict["NAME"]
         if (
             not self.connection.cluster.schema_metadata_enabled
             and keyspace not in self.connection.cluster.metadata.keyspaces
@@ -158,7 +149,5 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         return CursorWrapper(self.connection.cursor(), self)
 
     def schema_editor(self, *args, **kwargs):
-        """
-        Returns a new instance of this backends' SchemaEditor (Django>=1.7)
-        """
+        """Returns a new instance of this backends' SchemaEditor (Django>=1.7)"""
         return CassandraDatabaseSchemaEditor(self, *args, **kwargs)

@@ -1,5 +1,15 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 1.7.0 (11.01.2022)
+
+* Fix(command/dbshell): Avoid raise TypeError when django-3.2 pass `options['parameters']` (#154) - thanks @icycandle!
+* Support Django 4.x
+* Drop support for Python <3.7
+* replace `cassandra-driver` with `scylla-driver` to better support ScyllaDB (Scylla driver is fully compatible with Cassandra)
+* Get rid of travis build system in favor of Github Actions (faster build times, better integration with Github)
+* Reformat entire codebase with flake8, isort and black
+* Add code style check to the build process
+
 ## Version 1.6.3 (26.07.2021)
 
 * Support cloud cred bundle (#142)
@@ -64,7 +74,7 @@
 
 ## Version 1.1.1 (26.04.2017)
 
-* Fix #90: Breaks BooleanField with provided default value: can't save False 
+* Fix #90: Breaks BooleanField with provided default value: can't save False
   via admin UI project-wide if using django-cassandra-engine in same project
 
 ## Version 1.1.0 (09.04.2017)
@@ -215,7 +225,7 @@
 ## Version 0.2.3 (25.03.2015)
 
 * fix #15: test database not used by code under test (by @lsmithso)
-* fix #25: working fixtures in `django_cassandra_engine.test.TestCase` 
+* fix #25: working fixtures in `django_cassandra_engine.test.TestCase`
   (by @slurms)
 
 ## Version 0.2.2 (19.01.2015)
