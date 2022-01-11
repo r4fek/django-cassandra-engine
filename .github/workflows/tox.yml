@@ -31,6 +31,7 @@ jobs:
         run: |
           pip install tox
           tox
+
   test:
     name: Run tests
     runs-on: ubuntu-latest

@@ -1,7 +1,7 @@
 from functools import partial
 from itertools import chain
 from operator import attrgetter
-import collections
+import collections.abc
 import copy
 import inspect
 import logging
@@ -573,7 +573,7 @@ class ReadOnlyDjangoCassandraQuerySet(list):
     use_in_migrations = False
 
     def __init__(self, data, model_class):
-        if not isinstance(data, collections.Iterable):
+        if not isinstance(data, collections.abc.Iterable):
             raise TypeError("ReadOnlyDjangoCassandraQuerySet requires iterable data")
         super(ReadOnlyDjangoCassandraQuerySet, self).__init__(data)
         self.model = model_class
