@@ -6,7 +6,6 @@ import uuid
 from cassandra.cqlengine import ValidationError as CQLValidationError
 from django.core import validators
 from django.forms import fields
-import django
 
 from common.models import CassandraFamilyMember
 from django_cassandra_engine.test import TestCase as CassandraTestCase

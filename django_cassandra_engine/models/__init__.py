@@ -145,7 +145,6 @@ class DjangoCassandraOptions(options.Options):
     def _give_columns_django_field_attributes(self):
         """
         Add Django Field attributes to each cqlengine.Column instance.
-
         So that the Django Options class may interact with it as if it were
         a Django Field.
         """
@@ -194,7 +193,7 @@ class DjangoCassandraOptions(options.Options):
                 setattr(cql_column, method_name, new_method)
 
 
-class DjangoCassandraModelMetaClass(ModelBase, metaclass=ModelMetaClass):
+class DjangoCassandraModelMetaClass(ModelMetaClass, ModelBase):
     def __new__(cls, name, bases, attrs):
         parents = [b for b in bases if isinstance(b, DjangoCassandraModelMetaClass)]
 
@@ -244,7 +243,7 @@ class DjangoCassandraModelMetaClass(ModelBase, metaclass=ModelMetaClass):
         if len(discriminator_columns) > 1:
             raise ModelDefinitionException(
                 "only one discriminator_column can be defined in a model, "
-                " {0} found".format(len(discriminator_columns))
+                "{0} found".format(len(discriminator_columns))
             )
 
         if attrs["__discriminator_value__"] and not is_polymorphic:
@@ -547,7 +546,6 @@ class DjangoCassandraModelMetaClass(ModelBase, metaclass=ModelMetaClass):
 def convert_pk_field_names_to_real(model, field_names):
     """
     Convert field names including 'pk' to the real field names:
-
     >>> convert_pk_field_names_to_real(['pk', 'another_field'])
     ['real_pk_field', 'another_field']
     """
@@ -861,7 +859,6 @@ class DjangoCassandraModel(BaseModel, metaclass=DjangoCassandraModelMetaClass):
     def _get_column(cls, name):
         """
         Based on cqlengine.models.BaseModel._get_column.
-
         But to work with 'pk'
         """
         if name == "pk":
