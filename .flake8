@@ -3,7 +3,6 @@ max-line-length = 88
 max-complexity = 42
 # http://flake8.pycqa.org/en/2.5.5/warnings.html#warning-error-codes
 ignore =
-  # pydocstyle - docstring conventions (PEP257)
   D100	# Missing docstring in public module
   D101	# Missing docstring in public class
   D102	# Missing docstring in public method
@@ -14,9 +13,7 @@ ignore =
   D107	# Missing docstring in __init__
   D403  # First word of the first line should be properly capitalized
   D412  # No blank lines allowed between a section header and its content
-  # pycodestyle - style checker (PEP8)
   W503  # line break before binary operator
-  # the following are ignored in CI using --extend-ignore option:
   D205  # [pydocstyle] 1 blank line required between summary line and description
   D400  # [pydocstyle] First line should end with a period
   S404  # Consider possible security implications associated with the subprocess module.
@@ -25,7 +22,7 @@ ignore =
   ; S308  # [bandit] Use of mark_safe() may expose cross-site scripting vulnerabilities and should be reviewed.
   ; S703  # [bandit] Potential XSS on mark_safe function.
   S101  # use of assert
-  
+
 per-file-ignores =
   ; D205 - 1 blank line required between summary line and description
   ; D400 - First line should end with a period
