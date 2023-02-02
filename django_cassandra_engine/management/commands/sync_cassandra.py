@@ -87,7 +87,6 @@ class Command(BaseCommand):
                 management.sync_table(model, keyspaces=[keyspace], connections=[alias])
 
     def handle(self, **options):
-
         self._import_management()
 
         database = options.get("database")

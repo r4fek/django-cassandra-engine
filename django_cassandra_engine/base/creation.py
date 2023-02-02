@@ -88,7 +88,6 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
         return test_database_name
 
     def _destroy_test_db(self, test_database_name, verbosity=1, **kwargs):
-
         drop_keyspace(test_database_name, connections=[self.connection.alias])
 
     def set_models_keyspace(self, keyspace):
