@@ -1,3 +1,5 @@
+from functools import cached_property
+
 from django.db.backends.base.features import BaseDatabaseFeatures
 
 
@@ -10,3 +12,7 @@ class CassandraDatabaseFeatures(BaseDatabaseFeatures):
     uses_savepoints = False
     requires_rollback_on_dirty_transaction = False
     atomic_transactions = True
+
+    @cached_property
+    def supports_transactions(self):
+        return False

@@ -49,7 +49,6 @@ class Database(object):
 
 
 class DatabaseWrapper(BaseDatabaseWrapper):
-
     Database = Database
     vendor = "cassandra"
 

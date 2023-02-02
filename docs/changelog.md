@@ -1,5 +1,11 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 1.8.0 (02.02.2023)
+
+* Drop support for Django 3.1
+* Support Django up to 4.1
+* Add support for Python 3.11
+
 ## Version 1.7.0 (11.01.2022)
 
 * Fix(command/dbshell): Avoid raise TypeError when django-3.2 pass `options['parameters']` (#154) - thanks @icycandle!
