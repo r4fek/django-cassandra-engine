@@ -75,7 +75,7 @@ class DjangoCassandraModelSerializer(serializers.ModelSerializer):
         if model_field.has_default or model_field.blank or model_field.null:
             kwargs["required"] = False
 
-        if model_field.null and not isinstance(model_field, models.NullBooleanField):
+        if model_field.null:
             kwargs["allow_null"] = True
 
         if model_field.blank and (

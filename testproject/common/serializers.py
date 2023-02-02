@@ -23,7 +23,7 @@ class ThingSerializer(DjangoCassandraModelSerializer):
 
 
 class CassandraFamilyMemberSerializer(DjangoCassandraModelSerializer):
-    is_real = serializers.NullBooleanField()
+    is_real = serializers.BooleanField()
 
     class Meta:
         model = CassandraFamilyMember
