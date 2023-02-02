@@ -36,8 +36,9 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
             if verbosity >= 2:
                 test_db_repr = " ('%s')" % test_database_name
             logger.info(
-                "Creating test database for alias '%s'%s..."
-                % (self.connection.alias, test_db_repr)
+                "Creating test database for alias '%s'%s...",
+                self.connection.alias,
+                test_db_repr,
             )
 
         options = self.connection.settings_dict.get("OPTIONS", {})
@@ -76,7 +77,7 @@ class CassandraDatabaseCreation(BaseDatabaseCreation):
         # restore the original connection options
         if not connection_options_copy.get("schema_metadata_enabled", True):
             logger.info(
-                "Disabling metadata on %s" % self.connection.settings_dict["NAME"]
+                "Disabling metadata on %s", self.connection.settings_dict["NAME"]
             )
             options["connection"]["schema_metadata_enabled"] = connection_options_copy[
                 "schema_metadata_enabled"
