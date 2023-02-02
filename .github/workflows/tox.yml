@@ -45,7 +45,7 @@ jobs:
 
     services:
       cassandra:
-        image: scylla:5.1.2
+        image: scylladb/scylla:5.1.2
         ports:
           - 9042:9042
     steps:
