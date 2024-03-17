@@ -1,6 +1,6 @@
 ## 2-clause BSD License
 
-Copyright (c) 2014-2016, Rafał Furmański <r.furmanski@gmail.com>
+Copyright (c) 2014-2024, Rafał Furmański <r.furmanski@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

@@ -19,6 +19,9 @@ ignore =
   S603
   D401
   S101
+  F401
+  F811
+  W503
 
 per-file-ignores =
   *tests/*:D205,D400,D401,S101,S106,E501,E731
