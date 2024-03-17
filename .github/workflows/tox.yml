@@ -20,15 +20,16 @@ jobs:
 
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python 3.10
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
       - name: Install and run tox
         run: |
+          pip install -U pip
           pip install tox
           tox
 
@@ -37,27 +38,28 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.8', '3.9', '3.10', '3.11']
-        django-version: ['32', '40', '4.1']
+        python-version: ['3.10', '3.11', '3.12']
+        django-version: ['32', '40', '41', '42', '50']
 
     env:
       TOXENV: py${{ matrix.python-version }}-django${{ matrix.django-version }}
 
     services:
       cassandra:
-        image: scylladb/scylla:5.1.2
+        image: scylladb/scylla:5.4
         ports:
           - 9042:9042
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Install and run tox
         run: |
+          pip install -U pip
           pip install tox
           tox

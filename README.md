@@ -102,6 +102,6 @@ To connect to a hosted Cassandra cluster that provides a secure connection bundl
 The documentation can be found online [here](http://r4fek.github.io/django-cassandra-engine/).
 
 ## License ##
-Copyright (c) 2014-2023, [Rafał Furmański](https://linkedin.com/in/furmanski).
+Copyright (c) 2014-2024, [Rafał Furmański](https://linkedin.com/in/furmanski).
 
 All rights reserved. Licensed under BSD 2-Clause License.

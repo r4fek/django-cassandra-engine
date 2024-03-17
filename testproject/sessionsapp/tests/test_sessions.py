@@ -1,7 +1,7 @@
 from datetime import timedelta
 import string
 import unittest
-
+import django
 from django.conf import settings
 from django.core.cache import InvalidCacheBackendError
 from django.test.utils import override_settings
@@ -290,6 +290,9 @@ class SessionTestsMixin(object):
         encoded = self.session.encode(data)
         self.assertEqual(self.session.decode(encoded), data)
 
+    @unittest.skipIf(
+        django.VERSION[0] >= 5, "Django 5.x does not support PickleSerializer"
+    )
     def test_actual_expiry(self):
         # this doesn't work with JSONSerializer (serializing timedelta)
         with override_settings(

@@ -19,7 +19,7 @@ in the way you're used to. You can focus on writing a good code.
 ## Features
 
 * integration with latest `python-driver` from DataStax
-* working `flush`, `syncdb`, `migrate`, `sync_cassandra`, `inspectdb` and 
+* working `flush`, `syncdb`, `migrate`, `sync_cassandra`, `inspectdb` and
   `dbshell` commands
 * support for creating/destroying test database
 * accepts all `cqlengine` and `cassandra.cluster.Cluster` connection options
@@ -29,8 +29,8 @@ in the way you're used to. You can focus on writing a good code.
 
 ## Requirements
 
-* Python>=3.7
-* Cassandra>=2.0
+* Python>=3.8
+* Cassandra>=4.0
 * cassandra-driver
 
 ---
