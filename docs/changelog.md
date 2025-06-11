@@ -1,5 +1,10 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 1.10.0 (11.06.2025)
+
+* Support Django up to 5.2
+* Remove support for Django<4.2
+* Add support for Python 3.13
 
 ## Version 1.9.0 (17.03.2024)
 
