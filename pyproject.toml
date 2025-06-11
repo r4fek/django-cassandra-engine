@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-cassandra-engine"
-version = "1.9.0"
+version = "1.10.0"
 description = "Django Cassandra Engine"
 authors = ["Rafał Furmański <r.furmanski@gmail.com>"]
 license = "2-clause BSD"
@@ -18,11 +18,10 @@ classifiers = [
     'License :: OSI Approved :: BSD License',
     'Operating System :: OS Independent',
     'Programming Language :: Python',
-    'Programming Language :: Python :: 3.8',
-    'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
     'Topic :: Database',
     'Topic :: Internet',
     'Topic :: Software Development :: Libraries :: Python Modules',
@@ -33,11 +32,11 @@ packages = [{ include = "django_cassandra_engine" }]
 Changelog = "https://r4fek.github.io/django-cassandra-engine/changelog/"
 
 [tool.poetry.dependencies]
-python = "^3.8 || ^3.9 || ^3.10 || ^3.11 || ^3.12"
-django = "^3.2 || ^4.0 || ^4.1 || ^4.2 || ^5.0"
-scylla-driver = "^3.26.0"
+python = "^3.10 || ^3.11 || ^3.12 || ^3.13"
+django = "^4.2 || ^5.0 || ^5.1 || ^5.2"
+scylla-driver = "^3.29"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 black = {version = "*", allow-prereleases = true}
 coverage = "*"
 djangorestframework = "*"
