@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.11
 ENV PYTHONUNBUFFERED=1
 ENV CASS_HOST=cassandra
 RUN apt-get -y update
@@ -9,6 +9,7 @@ RUN mkdir /code
 WORKDIR /code
 RUN pip install poetry
 ADD . /code/
-RUN poetry install
+RUN poetry config virtualenvs.in-project true
+RUN poetry install --with dev
 
 EXPOSE 8000

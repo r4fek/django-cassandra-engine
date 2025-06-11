@@ -1,4 +1,3 @@
-version: '3'
 
 services:
   cassandra:
@@ -9,7 +8,7 @@ services:
 
   web:
     build: .
-    command: /bin/bash -c "cd testproject && wait-for-it cassandra:9042 -- python manage.py sync_cassandra && python manage.py runserver 0.0.0.0:8000"
+    command: /bin/bash -c "cd testproject && wait-for-it cassandra:9042 -t 60 -- poetry run python manage.py sync_cassandra && poetry run python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
