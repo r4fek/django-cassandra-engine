@@ -48,6 +48,37 @@
 
 + Done!
 
+## Using with ScyllaDB
+
+Django Cassandra Engine has **full support for ScyllaDB**. The package uses `scylla-driver` for optimal performance with ScyllaDB.
+
+To use Django Cassandra Engine with ScyllaDB, simply point your database configuration to your ScyllaDB cluster:
+
+``` python
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django_cassandra_engine',
+            'NAME': 'db',
+            'TEST_NAME': 'test_db',
+            'HOST': 'scylla-node1.example.com,scylla-node2.example.com',
+            'OPTIONS': {
+                'replication': {
+                    'strategy_class': 'SimpleStrategy',
+                    'replication_factor': 3
+                }
+            }
+        }
+    }
+```
+
+All features work seamlessly with ScyllaDB, including:
+
+* Model synchronization with `sync_cassandra`
+* Database migrations
+* Test database creation and destruction
+* Django admin integration
+* Session storage
+
 ---
 
 That was simple, right? [I want more!](advanced_usage.md).

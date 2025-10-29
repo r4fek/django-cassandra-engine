@@ -2,6 +2,8 @@
 
 All tools you need to start your journey with Apache Cassandra and Django Framework!
 
+**Now with full ScyllaDB support!** Django Cassandra Engine is fully compatible with ScyllaDB using the `scylla-driver`.
+
 Already using <a href="http://datastax.github.io/python-driver/" target="_blank" rel="nofollow">
     DataStax Python Driver for Apache Cassandra
 </a>?
@@ -19,6 +21,7 @@ in the way you're used to. You can focus on writing a good code.
 ## Features
 
 * integration with latest `python-driver` from DataStax
+* **full compatibility with ScyllaDB** using `scylla-driver`
 * working `flush`, `syncdb`, `migrate`, `sync_cassandra`, `inspectdb` and
   `dbshell` commands
 * support for creating/destroying test database
@@ -30,8 +33,8 @@ in the way you're used to. You can focus on writing a good code.
 ## Requirements
 
 * Python>=3.8
-* Cassandra>=4.0
-* cassandra-driver
+* Cassandra>=4.0 or ScyllaDB
+* cassandra-driver or scylla-driver
 
 ---
 

@@ -10,6 +10,7 @@ Discord: https://discord.gg/pxunMGmDNc
 ## Features ##
 
 * integration with latest `python-driver` and optionally `dse-driver` from DataStax
+* **full compatibility with ScyllaDB** using `scylla-driver`
 * working `flush`, `migrate`, `sync_cassandra`, `inspectdb` and
   `dbshell` commands
 * support for creating/destroying test database
@@ -76,6 +77,29 @@ Recommended installation:
 
 4. Run `./manage.py sync_cassandra`
 5. Done!
+
+## ScyllaDB Support ##
+
+Django Cassandra Engine has **full support for ScyllaDB**. The package uses `scylla-driver`, which is ScyllaDB's optimized fork of the DataStax Python driver.
+
+ScyllaDB is a high-performance NoSQL database that is API-compatible with Apache Cassandra. To use Django Cassandra Engine with ScyllaDB, simply configure your database settings to point to your ScyllaDB instance:
+
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django_cassandra_engine',
+                'NAME': 'db',
+                'TEST_NAME': 'test_db',
+                'HOST': 'scylla-host.example.com',
+                'OPTIONS': {
+                    'replication': {
+                        'strategy_class': 'SimpleStrategy',
+                        'replication_factor': 1
+                    }
+                }
+            }
+        }
+
+All features of Django Cassandra Engine work seamlessly with ScyllaDB, including migrations, model operations, and test database management.
 
 ## Connect to Cassandra with a Cloud Config bundle ##
 To connect to a hosted Cassandra cluster that provides a secure connection bundle (ex. DataStax Astra) change the `DATABASES` setting of your settings.py:
