@@ -1,4 +1,4 @@
-FROM python:3.11
+FROM python:3.14
 ENV PYTHONUNBUFFERED=1
 ENV CASS_HOST=cassandra
 RUN apt-get -y update

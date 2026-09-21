@@ -32,7 +32,8 @@ in the way you're used to. You can focus on writing a good code.
 
 ## Requirements
 
-* Python>=3.8
+* Python>=3.10
+* Django>=5.2
 * Cassandra>=4.0 or ScyllaDB
 * cassandra-driver or scylla-driver
 

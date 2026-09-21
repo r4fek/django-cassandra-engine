@@ -8,6 +8,7 @@ __ALL__ = (
     "_perform_unique_checks",
     "_perform_date_checks",
     "validate_unique",
+    "validate_constraints",
     "clean",
     "clean_fields",
 )
@@ -27,7 +28,7 @@ def serializable_value(self, field_name):
     return getattr(self, field.attname)
 
 
-def full_clean(self, exclude=None, validate_unique=True):
+def full_clean(self, exclude=None, validate_unique=True, validate_constraints=True):
     # Taken from django.db.models.base
     errors = {}
     if exclude is None:
@@ -198,6 +199,12 @@ def validate_unique(self, exclude=None):
 
     if errors:
         raise ValidationError(errors)
+
+
+def validate_constraints(self, exclude=None):
+    # ponytail: Cassandra has no table constraints, so there is nothing to
+    # check. Present only so Django's ModelForm._post_clean() can call it.
+    pass
 
 
 def clean(self):
