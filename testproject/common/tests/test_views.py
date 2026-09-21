@@ -1,19 +1,21 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from http import client
 
 from django.urls import reverse
 
 from common.models import CassandraThingMultiplePK
 from django_cassandra_engine.test import TestCase as CassandraTestCase
-from freezegun import freeze_time
 
 
-@freeze_time("14-06-15 15:44:25")
+# ponytail: a literal timestamp instead of freezegun - freezing the clock also
+# freezes the driver's request timeouts, and nothing here needs a fake now().
+CREATED_ON = datetime(2015, 6, 14, 15, 44, 25, tzinfo=timezone.utc)
+
+
 def create_thing():
-    return CassandraThingMultiplePK.objects.create(created_on=datetime.now())
+    return CassandraThingMultiplePK.objects.create(created_on=CREATED_ON)
 
 
-@freeze_time("14-06-15 15:44:25")
 class TestViewSet(CassandraTestCase):
     def test_get_when_no_records_exist(self):
         response = self.client.get(reverse("thing_viewset_api"))
@@ -37,7 +39,6 @@ class TestViewSet(CassandraTestCase):
         self.assertEqual(response.json(), expected_response)
 
 
-@freeze_time("14-06-15 15:44:25")
 class TestListCreateAPIView(CassandraTestCase):
     def test_get_when_no_records_exist(self):
         response = self.client.get(reverse("thing_listcreate_api"))
@@ -53,7 +54,6 @@ class TestListCreateAPIView(CassandraTestCase):
         assert CassandraThingMultiplePK.objects.all().count() == 1
 
 
-@freeze_time("14-06-15 15:44:25")
 class TestListAPIView(CassandraTestCase):
     def test_get(self):
         thing = create_thing()

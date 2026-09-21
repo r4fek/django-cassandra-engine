@@ -1,5 +1,17 @@
 # Django Cassandra Engine - CHANGELOG
 
+## Version 1.11.0 (21.09.2026)
+
+* Add support for Django 6.0 and 6.1
+* Add support for Python 3.14
+* Drop support for Django 4.2, 5.0 and 5.1 (all EOL)
+* Fix `Model.full_clean()` to accept `validate_constraints` and add a no-op
+  `Model.validate_constraints()`, so `ModelForm` validation works on Django>=4.1
+* Require `scylla-driver>=3.29.11` (Python 3.14 support)
+* Drop the `freezegun` test dependency - a frozen clock also freezes the
+  driver's request timeouts
+* Build with `poetry-core` instead of the removed `poetry.masonry` backend
+
 ## Version 1.10.0 (11.06.2025)
 
 * Support Django up to 5.2
