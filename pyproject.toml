@@ -34,7 +34,7 @@ Changelog = "https://r4fek.github.io/django-cassandra-engine/changelog/"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-django = "^5.2 || ^6.0"
+django = ">=5.2,<7.0"
 scylla-driver = "^3.29.11"
 
 [tool.poetry.group.dev.dependencies]
